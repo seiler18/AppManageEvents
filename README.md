@@ -39,35 +39,20 @@
        * Nombre
        * Fecha
        * Invitados
-      
-     * (INVITADO)(CRUD)
-       * Id (identificador , rut, pasaporte, DNI ,etc) 
-       * Nombre 
-       * Apellido
-     *
-
 
      * (SALÓN)(CRUD) 
        * Id 
        * Descripción 
        * Capacidad
 
-
-
-
-
-
-- Funcionalidades:
+- ## Funcionalidades:
     - Crear, Leer, Actualizar y Borrar eventos (CRUD básico) 
-    - Listar todos los eventos 
-    - Filtrar eventos por fecha 
-    - Crear, Leer, Actualizar y Borrar invitados (CRUD básico) 
-    - Asignar invitados a eventos 
+    - Listar todos los eventos
     - Crear, Leer, Actualizar y Borrar salones (CRUD básico) 
-    - Asignar salones a eventos en base a la capacidad
+    - Asignar salones a eventos
     
 
-- Funcionalidades Adicionales
+- ## Funcionalidades Adicionales
  - Registrar evento:
    - Asignar un nombre, fecha y lista de invitados al evento.
    - Asignar salón para el evento:
@@ -77,20 +62,14 @@
    - Eliminar evento:
    - Borrar un evento existente.
 
-
-
-
-- Duración Estimada del Desarrollo
+- ## Duración Estimada del Desarrollo
  - Desarrollo de las funcionalidades básicas (CRUD): 2 semanas
  - Implementación de la interfaz de usuario (Thymeleaf): 1 semana
  - Integración con PostgreSQL: 1 semana
  - Implementación de pruebas (JUnit): 1 semana
  - Total estimado: 5 semanas
 
-
-
-
-- Despliegue
+- ## Despliegue
  - Para el despliegue de la aplicación, se considera utilizar un enfoque de despliegue continuo (CI/CD) con Jenkins:
    - Integración continua (CI): Automatización de pruebas y construcción de la aplicación cada vez que se realiza un commit en la rama principal del repositorio.
    - Despliegue continuo (CD): Automatización del despliegue de la aplicación en un entorno de producción una vez que las pruebas hayan sido satisfactorias.
@@ -98,13 +77,10 @@
 
 
 
-- Ambiente de Desarrollo
+- ## Ambiente de Desarrollo
  - Desarrollo local en máquinas de desarrolladores.
 
-
-
-
-- Ambiente de Producción
+- ## Ambiente de Producción
  - Despliegue en un servidor en la nube (por ejemplo, AWS, Azure, Google Cloud) con PostgreSQL como base de datos y Java Spring Boot para el backend.
 
 
