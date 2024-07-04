@@ -4,10 +4,10 @@ spring:
   devtools:
     restart:
       enabled: true   # Habilitar reinicio automático
-      livereload:
-        enabled: true   # Habilitar recarga automática
-    thymeleaf:
-      cache: false    # Desactivar el caché para Thymeleaf
+    livereload:
+      enabled: true   # Habilitar recarga automática
+  thymeleaf:
+    cache: false    # Desactivar el caché para Thymeleaf
   application:
     name: "AppManageEvents"
   profiles:
