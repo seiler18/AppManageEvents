@@ -74,7 +74,11 @@
    - Integración continua (CI): Automatización de pruebas y construcción de la aplicación cada vez que se realiza un commit en la rama principal del repositorio.
    - Despliegue continuo (CD): Automatización del despliegue de la aplicación en un entorno de producción una vez que las pruebas hayan sido satisfactorias.
 
-
+  ## Comandos
+    $ java -jar AppManageEvents-0.0.1-RELEASE.jar
+    $ mvn clean install
+    $ mvn spring-boot:run
+    
 
 
 - ## Ambiente de Desarrollo
