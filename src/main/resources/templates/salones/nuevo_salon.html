@@ -2,7 +2,7 @@
 <html xmlns:th="http://thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Registro de evento</title>
+    <title>Registro de Salones</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
           crossorigin="anonymous">
@@ -11,10 +11,9 @@
 
 <nav class="navbar navbar-expand-Lg navbar-dark bg-dark">
     <a class="navbar-brand" href="/"> Control de eventos</a>
-
-        <ul class="navbar-nav mr-auto">
-            <li class="navbar-brand"> Creando el evento</a></li>
-        </ul>
+    <ul class="navbar-nav mr-auto">
+        <li class="navbar-brand"> Creando el Salon</a></li>
+    </ul>
 </nav>
 
 <br>
@@ -22,35 +21,39 @@
 <div class = "container">
     <div class="row">
         <div class ="col-lg-6 col-md-6 col-sm-6 container justify-content-center card">
-         <h1 class ="text-center">Registro de evento</h1>
+         <h1 class ="text-center">Registro de salones</h1>
          <div class="card-body">
-            <form th:action="@{/guardar}" th:object="${evento}" method="post">
+            <form th:action="@{/guardarSalon}" th:object="${salon}" method="post">
                 <div class="form-group">
                     <label>Nombre :</label>
-                    <input type="text" name ="nombre" th:field="*{nombre}" class="form-control" placeholder="Digite el nombre del evento" required>
+                    <input type="text" name ="nombre" th:field="*{nombre}" class="form-control" placeholder="Digite el nombre del salon" required>
                 </div>
 
                 <div class="form-group">
-                    <label>Fecha :</label>
-                    <input type="date" name ="fecha" th:field="*{fecha}" class="form-control" placeholder="Digite la fecha del evento" required>
+                    <label>Capacidad :</label>
+                    <input type="number" name ="capacidad" th:field="*{capacidad}" class="form-control" placeholder="Digite la capacidad del salon" required>
                 </div>
 
                 <div class="form-group">
-                    <label>Invitados :</label>
-                    <input type="number" name ="nombre" th:field="*{invitados}" class="form-control" placeholder="Digite la cantidad de invitados" required>
+                    <label>Descripción :</label>
+                    <input type="text" name ="descripcion" th:field="*{descripcion}" class="form-control" placeholder="Ingrese la descripción" required>
                 </div>
 
-                <label for="salon">Seleccionar Salón:</label>
+                <!-- <label for="salon">En que evento:</label>
                 <select id="salon" name="salon">
                     <option value="">Seleccione un salón</option>
                     <option th:each="salon : ${salones}"
                             th:value="${salon.id}"
                             th:text="${salon.nombre}">Salon Nombre</option>
-                </select>
+                </select> -->
 
                 <div class="box-footer">
                  <button class="btn btn-success">Guardar</button>
+                 <a href="/" class="btn btn-primary">Regresar</a>
                 </div>
+
+               
+               
 
             </form>
         </div>

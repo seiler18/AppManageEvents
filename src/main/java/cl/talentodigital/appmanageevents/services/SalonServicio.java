@@ -34,4 +34,9 @@ public class SalonServicio {
         salonRepositorio.deleteById(id);
     }
 
+    public Salon get(Long id) {
+        return salonRepositorio.findById(id).get() ;
+        
+    }
+
 }
