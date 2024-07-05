@@ -1,0 +1,41 @@
+name: Docker Build and Run
+
+on:
+  push:
+    branches:
+      - main  
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up JDK 17
+      uses: actions/setup-java@v2
+      with:
+        java-version: '17'
+
+    - name: Build and package with Maven
+      run: |
+        mvn clean package -DskipTests
+
+    - name: Build Docker image
+      run: |
+        docker build -t appmanageevents:0.0.1-release .
+
+    - name: Run Docker container
+      run: |
+        docker run -d -p 8080:8080 appmanageevents:0.0.1-release
+
+    - name: Wait for application to start
+      run: sleep 15  # Ajusta esto según cuánto tiempo toma tu aplicación en arrancar
+
+    - name: Verify application is running
+      run: curl -Is http://localhost:8080/actuator/health | head -n 1 | grep 200
+
+    - name: Clean up Docker containers
+      run: |
+        docker ps -q --filter ancestor=appmanageevents:0.0.1-release | xargs -r docker stop
