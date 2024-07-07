@@ -9,58 +9,87 @@
 </head>
 <body>
 
-<nav class="navbar navbar-expand-Lg navbar-dark bg-dark">
-    <a class="navbar-brand" href="/"> Control de eventos</a>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="/">Control de eventos</a>
     <ul class="navbar-nav mr-auto">
-        <li class="navbar-brand"> Creando el Salon</a></li>
+        <li class="navbar-brand">Creando el Salon</li>
     </ul>
 </nav>
 
 <br>
 
-<div class = "container">
+<div class="container">
     <div class="row">
-        <div class ="col-lg-6 col-md-6 col-sm-6 container justify-content-center card">
-         <h1 class ="text-center">Registro de salones</h1>
-         <div class="card-body">
-            <form th:action="@{/guardarSalon}" th:object="${salon}" method="post">
-                <div class="form-group">
-                    <label>Nombre :</label>
-                    <input type="text" name ="nombre" th:field="*{nombre}" class="form-control" placeholder="Digite el nombre del salon" required>
+        <div class="col-lg-6 col-md-6 col-sm-6 container justify-content-center card">
+            <h1 class="text-center">Registro de salones</h1>
+            <div class="card-body">
+                <!-- Mensaje de éxito o error -->
+                <div th:if="${message}" th:classappend="${messageType == 'success'} ? 'alert alert-success' : 'alert alert-danger'" role="alert" id="alertMessage">
+                    <span th:text="${message}"></span>
                 </div>
 
-                <div class="form-group">
-                    <label>Capacidad :</label>
-                    <input type="number" name ="capacidad" th:field="*{capacidad}" class="form-control" placeholder="Digite la capacidad del salon" required>
+                <form th:action="@{/guardarSalon}" th:object="${salon}" method="post">
+                    <div class="form-group">
+                        <label>Nombre :</label>
+                        <input type="text" name="nombre" th:field="*{nombre}" class="form-control" placeholder="Digite el nombre del salon" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Capacidad :</label>
+                        <input type="number" name="capacidad" th:field="*{capacidad}" class="form-control" placeholder="Digite la capacidad del salon" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Descripción :</label>
+                        <input type="text" name="descripcion" th:field="*{descripcion}" class="form-control" placeholder="Ingrese la descripción" required>
+                    </div>
+
+                    <div class="box-footer">
+                        <button class="btn btn-success">Guardar</button>
+                        <a href="/" class="btn btn-primary">Regresar</a>
+                    </div>
+                </form>
+
+                <div class="p-3 container">
+                    <h2>Lista de salones</h2>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Capacidad</th>
+                                <th>Descripción</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:if="${#lists.isEmpty(salones)}">
+                                <td colspan="4" class="text-center">No existen salones, registre uno nuevo</td>
+                            </tr>
+                            <tr th:each="salon : ${salones}">
+                                <td th:text="${salon.nombre}"></td>
+                                <td th:text="${salon.capacidad}"></td>
+                                <td th:text="${salon.descripcion}"></td>
+                                <td>
+                                    <a th:href="@{/editarSalon/{id}(id=${salon.id})}" class="btn btn-info">Editar</a>
+                                    <a th:href="@{/eliminarSalon/{id}(id=${salon.id})}" class="btn btn-danger">Eliminar</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
 
-                <div class="form-group">
-                    <label>Descripción :</label>
-                    <input type="text" name ="descripcion" th:field="*{descripcion}" class="form-control" placeholder="Ingrese la descripción" required>
-                </div>
-
-                <!-- <label for="salon">En que evento:</label>
-                <select id="salon" name="salon">
-                    <option value="">Seleccione un salón</option>
-                    <option th:each="salon : ${salones}"
-                            th:value="${salon.id}"
-                            th:text="${salon.nombre}">Salon Nombre</option>
-                </select> -->
-
-                <div class="box-footer">
-                 <button class="btn btn-success">Guardar</button>
-                 <a href="/" class="btn btn-primary">Regresar</a>
-                </div>
-
-               
-               
-
-            </form>
-        </div>
+            </div>
         </div>
     </div>
 </div>
-
-
+<!-- Script para hacer desaparecer el mensaje después de unos segundos -->
+<script>
+    setTimeout(function() {
+        var alertMessage = document.getElementById('alertMessage');
+        if (alertMessage) {
+            alertMessage.style.display = 'none';
+        }
+    }, 2000); // 2000 ms = 2 segundos
+</script>
 </body>
 </html>

@@ -39,9 +39,6 @@
             <div class="form-group mx-sm-3 mb-2">
                 <input type="text" name="palabraClave" class="form-control" id="palabraClave" th:value="${palabraClave}" placeholder="BUSCAR EVENTO" required>
             </div>
-            <div class="form-group mx-sm-3 mb-2">
-                <input type="text" name="palabraClave" class="form-control" id="palabraClave" th:value="${palabraClave}" placeholder="BUSCAR EVENTO" required>
-            </div>
                 <input type="submit" class="btn btn-info mb-2" value ="Buscar">
                 &nbsp; &nbsp;
 
@@ -61,6 +58,9 @@
         <th scope="col">Acciones</th>
         </thead>
         <tbody>
+            <tr th:if="${#lists.isEmpty(listarEventos)}">
+                <td colspan="7" class="text-center">No existen eventos por el momento, registre uno </td>
+            </tr>
         <tr th:each="evento: ${listarEventos}">
             <td th:text="${evento.id}"></td>
             <td th:text="${evento.nombre}"></td>

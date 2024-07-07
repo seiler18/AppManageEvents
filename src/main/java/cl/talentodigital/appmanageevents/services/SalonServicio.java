@@ -26,8 +26,8 @@ public class SalonServicio {
         return salonRepositorio.findAll();
     }
 
-    public void save(Salon salon){
-        salonRepositorio.save(salon);
+    public Salon save(Salon salon) {
+        return salonRepositorio.save(salon);
     }
 
     public void delete(Long id){
