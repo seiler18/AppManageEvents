@@ -29,13 +29,13 @@ jobs:
 
     - name: Run Docker container
       run: |
-        docker run -d -p 8080:8080 appmanageevents:0.0.1-release
+        docker run -d -p 8081:8081 appmanageevents:0.0.1-release
 
     - name: Wait for application to start
       run: sleep 15  # Ajusta esto según cuánto tiempo toma tu aplicación en arrancar
 
     - name: Verify application is running
-      run: curl -Is http://localhost:8080/actuator/health | head -n 1 | grep 200
+      run: curl -Is http://localhost:8081/actuator/health | head -n 1 | grep 200
 
     - name: Clean up Docker containers
       run: |
