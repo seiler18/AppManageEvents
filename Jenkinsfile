@@ -36,9 +36,5 @@ pipeline {
             echo 'Pipeline completed'
         }
     }
-
-    //Finalizar el pipeline no es del todo necesario esto, pero solo para informar
-    end {
-        echo 'Pipeline finished'
-    }
+    //Aca ya se termino el pipeline y se puede hacer un post a un webhook por ejemplo
 }
