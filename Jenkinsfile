@@ -21,10 +21,10 @@ pipeline {
                 sh './mvnw test'
             }
         }
-        stage('Deploy') {
-            steps {
-                sh './mvnw spring-boot:run'
-            }
-        }
+        // stage('Deploy') {
+        //     steps {
+        //         sh './mvnw spring-boot:run'
+        //     }
+        // }
     }
 }
