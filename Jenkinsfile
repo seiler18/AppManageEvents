@@ -1,10 +1,14 @@
 pipeline {
     agent any
 
+    environment {
+        GIT_CREDENTIALS = credentials('80fb7680-e9da-48aa-80b6-d96387fbafec')
+    }
+
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/seiler18/AppManageEvents'
+                git url: 'https://github.com/seiler18/AppManageEvents', credentialsId: "${env.GIT_CREDENTIALS}"
             }
         }
         stage('Build') {
