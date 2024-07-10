@@ -21,6 +21,8 @@ pipeline {
                 sh './mvnw test'
             }
         }
+        //Si descomentamos esta parte, la aplicación se deployara y quedara corriendo en el puerto que asignemos en nuestro docker 
+        //docker run -d -p 8081:8081 appmanageevents:0.0.1-release por ejemplo
         // stage('Deploy') {
         //     steps {
         //         sh './mvnw spring-boot:run'
