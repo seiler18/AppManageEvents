@@ -30,9 +30,15 @@ pipeline {
         // }
     }
     
+    //Acciones posteriores a la ejecución del pipeline
     post {
         always {
             echo 'Pipeline completed'
         }
+    }
+
+    //Finalizar el pipeline no es del todo necesario esto, pero solo para informar
+    end {
+        echo 'Pipeline finished'
     }
 }
