@@ -1,4 +1,4 @@
-name: Docker Build and Run
+name: Docker Build and Publish
 
 on:
   push:
@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: code checkout
+    - name: Checkout code
       uses: actions/checkout@v2
       
     - name: Set up JDK 17
@@ -20,16 +20,19 @@ jobs:
         distribution: 'adopt'
 
     - name: Build and package with Maven
-      run: |
-        mvn clean package -DskipTests
+      run: mvn clean package -DskipTests
+
+    - name: Log in to Docker Hub
+      run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
     - name: Build Docker image
-      run: |
-        docker build -t appmanageevents:0.0.1-release .
+      run: docker build -t seiler18/mascachicles:latest .
+
+    - name: Push Docker image
+      run: docker push seiler18/mascachicles:latest
 
     - name: Run Docker container
-      run: |
-        docker run -d -p 8081:8081 appmanageevents:0.0.1-release
+      run: docker run -d -p 8081:8081 seiler18/mascachicles:latest
 
     - name: Wait for application to start
       run: sleep 15  # Ajusta esto según cuánto tiempo toma tu aplicación en arrancar
@@ -38,5 +41,4 @@ jobs:
       run: curl -Is http://localhost:8081/actuator/health | head -n 1 | grep 200
 
     - name: Clean up Docker containers
-      run: |
-        docker ps -q --filter ancestor=appmanageevents:0.0.1-release | xargs -r docker stop
+      run: docker ps -q --filter ancestor=seiler18/mascachicles:latest | xargs -r docker stop
