@@ -8,6 +8,8 @@ VOLUME /tmp
 ARG JAR_FILE=target/AppManageEvents-0.0.1-RELEASE.jar
 COPY ${JAR_FILE} AppManageEvents-0.0.1-RELEASE.jar
 
+
+#Este corresponde al segundo puerto que se expone 8080:*8080*
 # Expone el puerto de la aplicación
 EXPOSE 8080
 
