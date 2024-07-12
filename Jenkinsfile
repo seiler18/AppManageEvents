@@ -2,7 +2,9 @@ pipeline {
     agent any
 
     environment {
-        GIT_CREDENTIALS = '80fb7680-e9da-48aa-80b6-d96387fbafec' // El ID de tus credenciales en Jenkins
+        GIT_CREDENTIALS = '80fb7680-e9da-48aa-80b6-d96387fbafec' // ID de credenciales de Git en Jenkins
+        DOCKER_HUB_CREDENTIALS = 'docker-hub-credentials' // ID de credenciales de Docker Hub en Jenkins
+        DOCKER_IMAGE_TAG = "seiler18/mascachicles:latest" // Tag de la imagen Docker
     }
 
     stages {
@@ -11,18 +13,22 @@ pipeline {
                 git url: 'https://github.com/seiler18/AppManageEvents', branch: 'main', credentialsId: GIT_CREDENTIALS
             }
         }
-        stage('Build') {
+        stage('Build and Package with Maven') {
             steps {
-                sh './mvnw clean install'
+                sh './mvnw clean package -DskipTests'
             }
         }
-        stage('Test') {
+        stage('Build Docker Image') {
             steps {
-                sh './mvnw test'
+                script {
+                    docker.withRegistry('https://registry.hub.docker.com', DOCKER_HUB_CREDENTIALS) {
+                        def dockerImage = docker.build("${DOCKER_IMAGE_TAG}", ".")
+                        dockerImage.push()
+                    }
+                }
             }
         }
-        //Si descomentamos esta parte, la aplicación se deployara y quedara corriendo en el puerto que asignemos en nuestro docker 
-        //docker run -d -p 8081:8081 appmanageevents:0.0.1-release por ejemplo
+        // Si deseas desplegar la aplicación, puedes habilitar esta etapa
         // stage('Deploy') {
         //     steps {
         //         sh './mvnw spring-boot:run'
@@ -30,11 +36,9 @@ pipeline {
         // }
     }
     
-    //Acciones posteriores a la ejecución del pipeline
     post {
         always {
             echo 'Pipeline completed'
         }
     }
-    //Aca ya se termino el pipeline y se puede hacer un post a un webhook por ejemplo
 }
