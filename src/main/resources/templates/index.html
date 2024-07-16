@@ -1,18 +1,30 @@
 <!DOCTYPE html>
 <html xmlns:th="http://thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <title>Control de eventos</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
-          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-          crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="shortcut icon" type="image/png" href="/img/LOGO TALENTO DIGITAL.png">
+    <!--CSS de Bootstrap 4.2.1-->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+        integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <!--Google Fonts-->
+    <link href="https://fonts.googleapis.com/css?family=Raleway:400,700" rel="stylesheet">
+    <!--Font Awesome-->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
+        integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+    <!--CSS propio-->
+    <link rel="stylesheet" href="/css/style.css">
 </head>
+
 <body>
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
             <a class="navbar-brand" href="/">Control de Eventos</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
@@ -27,65 +39,97 @@
             </div>
         </div>
     </nav>
-<br>
+    <br>
 
-
-</form>
-
-<div class="container text-center">
-    <form class ="form-inline" th:action="@{/}">
-        <div class="form-group mb-2">
-         <label>Filtrar: </label>
-            <div class="form-group mx-sm-3 mb-2">
-                <input type="text" name="palabraClave" class="form-control" id="palabraClave" th:value="${palabraClave}" placeholder="BUSCAR EVENTO" required>
-            </div>
-                <input type="submit" class="btn btn-info mb-2" value ="Buscar">
+    <div class="container text-center">
+        <form class="form-inline" th:action="@{/}">
+            <div class="form-group mb-2">
+                <label>Filtrar: </label>
+                <div class="form-group mx-sm-3 mb-2">
+                    <input type="text" name="palabraClave" class="form-control" id="palabraClave"
+                        th:value="${palabraClave}" placeholder="BUSCAR EVENTO" required>
+                </div>
+                <input type="submit" class="btn btn-info mb-2" value="Buscar">
                 &nbsp; &nbsp;
 
-            <input type="button" class="btn btn-secondary mb-2" value ="Limpiar" onclick="limpiarCampos()">
+                <input type="button" class="btn btn-secondary mb-2" value="Limpiar" onclick="limpiarCampos()">
+            </div>
+        </form>
+
+        <br>
+        <table class="table">
+            <thead class="thead-dark">
+                <th scope="col">ID</th>
+                <th scope="col">Nombre</th>
+                <th scope="col">Fecha</th>
+                <th scope="col">Invitados</th>
+                <th scope="col">Salon</th>
+                <th scope="col">Capacidad</th>
+                <th scope="col">Acciones</th>
+            </thead>
+            <tbody>
+                <tr th:if="${#lists.isEmpty(listarEventos)}">
+                    <td colspan="7" class="text-center">No existen eventos por el momento, registre uno </td>
+                </tr>
+                <tr th:each="evento: ${listarEventos}">
+                    <td th:text="${evento.id}"></td>
+                    <td th:text="${evento.nombre}"></td>
+                    <td th:text="${evento.fecha}"></td>
+                    <td th:text="${evento.invitados}"></td>
+                    <td th:text="${evento.salon.nombre}"></td>
+                    <td th:text="${evento.salon.capacidad}"></td>
+                    <td>
+                        <a class="btn btn-primary" th:href="@{'/editar/' + ${evento.id}}">Editar</a>
+                        <a class="btn btn-danger" th:href="@{'/eliminar/' + ${evento.id}}">Eliminar</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="container text-center p-3">
+            <img src="/img/Salon.png" class="img-fluid" alt="Responsive image">
         </div>
-    </form>
 
-    <br>
-    <table class="table">
-        <thead class="thead-dark">
-        <th scope="col">ID</th>
-        <th scope="col">Nombre</th>
-        <th scope="col">Fecha</th>
-        <th scope="col">Invitados</th>
-        <th scope="col">Salon</th>
-        <th scope="col">Capacidad</th>
-        <th scope="col">Acciones</th>
-        </thead>
-        <tbody>
-            <tr th:if="${#lists.isEmpty(listarEventos)}">
-                <td colspan="7" class="text-center">No existen eventos por el momento, registre uno </td>
-            </tr>
-        <tr th:each="evento: ${listarEventos}">
-            <td th:text="${evento.id}"></td>
-            <td th:text="${evento.nombre}"></td>
-            <td th:text="${evento.fecha}"></td>
-            <td th:text="${evento.invitados}"></td>
-            <td th:text="${evento.salon.nombre}"></td>
-            <td th:text="${evento.salon.capacidad}"></td>
-            <td>
-                <a class="btn btn-primary" th:href="@{'/editar/' + ${evento.id}}">Editar</a>
-                <a class="btn btn-danger" th:href="@{'/eliminar/' + ${evento.id}}">Eliminar</a>
-            </td>
-        <tr>
+    </div> <!-- Cierre del div container text-center -->
 
-    </table>
-    </tr>
-    </tr>
-    </tbody>
-</div>
+    <!-- Footer -->
+    <footer class="bg-dark text-white text-center py-3 mt-auto container-footer">
+        <div class="container">
+            <p>&copy; 2024 Control de Eventos. Todos los derechos reservados.</p>
+            <ul class="list-inline">
+                <li class="list-inline-item">
+                    <a href="/" class="text-white">Política de Privacidad</a>
+                </li>
+                <li class="list-inline-item">
+                    <a href="/" class="text-white">Términos de Servicio</a>
+                </li>
+                <li class="list-inline-item">
+                    <a href="/" class="text-white">Contacto</a>
+                </li>
+            </ul>
+        </div>
+    </footer>
 
-<script type="text/javascript">
-    function limpiarCampos(){
-        window.location='/'
-    }
+        <!--Ajax-->
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 
-</script>
+        <!--jQuery 3.3.1 -->
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"
+            integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+
+        <!--Popper JS 1.14.3-->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
+            integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous">
+            </script>
+
+        <!--Bootstrap JS 4.2.1-->
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
+            integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous">
+            </script>
+
+        <!--Script propio-->
+        <script src="/js/script.js"></script>
 
 </body>
+
 </html>

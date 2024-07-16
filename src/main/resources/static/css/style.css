@@ -1,0 +1,41 @@
+/* Asegurar que el footer se mantenga al final */
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Asegura que el cuerpo ocupe al menos toda la altura de la ventana */
+}
+
+.container-footer {
+    width: 100%;
+    background-color: #343a40; /* Ajusta el color de fondo según tu diseño */
+    color: white; /* Ajusta el color de texto según tu diseño */
+    text-align: center;
+    padding: 15px 0; /* Espaciado interno del footer */
+    margin-top: auto; /* Empuja el footer hacia abajo */
+}
+
+/* Estilos para los elementos de lista en el footer */
+.container-footer ul.list-inline {
+    margin-bottom: 0; /* Elimina el margen inferior de la lista */
+}
+
+.container-footer ul.list-inline li.list-inline-item {
+    margin-right: 10px; /* Espaciado entre los elementos de la lista */
+}
+
+/* Estilos específicos para el contenido principal */
+.container.text-center {
+    margin-top: 20px; /* Ajusta el margen superior según sea necesario */
+}
+
+/* Estilos para la imagen fluida */
+.img-fluid {
+    max-width: 100%;
+    height: auto;
+}
