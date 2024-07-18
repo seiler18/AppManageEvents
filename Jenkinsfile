@@ -36,9 +36,16 @@ pipeline {
         // }
     }
     
-    post {
+     post {
         always {
             echo 'Pipeline completed'
+        }
+        cleanup {
+            echo 'Cleaning up old Docker images'
+            sh '''
+                docker images --filter "reference=seiler18/mascachicles" --format "{{.ID}}" | tail -n +3 | xargs -r docker rmi -f
+                docker images --filter "reference=registry.hub.docker.com/seiler18/mascachicles" --format "{{.ID}}" | tail -n +3 | xargs -r docker rmi -f
+            '''
         }
     }
 }
