@@ -4,7 +4,7 @@ pipeline {
     environment {
         GIT_CREDENTIALS = '80fb7680-e9da-48aa-80b6-d96387fbafec' // ID de credenciales de Git en Jenkins
         DOCKER_HUB_CREDENTIALS = 'docker-hub-credentials' // ID de credenciales de Docker Hub en Jenkins
-        DOCKER_IMAGE_TAG = "seiler18/mascachicles:jenkins-${env.BUILD_NUMBER}" // Cambia 'latest' por cualquier otro tag que desees
+        DOCKER_IMAGE_TAG = "seiler18/mascachicles:jenkins-${env.BUILD_NUMBER}" // Despues de ":" va el tag de la imagen o quiere decir el nombre que tendra la imagen en el docker hub
     }
 
     stages {
