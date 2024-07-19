@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>cl.talentodigital</groupId>
-	<artifactId>AppManageEvents</artifactId>
+	<artifactId>appmanageevents</artifactId>
 	<version>0.0.1-RELEASE</version>
-	<name>AppManageEvents</name>
+	<name>appmanageevents</name>
 	<description>AppManageEvents</description>
 	<url/>
 	<licenses>
@@ -102,6 +102,18 @@
 					</excludes>
 				</configuration>
 			</plugin>
+
+				<plugin>
+					<groupId>com.google.cloud.tools</groupId>
+					<artifactId>jib-maven-plugin</artifactId>
+					<version>3.4.1</version>
+					<configuration>
+					<to>
+						<image>${project.artifactId}:tag1</image>
+					</to>
+					</configuration>
+				</plugin>
+
 		</plugins>
 	</build>
 
