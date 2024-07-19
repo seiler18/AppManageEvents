@@ -1,3 +1,4 @@
+# DESABILITADO MANUALMENTE EN EL REPOSITORIO GITHUB ACTIONS
 name: Docker Build and Publish
 
 on:
