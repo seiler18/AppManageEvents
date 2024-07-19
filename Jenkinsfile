@@ -1,3 +1,7 @@
+
+// Este archivo es un script de Jenkins que define un pipeline de CI/CD
+// para una aplicación Spring Boot que se empaqueta en un contenedor Docker
+// y se despliega en un servidor de aplicaciones.
 pipeline {
     agent any
 
