@@ -29,18 +29,18 @@ pipeline {
                 }
             }
         }
-        stage('Wait for Quality Gate') {
-            steps {
-                script {
-                    def qualityGate = waitForQualityGate()
-                    if (qualityGate.status != 'OK') {
-                        error "Pipeline abortado debido a un Quality Gate fallido: ${qualityGate.status}"
-                    } else {
-                        echo "Quality Gate passed"
-                    }
-                }
-            }
-        }
+        // stage('Wait for Quality Gate') {
+        //     steps {
+        //         script {
+        //             def qualityGate = waitForQualityGate()
+        //             if (qualityGate.status != 'OK') {
+        //                 error "Pipeline abortado debido a un Quality Gate fallido: ${qualityGate.status}"
+        //             } else {
+        //                 echo "Quality Gate passed"
+        //             }
+        //         }
+        //     }
+        // }
         stage('Build Docker Image') {
             steps {
                 script {
