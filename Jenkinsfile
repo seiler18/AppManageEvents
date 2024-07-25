@@ -8,7 +8,9 @@ pipeline {
     environment {
         GIT_CREDENTIALS = '80fb7680-e9da-48aa-80b6-d96387fbafec' // ID de credenciales de Git en Jenkins
         DOCKER_HUB_CREDENTIALS = 'docker-hub-credentials' // ID de credenciales de Docker Hub en Jenkins
-        DOCKER_IMAGE_TAG = "seiler18/mascachicles:AppFinalRelease-${env.BUILD_NUMBER}" // Despues de ":" va el tag de la imagen o quiere decir el nombre que tendra la imagen en el docker hub
+        DOCKER_IMAGE_TAG = "seiler18/mascachicles:AppFinalRelease-${env.BUILD_NUMBER}" // Tag de la imagen en Docker Hub
+        SONARQUBE_SERVER = 'Sonar' // Nombre del servidor SonarQube configurado en Jenkins
+        SONARQUBE_TOKEN = credentials('ProbandoSonar') // Token de autenticación para SonarQube
     }
 
     stages {
@@ -20,6 +22,20 @@ pipeline {
         stage('Build and Package with Maven') {
             steps {
                 sh './mvnw clean package -DskipTests'
+            }
+        }
+        stage('SonarQube Analysis') {
+            steps {
+                script {
+                    withSonarQubeEnv(SONARQUBE_SERVER) {
+                        sh './mvnw sonar:sonar -Dsonar.login=${SONARQUBE_TOKEN}'
+                    }
+                }
+            }
+        }
+        stage('Quality Gate') {
+            steps {
+                waitForQualityGate abortPipeline: true
             }
         }
         stage('Build Docker Image') {
@@ -39,8 +55,8 @@ pipeline {
         //     }
         // }
     }
-    
-     post {
+
+    post {
         always {
             echo 'Pipeline completed'
         }
