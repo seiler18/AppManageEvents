@@ -9,7 +9,7 @@ pipeline {
         GIT_CREDENTIALS = '80fb7680-e9da-48aa-80b6-d96387fbafec' // ID de credenciales de Git en Jenkins
         DOCKER_HUB_CREDENTIALS = 'docker-hub-credentials' // ID de credenciales de Docker Hub en Jenkins
         DOCKER_IMAGE_TAG = "seiler18/mascachicles:AppFinalRelease-${env.BUILD_NUMBER}" // Tag de la imagen en Docker Hub
-        SONARQUBE_SERVER = 'Sonar' // Nombre del servidor SonarQube configurado en Jenkins
+        SONARQUBE_SERVER = 'ProbandoSonar' // Nombre del servidor SonarQube configurado en Jenkins
         SONARQUBE_TOKEN = credentials('ProbandoSonar') // Token de autenticación para SonarQube
     }
 
