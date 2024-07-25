@@ -1,4 +1,3 @@
-
 // Este archivo es un script de Jenkins que define un pipeline de CI/CD
 // para una aplicación Spring Boot que se empaqueta en un contenedor Docker
 // y se despliega en un servidor de aplicaciones.
@@ -28,14 +27,21 @@ pipeline {
             steps {
                 script {
                     withSonarQubeEnv(SONARQUBE_SERVER) {
-                        sh './mvnw sonar:sonar -Dsonar.login=${SONARQUBE_TOKEN}'
+                        sh './mvnw sonar:sonar -Dsonar.token=${SONARQUBE_TOKEN}'
                     }
                 }
             }
         }
         stage('Quality Gate') {
             steps {
-                waitForQualityGate abortPipeline: true
+                script {
+                    def qg = waitForQualityGate()
+                    if (qg.status != 'OK') {
+                        error "Pipeline abortado debido a un Quality Gate fallido: ${qg.status}"
+                    } else {
+                        echo "Quality Gate passed"
+                    }
+                }
             }
         }
         stage('Build Docker Image') {
