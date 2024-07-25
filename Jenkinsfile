@@ -1,6 +1,3 @@
-// Este archivo es un script de Jenkins que define un pipeline de CI/CD
-// para una aplicación Spring Boot que se empaqueta en un contenedor Docker
-// y se despliega en un servidor de aplicaciones.
 pipeline {
     agent any
 
@@ -32,12 +29,12 @@ pipeline {
                 }
             }
         }
-        stage('Quality Gate') {
+        stage('Wait for Quality Gate') {
             steps {
                 script {
-                    def qg = waitForQualityGate()
-                    if (qg.status != 'OK') {
-                        error "Pipeline abortado debido a un Quality Gate fallido: ${qg.status}"
+                    def qualityGate = waitForQualityGate()
+                    if (qualityGate.status != 'OK') {
+                        error "Pipeline abortado debido a un Quality Gate fallido: ${qualityGate.status}"
                     } else {
                         echo "Quality Gate passed"
                     }
