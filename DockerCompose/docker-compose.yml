@@ -1,4 +1,4 @@
-version: '2'
+version: '3.8'
 
 services:
 
@@ -13,7 +13,7 @@ services:
       - '50000:50000'
 
   sonarqube:
-    image: sonarqube:7.6-community 
+    image: sonarqube:10.6-community 
     volumes:
       - sonarqube_conf:/opt/sonarqube/conf
       - sonarqube_data:/opt/sonarqube/data

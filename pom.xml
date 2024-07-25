@@ -90,7 +90,15 @@
 
 	<build>
 		<plugins>
+ <plugin>
+            <groupId>org.sonarsource.scanner.maven</groupId>
+    <artifactId>sonar-maven-plugin</artifactId>
+    <version>4.0.0.4121</version>
+        </plugin>
+
 			<plugin>
+
+			
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
@@ -101,6 +109,8 @@
 						</exclude>
 					</excludes>
 				</configuration>
+
+
 			</plugin>
 		</plugins>
 	</build>
