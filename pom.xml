@@ -129,7 +129,7 @@
 
 	<distributionManagement>
 		<repository>
-			<id>appmanageevents</id>
+			<id>NexusLogin</id>
 			<url>http://localhost:8081/repository/appmanageevents/</url>
 		</repository>
 	</distributionManagement>
