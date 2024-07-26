@@ -7,7 +7,6 @@ pipeline {
         DOCKER_IMAGE_TAG = "seiler18/mascachicles:AppFinalRelease-${env.BUILD_NUMBER}" // Tag de la imagen en Docker Hub
         SONARQUBE_SERVER = 'ProbandoSonar' // Nombre del servidor SonarQube configurado en Jenkins
         SONARQUBE_TOKEN = credentials('ProbandoSonar') // Token de autenticación para SonarQube
-        NEXUS_URL = 'http://localhost:8081/repository/appmanageevents/'
         NEXUS_CREDENTIALS = 'NexusLogin' // ID de credenciales de Nexus en Jenkins
         GROUP_ID = 'cl.talentodigital'
         ARTIFACT_ID = 'appmanageevents'
@@ -58,9 +57,7 @@ pipeline {
                 script {
                     withCredentials([usernamePassword(credentialsId: NEXUS_CREDENTIALS, usernameVariable: 'NEXUS_USERNAME', passwordVariable: 'NEXUS_PASSWORD')]) {
                         sh """
-                        ./mvnw deploy:deploy-file -DgroupId=${GROUP_ID} -DartifactId=${ARTIFACT_ID} -Dversion=${VERSION} \
-                            -Dpackaging=${PACKAGING} -Dfile=${FILE} -DrepositoryId=nexus -Durl=${NEXUS_URL} \
-                            -DgeneratePom=true -DuniqueVersion=false -DaltDeploymentRepository=nexus::default::${NEXUS_URL}
+                        ./mvnw deploy -DskipTests
                         """
                     }
                 }
