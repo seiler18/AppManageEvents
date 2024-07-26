@@ -1,4 +1,3 @@
-//Pipeline completo
 pipeline {
     agent any
 
@@ -14,6 +13,7 @@ pipeline {
         VERSION = '0.0.1-RELEASE'
         PACKAGING = 'jar'
         FILE = 'target/appmanageevents-0.0.1-RELEASE.jar'
+        MAVEN_SETTINGS_ID = 'f1c1e9db-5051-4727-a9f4-d727d11f8f76' // ID del settings.xml administrado en Jenkins
     }
 
     stages {
@@ -24,14 +24,14 @@ pipeline {
         }
         stage('Build and Package with Maven') {
             steps {
-                sh './mvnw clean package -DskipTests'
+                sh "./mvnw clean package -DskipTests -s ${MAVEN_SETTINGS_ID}"
             }
         }
         stage('SonarQube Analysis') {
             steps {
                 script {
                     withSonarQubeEnv(SONARQUBE_SERVER) {
-                        sh './mvnw sonar:sonar -Dsonar.token=${SONARQUBE_TOKEN}'
+                        sh "./mvnw sonar:sonar -Dsonar.token=${SONARQUBE_TOKEN} -s ${MAVEN_SETTINGS_ID}"
                     }
                 }
             }
@@ -58,7 +58,7 @@ pipeline {
                 script {
                     withCredentials([usernamePassword(credentialsId: NEXUS_CREDENTIALS, usernameVariable: 'NEXUS_USERNAME', passwordVariable: 'NEXUS_PASSWORD')]) {
                         sh """
-                        ./mvnw deploy -DskipTests
+                        ./mvnw deploy -DskipTests -s ${MAVEN_SETTINGS_ID}
                         """
                     }
                 }
