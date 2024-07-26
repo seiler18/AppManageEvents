@@ -42,29 +42,26 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
 			<scope>runtime</scope>
 			<optional>true</optional>
 		</dependency>
-
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
 			<scope>runtime</scope>
 		</dependency>
-
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
-	<dependency>
-    <groupId>io.springfox</groupId>
-    <artifactId>springfox-boot-starter</artifactId>
-    <version>3.0.0</version>
-	</dependency>
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-boot-starter</artifactId>
+			<version>3.0.0</version>
+		</dependency>
 		<dependency>
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-core</artifactId>
@@ -75,7 +72,6 @@
 			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
 			<version>2.3.0</version>
 		</dependency>
-
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
@@ -90,16 +86,13 @@
 
 	<build>
 		<plugins>
-		
- 		<plugin>
-            <groupId>org.sonarsource.scanner.maven</groupId>
-   			 <artifactId>sonar-maven-plugin</artifactId>
-   			 <version>4.0.0.4121</version>
-        </plugin>
+			<plugin>
+				<groupId>org.sonarsource.scanner.maven</groupId>
+				<artifactId>sonar-maven-plugin</artifactId>
+				<version>4.0.0.4121</version>
+			</plugin>
 
 			<plugin>
-
-			
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
@@ -110,30 +103,35 @@
 						</exclude>
 					</excludes>
 				</configuration>
-
-
 			</plugin>
 
-				<plugin>
-					<groupId>com.google.cloud.tools</groupId>
-					<artifactId>jib-maven-plugin</artifactId>
-					<version>3.4.1</version>
-					<configuration>
+			<plugin>
+				<groupId>com.google.cloud.tools</groupId>
+				<artifactId>jib-maven-plugin</artifactId>
+				<version>3.4.1</version>
+				<configuration>
 					<to>
 						<image>${project.artifactId}:tag1</image>
 					</to>
-					</configuration>
-				</plugin>
+				</configuration>
+			</plugin>
 
-		<plugin>
-    <groupId>org.apache.maven.plugins</groupId>
-    <artifactId>maven-deploy-plugin</artifactId>
-    <version>3.1.2</version>
-    <configuration>
-        <altDeploymentRepository>nexus::default::${NEXUS_URL}</altDeploymentRepository>
-    </configuration>
-</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-deploy-plugin</artifactId>
+				<version>3.1.2</version>
+				<configuration>
+					<altDeploymentRepository>nexus::default::${NEXUS_URL}</altDeploymentRepository>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
+
+	<distributionManagement>
+		<repository>
+			<id>NexusLogin</id>
+			<url>http://localhost:8081/repository/appmanageevents/</url>
+		</repository>
+	</distributionManagement>
 
 </project>
