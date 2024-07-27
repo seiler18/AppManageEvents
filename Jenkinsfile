@@ -1,14 +1,13 @@
-//Pipeline completo
 pipeline {
     agent any
 
     environment {
-        GIT_CREDENTIALS = '80fb7680-e9da-48aa-80b6-d96387fbafec' // ID de credenciales de Git en Jenkins
-        DOCKER_HUB_CREDENTIALS = 'docker-hub-credentials' // ID de credenciales de Docker Hub en Jenkins
-        DOCKER_IMAGE_TAG = "seiler18/mascachicles:AppFinalRelease-${env.BUILD_NUMBER}" // Tag de la imagen en Docker Hub
-        SONARQUBE_SERVER = 'ProbandoSonar' // Nombre del servidor SonarQube configurado en Jenkins
-        SONARQUBE_TOKEN = credentials('ProbandoSonar') // Token de autenticación para SonarQube
-        NEXUS_CREDENTIALS = 'NexusLogin' // ID de credenciales de Nexus en Jenkins
+        GIT_CREDENTIALS = '80fb7680-e9da-48aa-80b6-d96387fbafec'
+        DOCKER_HUB_CREDENTIALS = 'docker-hub-credentials'
+        DOCKER_IMAGE_TAG = "seiler18/mascachicles:AppFinalRelease-${env.BUILD_NUMBER}"
+        SONARQUBE_SERVER = 'ProbandoSonar'
+        SONARQUBE_TOKEN = credentials('ProbandoSonar')
+        NEXUS_CREDENTIALS = 'NexusLogin'
         GROUP_ID = 'cl.talentodigital'
         ARTIFACT_ID = 'appmanageevents'
         VERSION = '0.0.1-RELEASE'
@@ -53,17 +52,19 @@ pipeline {
                 }
             }
         }
-        // stage('Publish to Nexus') {
-        //     steps {
-        //         script {
-        //             withCredentials([usernamePassword(credentialsId: NEXUS_CREDENTIALS, usernameVariable: 'NEXUS_USERNAME', passwordVariable: 'NEXUS_PASSWORD')]) {
-        //                 sh """
-        //                 ./mvnw deploy -DskipTests
-        //                 """
-        //             }
-        //         }
-        //     }
-        // }
+        stage('Publish to Nexus') {
+            steps {
+                script {
+                    withCredentials([usernamePassword(credentialsId: NEXUS_CREDENTIALS, usernameVariable: 'NEXUS_USERNAME', passwordVariable: 'NEXUS_PASSWORD')]) {
+                        configFileProvider([configFile(fileId: '554327cb-23d7-4efc-8cb0-1cce65e8b32e', variable: 'MAVEN_SETTINGS')]) {
+                            sh """
+                            ./mvnw deploy -s ${MAVEN_SETTINGS} -DskipTests
+                            """
+                        }
+                    }
+                }
+            }
+        }
     }
 
     post {
