@@ -13,6 +13,8 @@ pipeline {
         VERSION = '0.0.1-RELEASE'
         PACKAGING = 'jar'
         FILE = 'target/appmanageevents-0.0.1-RELEASE.jar'
+        SLACK_CHANNEL = '#aplicación-de-eventos' 
+        SLACK_CREDENTIALS = 'slackToken'
     }
 
     stages {
@@ -70,6 +72,15 @@ pipeline {
     post {
         always {
             echo 'Pipeline completed'
+            slackSend(channel: env.SLACK_CHANNEL, color: '#FFFF00', message: "Pipeline completed: ${env.JOB_NAME} ${env.BUILD_NUMBER}")
+        }
+        success {
+            echo 'Pipeline succeeded'
+            slackSend(channel: env.SLACK_CHANNEL, color: 'good', message: "Pipeline succeeded: ${env.JOB_NAME} ${env.BUILD_NUMBER}")
+        }
+        failure {
+            echo 'Pipeline failed'
+            slackSend(channel: env.SLACK_CHANNEL, color: 'danger', message: "Pipeline failed: ${env.JOB_NAME} ${env.BUILD_NUMBER}")
         }
         cleanup {
             echo 'Cleaning up old Docker images'
