@@ -2,6 +2,10 @@ pipeline {
     agent any
 
     environment {
+        //Aca deberiamos definir las variables de entorno que se van a utilizar en el pipeline
+        //Todas estas variables deberian apuntar a un perfil unico para la App , en este caso ocupe mis perfiles
+        //GIT credentials , docker credentials, sonarqube server, nexus credentials, slack credentials
+        //Estas credenciales seran ocupadas en el pipeline para poder hacer el build, push, deploy, etc , osea sus respectivas "steps" > "etapas"
         GIT_CREDENTIALS = '80fb7680-e9da-48aa-80b6-d96387fbafec'
         DOCKER_HUB_CREDENTIALS = 'docker-hub-credentials'
         DOCKER_IMAGE_TAG = "seiler18/mascachicles:AppFinalRelease-${env.BUILD_NUMBER}"
@@ -82,6 +86,7 @@ pipeline {
             echo 'Pipeline failed'
             slackSend(channel: env.SLACK_CHANNEL, color: 'danger', message: "Pipeline failed: ${env.JOB_NAME} ${env.BUILD_NUMBER}")
         }
+        //Aca hacemos una limpieza de imagenes de docker que no se estan ocupando
         cleanup {
             echo 'Cleaning up old Docker images'
             sh '''
