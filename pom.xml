@@ -95,14 +95,19 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <excludes>
-                        <exclude>
-                            <groupId>org.projectlombok</groupId>
-                            <artifactId>lombok</artifactId>
-                        </exclude>
-                    </excludes>
-                </configuration>
+                 <configuration>
+                <archive>
+                    <manifestEntries>
+                        <Main-Class>cl.talentodigital.appmanageevents.AppManageEventsApplication</Main-Class>
+                    </manifestEntries>
+                </archive>
+                <excludes>
+                    <exclude>
+                        <groupId>org.projectlombok</groupId>
+                        <artifactId>lombok</artifactId>
+                    </exclude>
+                </excludes>
+            </configuration>
             </plugin>
 
             <plugin>
