@@ -1,9 +1,9 @@
 # AppManageEvents
-![GitHub contributors](https://img.shields.io/github/contributors/yourusername/yourrepository)
-![GitHub last commit](https://img.shields.io/github/last-commit/yourusername/yourrepository)
-![GitHub issues](https://img.shields.io/github/issues/yourusername/yourrepository)
-![GitHub pull requests](https://img.shields.io/github/issues-pr/yourusername/yourrepository)
-![GitHub forks](https://img.shields.io/github/forks/yourusername/yourrepository?style=social)
+![GitHub contributors](https://img.shields.io/github/contributors/seiler18/AppManageEvents)
+![GitHub last commit](https://img.shields.io/github/last-commit/seiler18/AppManageEvents)
+![GitHub issues](https://img.shields.io/github/issues/seiler18/AppManageEvents)
+![GitHub pull requests](https://img.shields.io/github/issues-pr/seiler18/AppManageEvents)
+![GitHub forks](https://img.shields.io/github/forks/seiler18/AppManageEvents?style=social)
 
 ![Linux](https://img.shields.io/badge/Linux-FCC624?&logo=linux&logoColor=black)
 ![Ubuntu](https://img.shields.io/badge/Ubuntu-E95420?&logo=ubuntu&logoColor=white)
