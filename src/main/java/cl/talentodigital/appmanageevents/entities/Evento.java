@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+
+import io.micrometer.common.lang.Nullable;
 @Entity
 @Getter
 @Setter
@@ -25,8 +27,9 @@ public class Evento {
 
     //Aca deberia ser un private Invitado invitados
     //pero lo dejaremos como un Integer para no hacer mas largo el proyecto
+    //Modificamos a nullable = true , ya que un evento puede o no tener invitados
     @Column( name ="invitados")
-    @NonNull
+    @Nullable
     private Integer invitados ;
 
     @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})

@@ -86,7 +86,7 @@ public class EventoControlador {
     public ModelAndView mostrarFormularioDeEditarEvento(@PathVariable(name = "id") Long id){
 
         ModelAndView modelo = new ModelAndView("eventos/editar_evento");
-        Evento evento = eventoServicio.get(id);
+        Evento evento = eventoServicio.getById(id);
         List<Salon> salones = salonServicio.salonList();
 
       
