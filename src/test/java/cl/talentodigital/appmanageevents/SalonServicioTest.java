@@ -20,7 +20,7 @@ import cl.talentodigital.appmanageevents.repositories.SalonRepositorio;
 import cl.talentodigital.appmanageevents.services.SalonServicio;
 
 @ExtendWith(MockitoExtension.class)
-public class SalonServicioTest {
+class SalonServicioTest {
 
     @Mock // REPOSITORIO
     private SalonRepositorio salonRepositorio;
