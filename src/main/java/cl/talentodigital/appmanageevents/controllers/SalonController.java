@@ -81,7 +81,7 @@ public class SalonController {
     @RequestMapping(value = "/editarSalon/{id}")
     public ModelAndView mostrarFormularioDeEditarSalon(@PathVariable(name = "id") Long id) {
         ModelAndView modelo = new ModelAndView("salones/editar_salon");
-        Optional<Salon> optionalSalon = Optional.ofNullable(salonServicio.get(id));
+        Optional<Salon> optionalSalon = Optional.ofNullable(salonServicio.getById(id));
     
         if (optionalSalon.isPresent()) {
             Salon salon = optionalSalon.get();

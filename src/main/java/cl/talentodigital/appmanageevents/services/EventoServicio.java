@@ -14,6 +14,7 @@ public class EventoServicio {
     @Autowired
     private EventoRepositorio eventoRepositorio;
 
+    //Metodo para listar todos los eventos
     public List<Evento> listAll(String palabraClave) {
         if (palabraClave != null) {
             return eventoRepositorio.findAllByNombre(palabraClave);
@@ -21,17 +22,21 @@ public class EventoServicio {
         return eventoRepositorio.findAll();
     }
 
-
+    //Metodo para guardar un evento
     public void save(Evento evento){
         eventoRepositorio.save(evento);
     }
 
-    public Evento get(Long id){
+    //Metodo para obtener un evento por id
+    public Evento getById(Long id){
         return eventoRepositorio.findById(id).get() ;
     }
 
+    //Metodo para eliminar un evento por id
     public void delete(Long id){
 
         eventoRepositorio.deleteById(id);
     }
+
+
 }
