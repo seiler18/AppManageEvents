@@ -18,7 +18,7 @@ import cl.talentodigital.appmanageevents.repositories.EventoRepositorio;
 import cl.talentodigital.appmanageevents.services.EventoServicio;
 
 @ExtendWith(MockitoExtension.class)
-public class EventoServicioTest {
+class EventoServicioTest {
 
     @Mock // REPOSITORIO
     private EventoRepositorio eventoRepositorio;
