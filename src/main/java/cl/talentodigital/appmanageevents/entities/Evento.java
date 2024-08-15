@@ -1,11 +1,11 @@
 package cl.talentodigital.appmanageevents.entities;
 
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
 
-import io.micrometer.common.lang.Nullable;
 @Entity
 @Getter
 @Setter

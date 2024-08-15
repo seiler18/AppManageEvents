@@ -19,6 +19,9 @@ pipeline {
 
     stages {
         stage('Checkout') {
+            when {
+                branch 'main'
+            }
             steps {
                 git url: 'https://github.com/seiler18/AppManageEvents', branch: 'main', credentialsId: GIT_CREDENTIALS
             }
@@ -32,6 +35,7 @@ pipeline {
         stage('Run Unit Tests') {
             steps {
                 sh './mvnw test'
+                junit '**/target/surefire-reports/*.xml' // Publica los resultados de las pruebas
             }
         }
         stage('SonarQube Analysis') {
