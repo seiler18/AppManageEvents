@@ -8,13 +8,13 @@ import org.junit.platform.suite.api.Suite;
 
 @Suite
 @SelectClasses({SalonServicioTest.class, EventoServicioTest.class})
-public class ServicioSuiteTest {
+class ServicioSuiteTest {
     // Test suite for SalonServicioTest and EventoServicioTest
     // Run this class to run both test classes
     // This class should not contain any logic
 
     @Test
-    public void testSuiteRuns() {
+    void testSuiteRuns() {
         // This test just ensures that the suite runs
         assertTrue(true, "The test suite is running.");
     }
