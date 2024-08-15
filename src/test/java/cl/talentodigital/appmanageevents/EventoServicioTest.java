@@ -90,9 +90,4 @@ class EventoServicioTest {
         verify(eventoRepositorio, times(1)).deleteById(id);
     }
 
-
-
-
-
-
 }
