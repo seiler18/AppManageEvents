@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Inicio</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="/">Gestión de Eventos</a>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav ml-auto">
+                <li th:if="${#authorization.expression('isAuthenticated()')}" class="nav-item">
+                    <a class="nav-link" th:href="@{/eventos}">Panel de Control</a>
+                </li>
+                <li th:if="${#authorization.expression('!isAuthenticated()')}" class="nav-item">
+                    <a class="nav-link" th:href="@{/login}">Iniciar sesión</a>
+                </li>
+                <li th:if="${#authorization.expression('!isAuthenticated()')}" class="nav-item">
+                    <a class="nav-link" th:href="@{/register}">Registrarse</a>
+                </li>
+                <li th:if="${#authorization.expression('isAuthenticated()')}" class="nav-item">
+                    <a class="nav-link" th:href="@{/logout}">Cerrar sesión</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    
+    <div class="container text-center mt-5">
+        <h1>Bienvenido a la Aplicación de Gestión de Eventos</h1>
+        <p>Administra y organiza tus eventos de manera sencilla y eficiente.</p>
+    </div>
+</body>
+</html>

@@ -35,7 +35,7 @@ public class EventoControlador {
 
     @Operation(summary = "Obtiene la lista de eventos en la pagina de inicio y filtra por palabra clave")
     @ApiResponse(responseCode = "200", description = "HTTP STATUS 200")
-    @RequestMapping(value ="/" ,method = RequestMethod.GET)
+    @RequestMapping(value ="/eventos" ,method = RequestMethod.GET)
     public String verPaginaDeInicio(Model modelo, @Param("palabraClave") String palabraClave){
 
         List<Evento> listarEventos = eventoServicio.listAll(palabraClave);
@@ -77,7 +77,7 @@ public class EventoControlador {
         logger.info("===============================================");
 
         eventoServicio.save(evento);
-        return "redirect:/" ;
+        return "redirect:/eventos" ;
     }
 
     @Operation(summary = "Edita un evento")
@@ -109,6 +109,6 @@ public class EventoControlador {
         logger.info("Se obtiene el ID a eliminar : {}", id);
         logger.info("================================================");
         eventoServicio.delete(id);
-        return "redirect:/" ;
+        return "redirect:/eventos" ;
     }
 }
