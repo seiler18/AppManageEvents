@@ -2,7 +2,11 @@ package cl.talentodigital.appmanageevents.entities;
 
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.Setter;
 
 import java.time.LocalDate;
 

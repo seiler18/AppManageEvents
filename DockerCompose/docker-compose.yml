@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   jenkins:
     image: jenkins/jenkins:lts
@@ -45,7 +43,7 @@ services:
     networks:
       - sonarnet
     ports:
-      - '8081:8081'
+      - '8083:8083'
 
 networks:
   sonarnet:

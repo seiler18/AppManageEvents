@@ -14,11 +14,16 @@ public class EventoServicio {
     @Autowired
     private EventoRepositorio eventoRepositorio;
 
-    //Metodo para listar todos los eventos
+    //Metodo para listar todos los eventos con filtro
     public List<Evento> listAll(String palabraClave) {
         if (palabraClave != null) {
             return eventoRepositorio.findAllByNombre(palabraClave);
         }
+        return eventoRepositorio.findAll();
+    }
+
+    //Metodo para listar todos los eventos
+    public List<Evento> listAll() {
         return eventoRepositorio.findAll();
     }
 
