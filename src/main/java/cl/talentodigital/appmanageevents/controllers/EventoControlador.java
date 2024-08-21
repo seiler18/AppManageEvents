@@ -38,7 +38,7 @@ public class EventoControlador {
     @RequestMapping(value ="/eventos" ,method = RequestMethod.GET)
     public String verPaginaDeInicio(Model modelo, @Param("palabraClave") String palabraClave){
 
-        List<Evento> listarEventos = eventoServicio.listAll(palabraClave);
+        List<Evento> listarEventos = eventoServicio.findAllByNombre(palabraClave);
 
         modelo.addAttribute("palabraClave", palabraClave);
         modelo.addAttribute("listarEventos", listarEventos);

@@ -15,7 +15,7 @@ public class EventoServicio {
     private EventoRepositorio eventoRepositorio;
 
     //Metodo para listar todos los eventos con filtro
-    public List<Evento> listAll(String palabraClave) {
+    public List<Evento> findAllByNombre(String palabraClave) {
         if (palabraClave != null) {
             return eventoRepositorio.findAllByNombre(palabraClave);
         }

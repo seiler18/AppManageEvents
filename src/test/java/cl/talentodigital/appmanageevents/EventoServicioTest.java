@@ -36,7 +36,7 @@ class EventoServicioTest {
 
         when(eventoRepositorio.findAllByNombre(keyword)).thenReturn(Arrays.asList(evento1, evento2));
 
-        List<Evento> eventos = eventoServicio.listAll(keyword);
+        List<Evento> eventos = eventoServicio.findAllByNombre(keyword);
 
         assertEquals(2, eventos.size());
         verify(eventoRepositorio, times(1)).findAllByNombre(keyword);
@@ -50,7 +50,7 @@ class EventoServicioTest {
 
         when(eventoRepositorio.findAll()).thenReturn(Arrays.asList(evento1, evento2));
 
-        List<Evento> eventos = eventoServicio.listAll(null);
+        List<Evento> eventos = eventoServicio.findAllByNombre(null);
 
         assertEquals(2, eventos.size());
         verify(eventoRepositorio, times(1)).findAll();
