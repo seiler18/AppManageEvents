@@ -15,6 +15,7 @@ pipeline {
         FILE = 'target/appmanageevents-0.0.1-RELEASE.jar'
         SLACK_CHANNEL = '#aplicación-de-eventos' 
         SLACK_CREDENTIALS = 'slackToken'
+        READY_API_PROJECT_ID = '439c55c0-245a-4188-9300-e13e13f968cf'
     }
 
     stages {
@@ -26,6 +27,7 @@ pipeline {
                 git url: 'https://github.com/seiler18/AppManageEvents', branch: 'main', credentialsId: GIT_CREDENTIALS
             }
         }
+        
         stage('Build and Package with Maven') {
             steps {
                 sh './mvnw clean package -DskipTests'
