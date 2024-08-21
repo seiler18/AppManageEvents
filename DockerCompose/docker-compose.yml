@@ -43,7 +43,7 @@ services:
     networks:
       - sonarnet
     ports:
-      - '8083:8083'
+      - '8081:8081'
 
 networks:
   sonarnet:
