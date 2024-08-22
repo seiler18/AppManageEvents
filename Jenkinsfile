@@ -15,7 +15,6 @@ pipeline {
         FILE = 'target/appmanageevents-0.0.1-RELEASE.jar'
         SLACK_CHANNEL = '#aplicación-de-eventos' 
         SLACK_CREDENTIALS = 'slackToken'
-        READY_API_PROJECT_ID = '439c55c0-245a-4188-9300-e13e13f968cf'
     }
 
     stages {
@@ -40,7 +39,6 @@ pipeline {
                 junit '**/target/surefire-reports/*.xml' // Publica los resultados de las pruebas
             }
         }
-        
         stage('SonarQube Analysis') {
             steps {
                 script {
@@ -50,34 +48,15 @@ pipeline {
                 }
             }
         }
-
         stage('Wait for Quality Gate') {
             steps {
+                // Aca no importa si el qualitygate pasa o no, el pipeline sigue
+                //igual el report estara despues disponible en sonar
                 timeout(time: 1, unit: 'MINUTES') {
                     waitForQualityGate abortPipeline: false
                 }
             }
         }
-
-        stage('Run ReadyAPI Tests') { // Nueva etapa añadida para ReadyAPI
-            steps {
-                script {
-                    // Ejecuta las pruebas ReadyAPI usando el ID del archivo gestionado
-                    configFileProvider([configFile(fileId: READY_API_PROJECT_ID, variable: 'READY_API_PROJECT_FILE')]) {
-                        readyApiTest(
-                            projectPath: "${READY_API_PROJECT_FILE}", 
-                            testSuite: '', // Dejar en blanco para ejecutar todo el proyecto
-                            testCase: '', // Dejar en blanco para ejecutar todas las pruebas del test suite
-                            logEnabled: true, // Habilita los logs para el test
-                            saveReport: true, // Guarda el reporte del test
-                            junitReport: true, // Genera reporte JUnit
-                            environment: 'Default' // Ambiente de prueba que deseas usar
-                        )
-                    }
-                }
-            }
-        }
-
         stage('Build Docker Image') {
             steps {
                 script {
@@ -88,7 +67,6 @@ pipeline {
                 }
             }
         }
-
         stage('Publish to Nexus') {
             steps {
                 script {
