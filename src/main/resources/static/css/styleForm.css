@@ -10,12 +10,13 @@ body {
     background-repeat: no-repeat;
     display: flex;
     flex-direction: column;
+    min-height: 100vh; /* Asegura que el cuerpo ocupe al menos la altura de la ventana */
 }
 
 .main-container {
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
+    flex: 1; /* Ocupa el espacio restante */
 }
 
 .navbar {
@@ -49,9 +50,10 @@ body {
 }
 
 footer {
-    width: 100%;
     background-color: rgba(0, 0, 0, 0.9); /* Fondo negro para el footer */
     color: #fff; /* Texto blanco en el footer */
+    text-align: center;
+    padding: 1rem;
 }
 
 footer a {
