@@ -39,6 +39,13 @@ pipeline {
                 junit '**/target/surefire-reports/*.xml' // Publica los resultados de las pruebas
             }
         }
+
+        stage('Generate Code Coverage Report') {
+            steps {
+                sh './mvnw jacoco:report'
+            }
+        }
+        
         stage('SonarQube Analysis') {
             steps {
                 script {
