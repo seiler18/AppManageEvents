@@ -23,6 +23,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/", "/home", "/login", "/register", "/api/auth/**").permitAll()
                         .requestMatchers("/api/eventos/**", "/api/salones/**").permitAll()
+                        .requestMatchers("/css/**", "/js/**", "/img/**").permitAll() // Permite acceso a recursos estáticos
                         .anyRequest().authenticated())
                 .formLogin(form -> form
                         .loginPage("/login")
