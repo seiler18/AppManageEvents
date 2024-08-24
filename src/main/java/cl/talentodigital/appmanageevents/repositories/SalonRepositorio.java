@@ -9,9 +9,7 @@ import java.util.Optional;
 
 public interface SalonRepositorio extends JpaRepository<Salon, Long> {
 
-    @SuppressWarnings("null")
     public List<Salon> findAll();
-    @SuppressWarnings("null")
     public Optional<Salon> findById(Long id);
 
 @Query("SELECT e FROM Salon e WHERE e.nombre LIKE %?1%")
