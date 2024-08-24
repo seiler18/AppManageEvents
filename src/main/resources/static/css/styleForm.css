@@ -1,13 +1,42 @@
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
 body {
     background-image: url('/img/Eventos.jpeg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     display: flex;
+    flex-direction: column;
+}
+
+.main-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.navbar {
+    background-color: rgba(0, 0, 0, 0.8) !important; /* Navbar más oscuro para mejorar contraste */
+    color: #fff; /* Texto blanco para mejor visibilidad */
+}
+
+.navbar-brand {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #fff; /* Mantener el texto blanco en el navbar */
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.content {
+    flex: 1;
+    display: flex;
     align-items: center;
     justify-content: center;
-    height: 100vh;
-    margin: 0;
+    padding: 2rem 0;
 }
 
 .login-container {
@@ -16,7 +45,22 @@ body {
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     width: 100%;
-    max-width: 400px;
+    max-width: 500px;
+}
+
+footer {
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.9); /* Fondo negro para el footer */
+    color: #fff; /* Texto blanco en el footer */
+}
+
+footer a {
+    color: #fff; /* Mantener los enlaces en blanco */
+    text-decoration: none;
+}
+
+footer a:hover {
+    text-decoration: underline;
 }
 
 .btn-google {
@@ -35,4 +79,8 @@ body {
 
 .btn {
     width: 100%;
+}
+
+hr {
+    border-top: 1px solid #ccc;
 }
