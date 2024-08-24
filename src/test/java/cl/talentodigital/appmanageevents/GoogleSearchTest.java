@@ -23,6 +23,10 @@ public class GoogleSearchTest {
     public void setUp() {
         // Configura las opciones del navegador
         EdgeOptions options = new EdgeOptions();
+        options.addArguments("--headless");
+        options.addArguments("--disable-gpu"); // Opcional, pero puede ayudar a evitar problemas en algunos entornos
+        options.addArguments("--no-sandbox"); // Opcional, puede ser necesario en algunos entornos de CI/CD
+        options.addArguments("--disable-dev-shm-usage"); // Opcional, puede ayudar a evitar problemas de recursos en entornos limitados
         // Establece la propiedad para el WebDriver de Microsoft Edge
         System.setProperty("webdriver.edge.driver", "/usr/bin/msedgedriver");
         // Inicia el WebDriver
