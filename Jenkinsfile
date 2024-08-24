@@ -46,6 +46,13 @@ pipeline {
             }
         }
         
+         stage('Archive Reports') {
+            steps {
+                // Archiva los informes de JaCoCo
+                archiveArtifacts artifacts: 'target/site/jacoco/*.html', allowEmptyArchive: true
+            }
+        }
+
         stage('SonarQube Analysis') {
             steps {
                 script {
