@@ -57,6 +57,7 @@ public class GoogleSearchTest {
         
         // Imprimir mensaje si el test pasa
         System.out.println("Test Passed");
+        System.out.println("Título de la página: " + title);
     }
 
     @Test
@@ -90,7 +91,7 @@ public class GoogleSearchTest {
         assertTrue(resultContainsText, "Test Failed: Ninguno de los resultados de búsqueda contiene 'Selenium WebDriver'.");
 
         // Imprimir mensaje si el test pasa
-        System.out.println("Test Passed");
+        System.out.println("Test Passed - Al menos un resultado contiene 'Selenium WebDriver'.");
     }
 
     @AfterEach

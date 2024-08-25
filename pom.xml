@@ -49,6 +49,11 @@
             <artifactId>spring-security-oauth2-client</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
             <scope>runtime</scope>
@@ -148,7 +153,9 @@
                     <includes>
                         <include>**/*Test.java</include>
                     </includes>
-                    <argLine>-javaagent:${settings.localRepository}/org/jacoco/org.jacoco.agent/${jacoco.version}/org.jacoco.agent-${jacoco.version}-runtime.jar=destfile=${project.build.directory}/jacoco.exec</argLine>
+                    <argLine>-javaagent:${settings.
+                    localRepository}/org/jacoco/org.jacoco.agent/${jacoco.version}/org.jacoco.agent-
+                    ${jacoco.version}-runtime.jar=destfile=${project.build.directory}/jacoco.exec</argLine>
                 </configuration>
             </plugin>
             <plugin>
