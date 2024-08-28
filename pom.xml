@@ -153,9 +153,7 @@
                     <includes>
                         <include>**/*Test.java</include>
                     </includes>
-                    <argLine>-javaagent:${settings.
-                    localRepository}/org/jacoco/org.jacoco.agent/${jacoco.version}/org.jacoco.agent-
-                    ${jacoco.version}-runtime.jar=destfile=${project.build.directory}/jacoco.exec</argLine>
+                    <argLine>-javaagent:${settings.localRepository}/org/jacoco/org.jacoco.agent/${jacoco.version}/org.jacoco.agent-${jacoco.version}-runtime.jar=destfile=${project.build.directory}/jacoco.exec</argLine>
                 </configuration>
             </plugin>
             <plugin>
