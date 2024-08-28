@@ -56,7 +56,7 @@ public class AppManageEventsTest {
         assertTrue(pageContent.contains("Reunión Anual"), "Test Failed: 'Reunión Anual' no está presente en la página.");
         assertTrue(pageContent.contains("Seminario de Educación"), "Test Failed: 'Seminario de Educación' no está presente en la página.");
 
-        System.out.println("Test Passed: La página contiene los eventos esperados.");
+        System.out.println("Functional Test Passed: La página contiene los eventos esperados.");
     }
 
     @AfterEach
