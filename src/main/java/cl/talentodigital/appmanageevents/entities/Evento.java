@@ -36,8 +36,11 @@ public class Evento {
     @Nullable
     private Integer invitados ;
 
-    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
-    @JoinColumn(name = "salon_id" , referencedColumnName = "id")
+    //Aca dejamos la relacion @ManyToOne con el atributo salon ya que un evento solo puede tener un salon, y un salon puede tener muchos eventos
+    //la idea es colocar el salon como nulable para que un evento pueda existir sin un salon
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
+    @JoinColumn(name = "salon_id", referencedColumnName = "id")
+    @Nullable
     private Salon salon;
 
     @Override
