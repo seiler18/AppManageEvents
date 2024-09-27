@@ -31,8 +31,8 @@ class SalonServicioTest {
     @Test
     // Test para listar todos los nombres de salones
     void testSalonListByName() {
-        Salon salon1 = new Salon(1L, "Salon 1", null, null);
-        Salon salon2 = new Salon(2L, "Salon 2", null, null);
+        Salon salon1 = new Salon(1L, "Salon 1", null, null, null);
+        Salon salon2 = new Salon(2L, "Salon 2", null, null, null);
 
         when(salonRepositorio.findAll()).thenReturn(Arrays.asList(salon1, salon2));
 
@@ -47,8 +47,8 @@ class SalonServicioTest {
     @Test
     // Test para listar todos los salones
     void testSalonList() {
-        Salon salon1 = new Salon(1L, "Salon 1", null, null);
-        Salon salon2 = new Salon(2L, "Salon 2", null, null);
+        Salon salon1 = new Salon(1L, "Salon 1", null, null, null);
+        Salon salon2 = new Salon(2L, "Salon 2", null, null, null);
 
         when(salonRepositorio.findAll()).thenReturn(Arrays.asList(salon1, salon2));
 
@@ -63,7 +63,7 @@ class SalonServicioTest {
     @Test
     // Test para guardar un salón
     void testSave() {
-        Salon salon = new Salon(1L, "Salon Test", null, null);
+        Salon salon = new Salon(1L, "Salon Test", null, null, null);
 
         when(salonRepositorio.save(salon)).thenReturn(salon);
 
@@ -87,7 +87,7 @@ class SalonServicioTest {
     // Test para obtener un salón por id
     void testGetById() {
         Long id = 1L;
-        Salon salon = new Salon(id, "Salon Test", null, null);
+        Salon salon = new Salon(id, "Salon Test", null, null, null);
 
         when(salonRepositorio.findById(id)).thenReturn(Optional.of(salon));
 

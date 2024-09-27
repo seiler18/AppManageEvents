@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: appmanageevents-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: appmanageevents
+  template:
+    metadata:
+      labels:
+        app: appmanageevents
+    spec:
+      containers:
+      - name: appmanageevents
+        image: seiler18/mascachicles:AppFinalRelease-80
+        resources:
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+        ports:
+        - containerPort: 8083 

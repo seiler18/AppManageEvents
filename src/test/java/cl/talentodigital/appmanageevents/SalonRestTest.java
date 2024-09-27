@@ -30,8 +30,8 @@ public class SalonRestTest {
     @Test
     @WithMockUser(username = "user", roles = { "USER" })
     public void testListarSalones() throws Exception {
-        Salon salon1 = new Salon(1L, "Salón A", null, null);
-        Salon salon2 = new Salon(2L, "Salón B", null, null);
+        Salon salon1 = new Salon(1L, "Salón A", null, null, null);
+        Salon salon2 = new Salon(2L, "Salón B", null, null, null);
         when(salonServicio.salonList()).thenReturn(List.of(salon1, salon2));
 
         mockMvc.perform(get("/api/salones"))
@@ -46,7 +46,7 @@ public class SalonRestTest {
     @Test
     @WithMockUser(username = "user", roles = { "USER" })
     public void testObtenerSalonPorId() throws Exception {
-        Salon salon = new Salon(1L, "Salón A", null, null);
+        Salon salon = new Salon(1L, "Salón A", null, null, null);
         when(salonServicio.getById(1L)).thenReturn(salon);
 
         mockMvc.perform(get("/api/salones/1"))

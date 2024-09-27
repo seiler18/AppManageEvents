@@ -1,5 +1,6 @@
 package cl.talentodigital.appmanageevents.services;
 
+import cl.talentodigital.appmanageevents.entities.Evento;
 import cl.talentodigital.appmanageevents.entities.Salon;
 import cl.talentodigital.appmanageevents.repositories.SalonRepositorio;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +38,14 @@ public class SalonServicio {
     public Salon getById(Long id) {
         return salonRepositorio.findById(id).get() ;
         
+    }
+
+    public List<Salon> findAllByNombre(String nombre){
+        return salonRepositorio.findAllByNombre(nombre);
+    }
+
+    public List<Evento> findAllEventosSalon(Long id){
+        return salonRepositorio.findAllEventosSalon(id);
     }
 
 

@@ -19,7 +19,7 @@ public class EntitiesTest {
     @Test
     public void testEvento() {
         // Crear una instancia de Evento
-        Salon salon = new Salon(1L, "Salon Principal", 100, "Un gran salón");
+        Salon salon = new Salon(1L, "Salon Principal", 100, null, "Un gran salón");
         Evento evento = new Evento(1L, "Conferencia de Java", LocalDate.of(2024, 8, 25), 50, salon);
 
         // Validar getters
@@ -41,7 +41,7 @@ public class EntitiesTest {
     @Test
     public void testSalon() {
         // Crear una instancia de Salon
-        Salon salon = new Salon(1L, "Salon Principal", 100, "Un gran salón");
+        Salon salon = new Salon(1L, "Salon Principal", 100, null, "Un gran salón");
 
         // Validar getters
         assertEquals(1L, salon.getId());
