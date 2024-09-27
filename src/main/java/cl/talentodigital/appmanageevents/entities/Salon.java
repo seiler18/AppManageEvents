@@ -1,5 +1,8 @@
 package cl.talentodigital.appmanageevents.entities;
 
+import java.util.List;
+
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,6 +15,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
+//Clase Salon que se relaciona con la clase evento
 public class Salon {
 
     @Id
@@ -24,6 +28,12 @@ public class Salon {
 
     @Column( name ="capacidad" )
     private Integer capacidad ;
+
+    //Aca dejamos la relacion @OneToMany con el atributo eventos ya que un salon puede tener muchos eventos, y un evento solo puede tener un salon
+    //la idea es colocar el evento como nulable para que un salon pueda existir sin eventos
+    @OneToMany(mappedBy = "salon", cascade = CascadeType.ALL)
+    @Nullable
+    private List<Evento> eventos;
 
     @Column( name ="descripcion",nullable = false, length = 200 )
     private String descripcion ;
