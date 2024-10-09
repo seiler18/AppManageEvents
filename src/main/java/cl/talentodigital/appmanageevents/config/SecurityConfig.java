@@ -24,16 +24,17 @@ public class SecurityConfig {
                         .requestMatchers("/", "/home", "/login", "/register", "/api/auth/**").permitAll()
                         .requestMatchers("/api/eventos/**", "/api/salones/**").permitAll()
                         .requestMatchers("/css/**", "/js/**", "/img/**").permitAll() // Permite acceso a recursos estáticos
+                        .requestMatchers("/actuator/prometheus", "/actuator/metrics").permitAll() // Permitir acceso a métricas de Actuator
                         .anyRequest().authenticated())
                 .formLogin(form -> form
                         .loginPage("/login")
                         .failureUrl("/login?error=true")
-                        .defaultSuccessUrl("/eventos",true)
+                        .defaultSuccessUrl("/eventos", true)
                         .permitAll())
                 .logout(logout -> logout
-                .logoutUrl("/logout")
-                .logoutSuccessUrl("/login?logout=true")
-                .permitAll());
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/login?logout=true")
+                        .permitAll());
 
         return http.build();
     }
@@ -50,7 +51,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    // Crea el Cliente de registro para google,github y facebook
+    // Crea el Cliente de registro para google, github y facebook
     public ClientRegistrationRepository clientRegistrationRepository() {
         return new ClientRegistrationRepository() {
             @Override
