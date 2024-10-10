@@ -1,0 +1,138 @@
+
+services:
+  jenkins:
+    image: jenkins/jenkins:lts
+    volumes:
+      - jenkins_data:/var/jenkins_home
+    networks:
+      - sonarnet
+    ports:
+      - '8080:8080'
+      - '50000:50000'
+
+  sonarqube:
+    image: sonarqube:10.6-community 
+    volumes:
+      - sonarqube_conf:/opt/sonarqube/conf
+      - sonarqube_data:/opt/sonarqube/data
+      - sonarqube_extensions:/opt/sonarqube/extensions
+      - sonarqube_bundled-plugins:/opt/sonarqube/lib/bundled-plugins
+    networks:
+      - sonarnet
+    ports:
+      - '9000:9000'
+    environment:
+      - SONAR_JDBC_USERNAME=sonar
+      - SONAR_JDBC_PASSWORD=sonar
+      - SONAR_JDBC_URL=jdbc:postgresql://db:5432/sonar
+    depends_on:
+      - db
+
+  db:
+    image: postgres:13
+    networks:
+      - sonarnet
+    environment:
+      - POSTGRES_USER=sonar
+      - POSTGRES_PASSWORD=sonar
+      - POSTGRES_DB=sonar
+    volumes:
+      - postgresql:/var/lib/postgresql
+      - postgresql_data:/var/lib/postgresql/data
+
+  nexus:
+    image: sonatype/nexus3
+    volumes:
+      - nexus-data:/nexus-data
+    networks:
+      - sonarnet
+    ports:
+      - '8081:8081'
+
+  mongodb:
+    image: mongo:4.4
+    networks:
+      - sonarnet
+    volumes:
+      - mongo_data:/data/db
+    restart: always
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.10.2
+    environment:
+      - discovery.type=single-node
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+    networks:
+      - sonarnet
+    volumes:
+      - elasticsearch_data:/usr/share/elasticsearch/data
+    ports:
+      - '9200:9200'
+    restart: always
+
+  graylog:
+    image: graylog/graylog:4.2
+    networks:
+      - sonarnet
+    depends_on:
+      - mongodb
+      - elasticsearch
+    environment:
+      - GRAYLOG_PASSWORD_SECRET=Gp4d5bGndgXlZxIvpgsGmjUzZZN+l8izRGJw+YNRExs=
+      - GRAYLOG_ROOT_PASSWORD_SHA2=38f6177fe1c4eab3707b75de9f15f2f5b22bc157de84c0b5b5fcc9d619cf84bf
+      - GRAYLOG_HTTP_EXTERNAL_URI=http://127.0.0.1:9002/
+      - GRAYLOG_MONGODB_URI=mongodb://mongodb:27017/graylog
+      - GRAYLOG_ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+    volumes:
+      - graylog_data:/usr/share/graylog/data
+    ports:
+      - '9002:9000'
+    restart: always
+
+  fluentd:
+    image: fluent/fluentd-kubernetes-daemonset:v1.14-debian-elasticsearch7-1
+    volumes:
+      - ./fluentd/conf:/fluentd/etc
+    ports:
+      - '24224:24224'
+      - '24224:24224/udp'
+    environment:
+      - FLUENT_ELASTICSEARCH_HOST=elasticsearch
+      - FLUENT_ELASTICSEARCH_PORT=9200
+    networks:
+      - sonarnet
+    depends_on:
+      - elasticsearch
+
+  grafana:
+    image: grafana/grafana:8.5.5
+    networks:
+      - sonarnet
+    depends_on:
+      - graylog
+      - elasticsearch
+    ports:
+      - '3001:3000'
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    volumes:
+      - grafana_data:/var/lib/grafana
+    restart: always
+
+networks:
+  sonarnet:
+    driver: bridge
+
+volumes:
+  sonarqube_conf:
+  sonarqube_data:
+  sonarqube_extensions:
+  sonarqube_bundled-plugins:
+  postgresql:
+  postgresql_data:
+  jenkins_data:
+  nexus-data:
+  mongo_data:
+  elasticsearch_data:
+  graylog_data:
+  grafana_data:
