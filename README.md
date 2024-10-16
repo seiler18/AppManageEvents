@@ -1,4 +1,8 @@
-# AppManageEvents
+<div align="center">
+    <img src="https://github.com/seiler18/AppManageEvents/blob/main/etc/AppManageEvents-logo.png" alt="Logo - AppManageEvents">
+</div>
+</br>
+
 ![GitHub contributors](https://img.shields.io/github/contributors/seiler18/AppManageEvents)
 ![GitHub last commit](https://img.shields.io/github/last-commit/seiler18/AppManageEvents)
 ![GitHub issues](https://img.shields.io/github/issues/seiler18/AppManageEvents)
