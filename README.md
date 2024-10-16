@@ -42,6 +42,7 @@ Ideal para organizaciones que buscan optimizar la gestión de sus eventos, **App
 - Gabriel Muñoz
 - Gustavo Andrade
 - Jesús Seiler
+- Daniela Gallardo
 - Sixto Felipe
 
 ## Herramientas DevOps
