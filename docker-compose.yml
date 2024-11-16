@@ -1,130 +1,191 @@
+# Definición de los servicios que se van a ejecutar en los contenedores
 services:
+
+  # Servicio de Jenkins para la integración continua
   jenkins:
+    # Imagen oficial de Jenkins LTS (Long Term Support)
     image: jenkins/jenkins:lts
+    # Volumen para persistir los datos de Jenkins
     volumes:
       - jenkins_data:/var/jenkins_home
+    # Definición de la red a la que se conectará este contenedor
     networks:
       - sonarnet
+    # Puertos que se expondrán
     ports:
-      - '8080:8080'
-      - '50000:50000'
+      - '8080:8080'  # Puerto de Jenkins en el contenedor
+      - '50000:50000'  # Puerto para conexiones de agentes Jenkins
 
+  # Servicio de SonarQube para el análisis de código
   sonarqube:
-    image: sonarqube:10.6-community 
+    # Imagen de SonarQube en su versión 10.6 para la comunidad
+    image: sonarqube:10.6-community
+    # Volúmenes para persistir datos y configuraciones de SonarQube
     volumes:
       - sonarqube_conf:/opt/sonarqube/conf
       - sonarqube_data:/opt/sonarqube/data
       - sonarqube_extensions:/opt/sonarqube/extensions
       - sonarqube_bundled-plugins:/opt/sonarqube/lib/bundled-plugins
+    # Conexión a la red del contenedor
     networks:
       - sonarnet
+    # Puertos de acceso a SonarQube
     ports:
-      - '9000:9000'
+      - '9000:9000'  # Puerto para acceder a la interfaz web de SonarQube
+    # Variables de entorno para configuración de la base de datos de SonarQube
     environment:
       - SONAR_JDBC_USERNAME=sonar
       - SONAR_JDBC_PASSWORD=sonar
       - SONAR_JDBC_URL=jdbc:postgresql://db:5432/sonar
+    # Dependencias de otros servicios (en este caso, la base de datos)
     depends_on:
       - db
 
+  # Servicio de PostgreSQL para almacenar los datos de SonarQube
   db:
+    # Imagen de PostgreSQL 13
     image: postgres:13
+    # Red a la que se conecta
     networks:
       - sonarnet
+    # Variables de entorno para la configuración de la base de datos
     environment:
       - POSTGRES_USER=sonar
       - POSTGRES_PASSWORD=sonar
       - POSTGRES_DB=sonar
+    # Volúmenes para persistir los datos de la base de datos
     volumes:
       - postgresql:/var/lib/postgresql
       - postgresql_data:/var/lib/postgresql/data
 
+  # Servicio de Nexus para almacenar artefactos y dependencias
   nexus:
+    # Imagen oficial de Nexus Repository Manager 3
     image: sonatype/nexus3
+    # Volumen para persistir los datos de Nexus
     volumes:
       - nexus-data:/nexus-data
+    # Red a la que se conecta
     networks:
       - sonarnet
+    # Puertos de acceso a Nexus
     ports:
-      - '8081:8081'
+      - '8081:8081'  # Puerto para acceder a Nexus
 
+  # Servicio de MongoDB para almacenamiento de datos
   mongodb:
+    # Imagen oficial de MongoDB 4.4
     image: mongo:4.4
+    # Red a la que se conecta
     networks:
       - sonarnet
+    # Volumen para persistir los datos de MongoDB
     volumes:
       - mongo_data:/data/db
+    # Asegura que el contenedor se reinicie automáticamente
     restart: always
 
+  # Servicio de Elasticsearch para la búsqueda y análisis de datos
   elasticsearch:
+    # Imagen de Elasticsearch 7.10.2
     image: docker.elastic.co/elasticsearch/elasticsearch:7.10.2
+    # Variables de entorno para configurar Elasticsearch
     environment:
-      - discovery.type=single-node
-      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+      - discovery.type=single-node  # Configura Elasticsearch en modo nodo único
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m  # Limita el uso de memoria Java
+    # Red a la que se conecta
     networks:
       - sonarnet
+    # Volúmenes para persistir los datos de Elasticsearch
     volumes:
       - elasticsearch_data:/usr/share/elasticsearch/data
+    # Puertos de acceso a Elasticsearch
     ports:
-      - '9200:9200'
+      - '9200:9200'  # Puerto para acceder a Elasticsearch
+    # Asegura que el contenedor se reinicie automáticamente
     restart: always
 
+  # Servicio de Graylog para la gestión de logs
   graylog:
+    # Imagen de Graylog 4.2
     image: graylog/graylog:4.2
+    # Red a la que se conecta
     networks:
       - sonarnet
+    # Dependencias de MongoDB y Elasticsearch
     depends_on:
       - mongodb
       - elasticsearch
+    # Variables de entorno para la configuración de Graylog
     environment:
-      - GRAYLOG_PASSWORD_SECRET=Gp4d5bGndgXlZxIvpgsGmjUzZZN+l8izRGJw+YNRExs=
-      - GRAYLOG_ROOT_PASSWORD_SHA2=38f6177fe1c4eab3707b75de9f15f2f5b22bc157de84c0b5b5fcc9d619cf84bf
-      - GRAYLOG_HTTP_EXTERNAL_URI=http://127.0.0.1:9002/
-      - GRAYLOG_MONGODB_URI=mongodb://mongodb:27017/graylog
-      - GRAYLOG_ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+      - GRAYLOG_PASSWORD_SECRET=Gp4d5bGndgXlZxIvpgsGmjUzZZN+l8izRGJw+YNRExs=  # Secreto para encriptar contraseñas
+      - GRAYLOG_ROOT_PASSWORD_SHA2=38f6177fe1c4eab3707b75de9f15f2f5b22bc157de84c0b5b5fcc9d619cf84bf  # Contraseña en hash para el acceso a Graylog
+      - GRAYLOG_HTTP_EXTERNAL_URI=http://127.0.0.1:9002/  # URI de acceso externo
+      - GRAYLOG_MONGODB_URI=mongodb://mongodb:27017/graylog  # URI de MongoDB para Graylog
+      - GRAYLOG_ELASTICSEARCH_HOSTS=http://elasticsearch:9200  # URI de Elasticsearch para Graylog
+    # Volumen para persistir los datos de Graylog
     volumes:
       - graylog_data:/usr/share/graylog/data
+    # Puertos de acceso a Graylog
     ports:
-      - '9002:9000'
+      - '9002:9000'  # Puerto para acceder a la interfaz web de Graylog
+    # Asegura que el contenedor se reinicie automáticamente
     restart: always
 
+  # Servicio de Fluentd para la recolección y envío de logs
   fluentd:
+    # Imagen de Fluentd para Docker
     image: fluent/fluentd:v1.14-debian-1
+    # Volúmenes para cargar la configuración de Fluentd
     volumes:
       - ./fluentd/conf:/fluentd/etc
+    # Puertos para recibir logs de los contenedores
     ports:
-      - '24224:24224'
-      - '24224:24224/udp'
+      - '24224:24224'  # Puerto TCP
+      - '24224:24224/udp'  # Puerto UDP
+    # Variables de entorno para conectar Fluentd a Elasticsearch
     environment:
       - FLUENT_ELASTICSEARCH_HOST=elasticsearch
       - FLUENT_ELASTICSEARCH_PORT=9200
+    # Red a la que se conecta
     networks:
       - sonarnet
+    # Dependencia de Elasticsearch
     depends_on:
       - elasticsearch
+    # Comando para instalar el plugin de Elasticsearch y ejecutar Fluentd
     command: >
       /bin/sh -c "fluent-gem install fluent-plugin-elasticsearch && fluentd -c /fluentd/etc/fluent.conf"
 
-
+  # Servicio de Grafana para la visualización de métricas y logs
   grafana:
+    # Imagen de Grafana
     image: grafana/grafana:8.5.5
+    # Red a la que se conecta
     networks:
       - sonarnet
+    # Dependencias de Graylog y Elasticsearch
     depends_on:
       - graylog
       - elasticsearch
+    # Puertos de acceso a Grafana
     ports:
-      - '3001:3000'
+      - '3001:3000'  # Puerto para acceder a la interfaz de Grafana
+    # Variables de entorno para configurar Grafana
     environment:
-      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin  # Contraseña de administrador
+    # Volumen para persistir los datos de Grafana
     volumes:
       - grafana_data:/var/lib/grafana
+    # Asegura que el contenedor se reinicie automáticamente
     restart: always
 
+# Red de contenedores para que puedan comunicarse entre sí
 networks:
   sonarnet:
-    driver: bridge
+    driver: bridge  # Utiliza el controlador 'bridge' para la red local
 
+# Definición de volúmenes para persistir datos entre reinicios de contenedores
 volumes:
   sonarqube_conf:
   sonarqube_data:
