@@ -1,6 +1,5 @@
-# Blueprint de Render. La base de datos es H2 en memoria: la app arranca con los
-# salones y eventos de data.sql y se reinicia limpia. Es una demo de portafolio,
-# no guarda nada entre reinicios, y asi esta dicho en la ficha del proyecto.
+# Blueprint de Render. Las credenciales van con sync:false: Render las pide en
+# el panel al crear el servicio y no quedan escritas en este repo publico.
 services:
   - type: web
     name: appmanageevents
@@ -8,4 +7,15 @@ services:
     plan: free
     region: oregon
     dockerfilePath: ./Dockerfile
+    # /login y no /: la raiz redirige a /eventos, que exige sesion, y un 302
+    # puede contar como servicio caido.
     healthCheckPath: /login
+    envVars:
+      - key: SPRING_PROFILES_ACTIVE
+        value: prod
+      - key: SPRING_DATASOURCE_URL
+        sync: false
+      - key: SPRING_DATASOURCE_USERNAME
+        sync: false
+      - key: SPRING_DATASOURCE_PASSWORD
+        sync: false

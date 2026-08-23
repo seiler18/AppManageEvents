@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import cl.talentodigital.appmanageevents.entities.User;
@@ -25,6 +26,7 @@ import cl.talentodigital.appmanageevents.repositories.UserRepository;
  * si algun dia cambia el algoritmo.
  */
 @Component
+@Order(2)
 public class UsuarioDemo implements ApplicationRunner {
 
     private static final Logger log = LoggerFactory.getLogger(UsuarioDemo.class);
