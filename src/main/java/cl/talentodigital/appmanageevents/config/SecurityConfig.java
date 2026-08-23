@@ -19,7 +19,13 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable()) // Desactiva CSRF para pruebas
+                // CSRF activo para las vistas web: sin el, cualquier pagina ajena
+                // podia enviar un formulario a esta app con la sesion del
+                // visitante. Thymeleaf inyecta el token solo en los formularios
+                // con th:action, asi que las vistas no necesitan nada mas.
+                // /api/** queda fuera: es una API sin sesion y register.js le
+                // manda JSON desde el navegador.
+                .csrf(csrf -> csrf.ignoringRequestMatchers("/api/**"))
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/", "/home", "/login", "/register", "/api/auth/**").permitAll()
                         .requestMatchers("/api/eventos/**", "/api/salones/**").permitAll()

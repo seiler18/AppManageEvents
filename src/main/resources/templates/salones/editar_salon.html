@@ -25,7 +25,7 @@
      con un </a> suelto sin apertura. El rotulo va en .navbar-text, que es la
      clase de Bootstrap para texto que no es enlace. -->
 <nav class="navbar navbar-expand flex-wrap navbar-dark bg-dark">
-    <a class="navbar-brand" href="/">Control de eventos</a>
+    <a class="navbar-brand" th:href="@{/eventos}">Control de eventos</a>
     <span class="navbar-text text-light">Editando el salón</span>
 </nav>
 
@@ -65,7 +65,7 @@
                 </div>
                 <div class="box-footer d-flex justify-content-center">
                     <button class="btn btn-success mx-2">Guardar</button>
-                    <a class="btn btn-danger mx-2" href="/">Volver</a>
+                    <a class="btn btn-danger mx-2" th:href="@{/eventos}">Volver</a>
                 </div>
             </form>
 
