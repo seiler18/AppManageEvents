@@ -102,7 +102,9 @@ public class EventoControlador {
     }
 
 
-    @RequestMapping("/eliminar/{id}")
+    // POST y no GET: siendo un enlace, cualquier rastreador o el prefetch del
+    // navegador podia borrar eventos con solo pasar por encima.
+    @RequestMapping(value = "/eliminar/{id}", method = RequestMethod.POST)
     public String EliminarProducto(@PathVariable(name = "id") Long id){
 
         logger.info("=========================Nuevo evento a eliminar =======================");

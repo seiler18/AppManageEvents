@@ -98,7 +98,8 @@ public class SalonController {
 
     @Operation(summary = "Eliminar un salon")
     @ApiResponse(responseCode = "200", description = "HTTP STATUS 200")
-    @RequestMapping(value = "/eliminarSalon/{id}")
+    // POST y no GET: ver el comentario del borrado de eventos.
+    @RequestMapping(value = "/eliminarSalon/{id}", method = RequestMethod.POST)
 public String eliminarSalon(@PathVariable(name = "id") Long id, RedirectAttributes redirectAttributes) {
     eventoServicio.delete(id);
     salonServicio.delete(id);
