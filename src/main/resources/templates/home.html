@@ -1,37 +1,51 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
+    <meta charset="UTF-8">
+    <!-- Sin este viewport el movil renderiza la pagina a 980px y la escala:
+         todo se veia diminuto. Es la causa raiz de que la app "no se viera
+         bien en el celular". -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Inicio</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="shortcut icon" type="image/png" href="/img/LOGO TALENTO DIGITAL.png">
+    <link rel="shortcut icon" type="image/png" href="/img/favicon.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" href="/css/styleForm.css">
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a class="navbar-brand" href="/">Gestión de Eventos</a>
-        <div class="collapse navbar-collapse">
+    <div class="main-container">
+        <!-- navbar-expand sin breakpoint, no navbar-expand-lg: este menu tiene
+             como maximo dos enlaces y caben en una fila hasta en un movil, asi
+             que no hace falta hamburguesa ni cargar el JS de Bootstrap solo
+             para abrirla. Antes era un .collapse SIN boton: en el movil el
+             menu quedaba oculto y no habia forma de desplegarlo. -->
+        <nav class="navbar navbar-expand flex-wrap navbar-dark bg-dark">
+            <a class="navbar-brand" href="/">Gestión de Eventos</a>
             <ul class="navbar-nav ml-auto">
-                <li th:if="${#authorization.expression('isAuthenticated()')}" class="nav-item">
+                <li class="nav-item" sec:authorize="isAuthenticated()">
                     <a class="nav-link" th:href="@{/eventos}">Panel de Control</a>
                 </li>
-                <li th:if="${#authorization.expression('!isAuthenticated()')}" class="nav-item">
+                <li class="nav-item" sec:authorize="!isAuthenticated()">
                     <a class="nav-link" th:href="@{/login}">Iniciar sesión</a>
                 </li>
-                <li th:if="${#authorization.expression('!isAuthenticated()')}" class="nav-item">
+                <li class="nav-item" sec:authorize="!isAuthenticated()">
                     <a class="nav-link" th:href="@{/register}">Registrarse</a>
                 </li>
-                <li th:if="${#authorization.expression('isAuthenticated()')}" class="nav-item">
+                <li class="nav-item" sec:authorize="isAuthenticated()">
                     <a class="nav-link" th:href="@{/logout}">Cerrar sesión</a>
                 </li>
             </ul>
+        </nav>
+
+        <!-- El texto iba directamente sobre la foto de fondo, en negro: ilegible.
+             Va en la misma tarjeta translucida que login y registro. -->
+        <div class="content">
+            <div class="login-container text-center">
+                <h1>Bienvenido a la Aplicacion de Gestión de Eventos</h1>
+                <p class="mb-0">Administra y organiza tus eventos de manera sencilla y eficiente.</p>
+            </div>
         </div>
-    </nav>
-    
-    <div class="container text-center mt-5">
-        <h1>Bienvenido a la Aplicación de Gestión de Eventos</h1>
-        <p>Administra y organiza tus eventos de manera sencilla y eficiente.</p>
     </div>
 </body>
 </html>

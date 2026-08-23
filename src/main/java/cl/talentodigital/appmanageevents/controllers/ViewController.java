@@ -11,6 +11,14 @@ public class ViewController {
         return "redirect:/eventos";
     }
 
+    // home.html existia en el repo pero ningun controlador la devolvia: era
+    // codigo muerto. SecurityConfig ya declaraba "/home" como publica, asi que
+    // la intencion era esta.
+    @GetMapping("/home")
+    public String inicio() {
+        return "home";
+    }
+
     @GetMapping("/login")
     public String login() {
         return "login";

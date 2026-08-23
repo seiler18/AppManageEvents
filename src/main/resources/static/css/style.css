@@ -39,3 +39,20 @@ body {
     max-width: 100%;
     height: auto;
 }
+
+/* ----------------------- MOVIL ----------------------- */
+/* La tabla de eventos vive dentro de .table-responsive, asi que hace scroll
+   ella sola; lo que faltaba era que el resto no se saliera de la pantalla. */
+@media (max-width: 576px) {
+    .container.text-center { margin-top: 12px; }
+
+    /* Los enlaces del footer en una sola linea se juntaban tanto que no se
+       podia acertar con el dedo. */
+    .container-footer ul.list-inline li.list-inline-item {
+        display: block;
+        margin-right: 0;
+        padding: 4px 0;
+    }
+
+    h1 { font-size: 1.6rem; }
+}

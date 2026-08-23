@@ -4,7 +4,10 @@ html, body {
 }
 
 body {
-    background-image: url('/img/Eventos.jpeg');
+    /* WebP de 130 KB en vez del JPEG de 1,5 MB: el fondo se descargaba
+       entero antes de poder leer el formulario en datos moviles.
+       El JPEG original sigue en el repo como master. */
+    background-image: url('/img/Eventos.webp');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -25,7 +28,9 @@ body {
 }
 
 .navbar-brand {
-    font-size: 2rem;
+    /* clamp y no 2rem fijos: "MANTENEDOR DE EVENTOS" en mayusculas con
+       letter-spacing no cabe en 360px de ancho. */
+    font-size: clamp(1.1rem, 5.5vw, 2rem);
     font-weight: bold;
     color: #fff; /* Mantener el texto blanco en el navbar */
     text-transform: uppercase;
@@ -37,7 +42,9 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 2rem 0;
+    /* padding horizontal: sin el, la tarjeta quedaba pegada a los dos bordes
+       de la pantalla del movil. */
+    padding: 2rem 1rem;
 }
 
 .login-container {
@@ -85,4 +92,14 @@ footer a:hover {
 
 hr {
     border-top: 1px solid #ccc;
+}
+
+/* Titulos dentro de la tarjeta: el h1 de la portada a 2.5rem fijos partia
+   palabras en un movil. */
+.login-container h1 {
+    font-size: clamp(1.35rem, 5vw, 2.2rem);
+}
+
+@media (max-width: 480px) {
+    .login-container { padding: 1.25rem; }
 }

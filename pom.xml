@@ -33,6 +33,14 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
         </dependency>
+        <!-- Dialecto sec: de Thymeleaf. home.html usaba expresiones de
+             seguridad sin tenerlo y reventaba con TemplateInputException; como
+             ninguna ruta la devolvia, el fallo no se veia. Sin version: la
+             gestiona el parent de Spring Boot. -->
+        <dependency>
+            <groupId>org.thymeleaf.extras</groupId>
+            <artifactId>thymeleaf-extras-springsecurity6</artifactId>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -124,10 +132,6 @@
             <artifactId>junit-platform-suite-api</artifactId>
             <version>1.10.0</version>
             <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
         <dependency>
             <groupId>net.logstash.logback</groupId>
