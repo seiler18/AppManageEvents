@@ -1,10 +1,12 @@
 <!DOCTYPE html>
-<html xmlns:th="http://thymeleaf.org">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <!-- Sin este viewport el movil renderiza la pagina a 980px y la escala:
+         el formulario se veia diminuto. -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Registro de Salones</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="shortcut icon" type="image/png" href="/img/LOGO TALENTO DIGITAL.png">
+    <link rel="shortcut icon" type="image/png" href="/img/favicon.png">
     <!--CSS de Bootstrap 4.2.1-->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
         integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
@@ -18,18 +20,20 @@
 </head>
 <body>
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<!-- Antes: navbar-expand-Lg (con L mayuscula, clase que no existe, asi que
+     el menu nunca se comportaba como barra) y un <li class="navbar-brand">
+     con un </a> suelto sin apertura. El rotulo va en .navbar-text, que es la
+     clase de Bootstrap para texto que no es enlace. -->
+<nav class="navbar navbar-expand flex-wrap navbar-dark bg-dark">
     <a class="navbar-brand" href="/">Control de eventos</a>
-    <ul class="navbar-nav mr-auto">
-        <li class="navbar-brand">Creando el Salon</li>
-    </ul>
+    <span class="navbar-text text-light">Creando el salón</span>
 </nav>
 
 <br>
 
 <div class="container">
-    <div class="row">
-        <div class="col-lg-6 col-md-6 col-sm-6 container justify-content-center card">
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-10 col-lg-6 card">
             <h1 class="text-center">Registro de salones</h1>
             <div class="card-body">
                 <!-- Mensaje de éxito o error -->
@@ -54,12 +58,12 @@
                     </div>
 
                     <div class="box-footer">
-                        <button class="btn btn-success">Guardar</button>
+                        <button class="btn btn-success mr-2">Guardar</button>
                         <a href="/" class="btn btn-primary">Regresar</a>
                     </div>
                 </form>
 
-                <div class="p-3 container">
+                <div class="p-3">
                     <h2>Lista de salones</h2>
                     <div class="table-responsive">
                         <table class="table">
@@ -80,8 +84,8 @@
                                     <td th:text="${salon.capacidad}"></td>
                                     <td th:text="${salon.descripcion}"></td>
                                     <td>
-                                        <a th:href="@{/editarSalon/{id}(id=${salon.id})}" class="btn btn-info">Editar</a>
-                                        <a th:href="@{/eliminarSalon/{id}(id=${salon.id})}" class="btn btn-danger">Eliminar</a>
+                                        <a th:href="@{/editarSalon/{id}(id=${salon.id})}" class="btn btn-sm btn-info mr-1">Editar</a>
+                                        <a th:href="@{/eliminarSalon/{id}(id=${salon.id})}" class="btn btn-sm btn-danger">Eliminar</a>
                                     </td>
                                 </tr>
                             </tbody>
@@ -89,8 +93,9 @@
                     </div>
                 </div>
                 
-                <div class="container text-center p-3">
-                    <img src="/img/Salon.png" class="img-fluid" alt="Responsive image">
+                <div class="text-center p-3">
+                    <img src="/img/Salon.png" class="img-fluid" alt="Imagen de un salon">
+                </div>
             </div>
         </div>
     </div>
@@ -114,7 +119,7 @@
 </footer>
 
 <!-- DIRECCION A MI SCRIPT-->
-<script src="js/script.js"></script>
+<script src="/js/script.js"></script>
 
 </body>
 </html>

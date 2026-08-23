@@ -1,10 +1,12 @@
 <!DOCTYPE html>
-<html xmlns:th="http://thymeleaf.org">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <!-- Sin este viewport el movil renderiza la pagina a 980px y la escala:
+         el formulario se veia diminuto. -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Editar Evento</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="shortcut icon" type="image/png" href="/img/LOGO TALENTO DIGITAL.png">
+    <link rel="shortcut icon" type="image/png" href="/img/favicon.png">
     <!--CSS de Bootstrap 4.2.1-->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
         integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
@@ -18,29 +20,27 @@
 </head>
 <body>
 
-<nav class="navbar navbar-expand-Lg navbar-dark bg-dark">
-    
-
-    <a class="navbar-brand" href="/"> Control de evento</a>
-
-    <ul class="navbar-nav mr-auto">
-        <li class="navbar-brand"> Editando el evento</a></li>
-    </ul>
-
+<!-- Antes: navbar-expand-Lg (con L mayuscula, clase que no existe, asi que
+     el menu nunca se comportaba como barra) y un <li class="navbar-brand">
+     con un </a> suelto sin apertura. El rotulo va en .navbar-text, que es la
+     clase de Bootstrap para texto que no es enlace. -->
+<nav class="navbar navbar-expand flex-wrap navbar-dark bg-dark">
+    <a class="navbar-brand" href="/">Control de eventos</a>
+    <span class="navbar-text text-light">Editando el evento</span>
 </nav>
 
 <br>
 
 <div class = "container">
-    <div class="row">
-        <div class ="col-lg-6 col-md-6 col-sm-6 container justify-content-center card">
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-10 col-lg-6 card">
          <h1 class ="text-center">Editar evento</h1>
          <div class="card-body">
             <form th:action="@{/guardar}" th:object="${evento}" method="post">
 
                 <div class="form-group">
                     <label>Evento ID :</label>
-                    <input type="text" name ="nombre" th:field="*{id}" class="form-control" readonly>
+                    <input type="text" th:field="*{id}" class="form-control" readonly>
                 </div>
 
                 <div class="form-group">
@@ -50,28 +50,32 @@
 
                 <div class="form-group">
                     <label>Fecha :</label>
-                    <input type="date" name ="fecha" th:field="*{fecha}" class="form-control" placeholder="Digite la fecha del evento" required>
+                    <input type="date" th:field="*{fecha}" class="form-control" placeholder="Digite la fecha del evento" required>
                 </div>
 
                 <div class="form-group">
                     <label>Invitados :</label>
-                    <input type="number" name ="nombre" th:field="*{invitados}" class="form-control" placeholder="Digite la cantidad de invitados" required>
+                    <input type="number" th:field="*{invitados}" class="form-control" placeholder="Digite la cantidad de invitados" required>
                 </div>
 
-                <label for="salon">Seleccionar Salón:</label>
-                <select id="salon" name="salon">
-                    <option value="">Seleccione un salón</option>
-                    <option th:each="salon : ${salones}"
-                            th:value="${salon.id}"
-                            th:text="${salon.nombre}">Salon Nombre</option>
-                </select>
+                <div class="form-group">
+                    <label for="salon">Seleccionar Salón:</label>
+                    <!-- form-control: sin ella el desplegable salia con el ancho
+                         nativo del navegador, minusculo al lado de los inputs. -->
+                    <select id="salon" name="salon" class="form-control">
+                        <option value="">Seleccione un salón</option>
+                        <option th:each="salon : ${salones}"
+                                th:value="${salon.id}"
+                                th:text="${salon.nombre}">Salon Nombre</option>
+                    </select>
+                </div>
 
-                <div class="container text-center p-3">
-                    <img src="/img/Salon.png" class="img-fluid" alt="Responsive image">
+                <div class="text-center p-3">
+                    <img src="/img/Salon.png" class="img-fluid" alt="Imagen de un salon">
                 </div>
                 <div class="box-footer d-flex justify-content-center">
-                    <button class="btn btn-success mx-5">Guardar</button>
-                    <a class="btn btn-danger mx-5" href="/">Volver</a>
+                    <button class="btn btn-success mx-2">Guardar</button>
+                    <a class="btn btn-danger mx-2" href="/">Volver</a>
                 </div>
                 
             </form>

@@ -1,11 +1,13 @@
 <!DOCTYPE html>
-<html xmlns:th="http://thymeleaf.org">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8">
+    <!-- Sin este viewport el movil renderiza la pagina a 980px y la escala:
+         la tabla y el menu se veian diminutos. -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Control de eventos</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="shortcut icon" type="image/png" href="/img/LOGO TALENTO DIGITAL.png">
+    <link rel="shortcut icon" type="image/png" href="/img/favicon.png">
     <!--CSS de Bootstrap 4.2.1-->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
         integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
@@ -53,30 +55,27 @@
     <br>
 
     <div class="container text-center">
-        <form class="form-inline" th:action="@{/eventos}">
-            <div class="form-group mb-2">
-                <label>Filtrar: </label>
-                <div class="form-group mx-sm-3 mb-2">
-                    <input type="text" name="palabraClave" class="form-control" id="palabraClave"
-                        th:value="${palabraClave}" placeholder="BUSCAR EVENTO" required>
-                </div>
-                <input type="submit" class="btn btn-info mb-2" value="Buscar">
-                &nbsp; &nbsp;
-
-                <input type="button" class="btn btn-secondary mb-2" value="Limpiar" onclick="limpiarCampos()">
-            </div>
+        <form class="form-inline justify-content-center flex-wrap" th:action="@{/eventos}">
+            <label class="mr-2 mb-2" for="palabraClave">Filtrar:</label>
+            <input type="text" name="palabraClave" class="form-control mr-2 mb-2" id="palabraClave"
+                th:value="${palabraClave}" placeholder="BUSCAR EVENTO" required>
+            <input type="submit" class="btn btn-info mr-2 mb-2" value="Buscar">
+            <input type="button" class="btn btn-secondary mb-2" value="Limpiar" onclick="limpiarCampos()">
         </form>
 
         <br>
+        <div class="table-responsive">
         <table class="table">
             <thead class="thead-dark">
-                <th scope="col">ID</th>
-                <th scope="col">Nombre</th>
-                <th scope="col">Fecha</th>
-                <th scope="col">Invitados</th>
-                <th scope="col">Salon</th>
-                <th scope="col">Capacidad</th>
-                <th scope="col">Acciones</th>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Fecha</th>
+                    <th scope="col">Invitados</th>
+                    <th scope="col">Salon</th>
+                    <th scope="col">Capacidad</th>
+                    <th scope="col">Acciones</th>
+                </tr>
             </thead>
             <tbody>
                 <tr th:if="${#lists.isEmpty(listarEventos)}">
@@ -90,15 +89,16 @@
                     <td th:text="${evento.salon.nombre}"></td>
                     <td th:text="${evento.salon.capacidad}"></td>
                     <td>
-                        <a class="btn btn-primary" th:href="@{'/editar/' + ${evento.id}}">Editar</a>
-                        <a class="btn btn-danger" th:href="@{'/eliminar/' + ${evento.id}}">Eliminar</a>
+                        <a class="btn btn-sm btn-primary mr-1" th:href="@{'/editar/' + ${evento.id}}">Editar</a>
+                        <a class="btn btn-sm btn-danger" th:href="@{'/eliminar/' + ${evento.id}}">Eliminar</a>
                     </td>
                 </tr>
             </tbody>
         </table>
+        </div>
 
-        <div class="container text-center p-3">
-            <img src="/img/Salon.png" class="img-fluid" alt="Responsive image">
+        <div class="text-center p-3">
+            <img src="/img/Salon.png" class="img-fluid" alt="Imagen de un salon">
         </div>
 
     </div> <!-- Cierre del div container text-center -->
@@ -120,9 +120,6 @@
             </ul>
         </div>
     </footer>
-
-    <!--Ajax-->
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 
     <!--jQuery 3.3.1 -->
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"
