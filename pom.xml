@@ -21,6 +21,9 @@
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-java</artifactId>
             <version>4.10.0</version>
+            <!-- test: solo lo usa GoogleSearchTest. En compile arrastraba un
+                 navegador entero al jar que se despliega. -->
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -37,7 +40,8 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
-            <version>2.6.3</version>
+            <!-- Sin version: la hereda del parent (Boot 3.3.2 -> Security 6).
+                 Estaba clavada en 2.6.3, que es Security 5. -->
         </dependency>
         <!-- <dependency>
             <groupId>com.google.firebase</groupId>
@@ -62,11 +66,8 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
-        <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-boot-starter</artifactId>
-            <version>3.0.0</version>
-        </dependency>
+        <!-- springfox 3.0.0 retirado: no soporta Boot 3 y competia con
+             springdoc, que es el que se queda para el OpenAPI. -->
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
@@ -162,7 +163,21 @@
                     <includes>
                         <include>**/*Test.java</include>
                     </includes>
-                    <argLine>-javaagent:${settings.localRepository}/org/jacoco/org.jacoco.agent/${jacoco.version}/org.jacoco.agent-${jacoco.version}-runtime.jar=destfile=${project.build.directory}/jacoco.exec</argLine>
+                    <excludes>
+                        <!-- Los dos tests de Selenium necesitan un navegador y
+                             su driver instalados (Chrome uno, Edge el otro), y
+                             una app ya levantada. No hay ninguna de las dos
+                             cosas ni en un equipo limpio ni en el contenedor
+                             que construye el despliegue: dejarlos dentro hace
+                             fallar el build entero. Se ejecutan a mano con
+                             -Dtest=AppManageEventsTest cuando se quieran. -->
+                        <exclude>**/GoogleSearchTest.java</exclude>
+                        <exclude>**/AppManageEventsTest.java</exclude>
+                    </excludes>
+                    <!-- El argLine lo pone jacoco:prepare-agent en @{argLine}.
+                         Escribirlo a mano con la ruta del repo local rompia el
+                         build en cualquier maquina sin ese jar cacheado. -->
+                    <argLine>@{argLine}</argLine>
                 </configuration>
             </plugin>
             <plugin>
@@ -175,8 +190,9 @@
                         <goals>
                             <goal>prepare-agent</goal>
                         </goals>
-                        <phase>test</phase>
-                        <!-- Configurado para ejecutarse en la fase de test -->
+                        <!-- initialize, no test: el agente tiene que estar
+                             preparado ANTES de que surefire lance la JVM. -->
+                        <phase>initialize</phase>
                     </execution>
                     <execution>
                         <id>report</id>

@@ -1,0 +1,11 @@
+# Blueprint de Render. La base de datos es H2 en memoria: la app arranca con los
+# salones y eventos de data.sql y se reinicia limpia. Es una demo de portafolio,
+# no guarda nada entre reinicios, y asi esta dicho en la ficha del proyecto.
+services:
+  - type: web
+    name: appmanageevents
+    runtime: docker
+    plan: free
+    region: oregon
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /login
