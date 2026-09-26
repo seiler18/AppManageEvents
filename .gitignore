@@ -43,3 +43,15 @@ build/
 # proyecto, así la configuración viaja con el repositorio.
 # settings.local.json son permisos de la máquina local, no del proyecto.
 .claude/settings.local.json
+
+### Terraform ###
+# El estado de Terraform no se versiona: guarda en claro todo lo que el
+# provider devuelve (variables de entorno con contraseñas, IDs, IPs) y en un
+# repo público eso queda a la vista para siempre. Los dos archivos siguen en
+# disco como evidencia del trabajo original; solo dejan de viajar con el repo.
+*.tfstate
+*.tfstate.*
+
+### Secretos locales ###
+# Aquí van las contraseñas que docker-compose.yml lee con ${VAR:?}.
+.env

@@ -4,7 +4,11 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.3.2</version>
+        <!-- 3.3.13 y no 3.3.2: mismo minor, sin cambios de API, pero trae los
+             parches de Tomcat (DoS por multipart y cabeceras), Spring
+             Security (BCrypt con mas de 72 bytes, CVE-2025-22228) y Logback
+             publicados despues. Saltar a 3.4/3.5 es otra conversacion. -->
+        <version>3.3.13</version>
         <relativePath/>
     </parent>
     <groupId>cl.talentodigital</groupId>

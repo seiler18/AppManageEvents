@@ -4,7 +4,13 @@ name: Docker Build and Publish
 on:
   push:
     branches:
-      - main  
+      - main
+
+# Permisos minimos para el GITHUB_TOKEN: sin este bloque hereda los del
+# repositorio, que pueden incluir escritura. El job solo lee el codigo; lo que
+# publica va a Docker Hub con sus propios secretos, no con este token.
+permissions:
+  contents: read
 
 jobs:
   build:

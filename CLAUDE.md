@@ -15,7 +15,7 @@ no reescribirlas sin motivo.
 
 | Pieza | Qué se usa |
 |---|---|
-| Backend | Spring Boot 3.3.2, Java 17 |
+| Backend | Spring Boot 3.3.13, Java 17 |
 | Vistas | Thymeleaf + `thymeleaf-extras-springsecurity6` |
 | Seguridad | Spring Security 6, OAuth2 client, Firebase Admin 8 |
 | Persistencia | Spring Data JPA · H2 (local) · PostgreSQL (prod) |
@@ -44,7 +44,7 @@ conserva como evidencia del proyecto, no como algo que funcione:
 | Archivo | Estado |
 |---|---|
 | `Jenkinsfile` | histórico — no hay Jenkins corriendo |
-| `main.tf`, `terraform.tfstate*`, `.terraform/` | histórico — estado de un provider Docker local |
+| `main.tf`, `.terraform/` | histórico — provider Docker local. `terraform.tfstate*` sigue en disco pero ya no se versiona |
 | `deployment.yaml`, `service.yaml` | histórico — no hay clúster |
 | `docker-compose.yml`, `fluentd/` | stack local de SonarQube · Graylog · Grafana |
 
@@ -56,12 +56,15 @@ retira, se anota como hito **de Curriculo**.
 1. **`mvn clean package` verde antes de cualquier push.**
 2. **Ninguna credencial nueva en el repo.** Es público. Lo sensible va con
    `sync: false` en `render.yaml` y se introduce en el panel de Render.
-   → Deuda conocida: `docker-compose.yml` trae contraseñas escritas
-   (`GRAYLOG_PASSWORD_SECRET`, `POSTGRES_PASSWORD=sonar`,
-   `GF_SECURITY_ADMIN_PASSWORD=admin`). Son de un stack local de desarrollo,
-   pero están en un repo público: si ese compose se revive, se rotan primero.
-   → Deuda conocida: `.terraform/` versiona 18 MB de binario del provider y
-   `terraform.tfstate` está versionado. Revisado: no contiene secretos.
+   → `docker-compose.yml` lee sus contraseñas de un `.env` ignorado y no
+   arranca sin él. Los valores que tuvo escritos siguen en el historial:
+   están quemados, no se reutilizan.
+   → Deuda conocida: `.terraform/` versiona 18 MB de binario del provider.
+   `terraform.tfstate*` dejó de versionarse (solo tenía `sonar/sonar` de un
+   contenedor local, pero un estado de Terraform no va en un repo público).
+   → Deuda conocida: `Documentación Proyecto.pdf` (trabajo en equipo) muestra
+   tokens de ngrok, Slack y Jenkins en claro. Son cuentas de un compañero;
+   hay que revocarlos en origen, borrar el PDF no los saca del historial.
 3. **Firebase y OAuth2 vienen del trabajo en equipo.** Si algo de eso falla,
    se desactiva la función antes que inventar una clave.
 4. **El enlace vivo se publica desde el CV**, no desde aquí. Si cambia la URL,

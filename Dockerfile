@@ -16,6 +16,13 @@ FROM eclipse-temurin:17-jre
 WORKDIR /app
 COPY --from=build /app/target/appmanageevents-0.0.1-RELEASE.jar app.jar
 
+# Usuario sin privilegios: por defecto la imagen corre como root, y un fallo
+# explotable en la app o en Tomcat daria root dentro del contenedor. El jar
+# queda de root y solo lectura para este usuario; la app no escribe en /app
+# (Tomcat usa /tmp, que sigue siendo escribible).
+RUN groupadd --system app && useradd --system --gid app --no-create-home app
+USER app
+
 # 512MB y 0.1 CPU en el plan gratuito: sin techo de heap la JVM se pasa y el
 # contenedor muere por OOM.
 ENV JAVA_TOOL_OPTIONS="-XX:MaxRAMPercentage=70 -XX:+UseSerialGC -Xss512k"

@@ -1,3 +1,8 @@
+# Las contraseñas y secretos ya no van escritos aquí: el repo es público y los
+# valores anteriores quedaron en el historial, así que se tratan como quemados.
+# Se leen de un archivo .env junto a este compose (ignorado por git). Con la
+# sintaxis ${VAR:?...} el compose se niega a arrancar si falta alguna, en vez
+# de levantar el stack con una contraseña vacía o por defecto.
 # Definición de los servicios que se van a ejecutar en los contenedores
 services:
 
@@ -35,7 +40,7 @@ services:
     # Variables de entorno para configuración de la base de datos de SonarQube
     environment:
       - SONAR_JDBC_USERNAME=sonar
-      - SONAR_JDBC_PASSWORD=sonar
+      - SONAR_JDBC_PASSWORD=${SONAR_DB_PASSWORD:?define SONAR_DB_PASSWORD en .env}
       - SONAR_JDBC_URL=jdbc:postgresql://db:5432/sonar
     # Dependencias de otros servicios (en este caso, la base de datos)
     depends_on:
@@ -51,7 +56,7 @@ services:
     # Variables de entorno para la configuración de la base de datos
     environment:
       - POSTGRES_USER=sonar
-      - POSTGRES_PASSWORD=sonar
+      - POSTGRES_PASSWORD=${SONAR_DB_PASSWORD:?define SONAR_DB_PASSWORD en .env}
       - POSTGRES_DB=sonar
     # Volúmenes para persistir los datos de la base de datos
     volumes:
@@ -118,8 +123,8 @@ services:
       - elasticsearch
     # Variables de entorno para la configuración de Graylog
     environment:
-      - GRAYLOG_PASSWORD_SECRET=Gp4d5bGndgXlZxIvpgsGmjUzZZN+l8izRGJw+YNRExs=  # Secreto para encriptar contraseñas
-      - GRAYLOG_ROOT_PASSWORD_SHA2=38f6177fe1c4eab3707b75de9f15f2f5b22bc157de84c0b5b5fcc9d619cf84bf  # Contraseña en hash para el acceso a Graylog
+      - GRAYLOG_PASSWORD_SECRET=${GRAYLOG_PASSWORD_SECRET:?define GRAYLOG_PASSWORD_SECRET en .env}  # Secreto para encriptar contraseñas
+      - GRAYLOG_ROOT_PASSWORD_SHA2=${GRAYLOG_ROOT_PASSWORD_SHA2:?define GRAYLOG_ROOT_PASSWORD_SHA2 en .env}  # Contraseña en hash para el acceso a Graylog
       - GRAYLOG_HTTP_EXTERNAL_URI=http://127.0.0.1:9002/  # URI de acceso externo
       - GRAYLOG_MONGODB_URI=mongodb://mongodb:27017/graylog  # URI de MongoDB para Graylog
       - GRAYLOG_ELASTICSEARCH_HOSTS=http://elasticsearch:9200  # URI de Elasticsearch para Graylog
@@ -173,7 +178,7 @@ services:
       - '3001:3000'  # Puerto para acceder a la interfaz de Grafana
     # Variables de entorno para configurar Grafana
     environment:
-      - GF_SECURITY_ADMIN_PASSWORD=admin  # Contraseña de administrador
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_ADMIN_PASSWORD:?define GRAFANA_ADMIN_PASSWORD en .env}  # Contraseña de administrador
     # Volumen para persistir los datos de Grafana
     volumes:
       - grafana_data:/var/lib/grafana
