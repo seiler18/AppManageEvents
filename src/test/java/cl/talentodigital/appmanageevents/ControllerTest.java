@@ -250,7 +250,9 @@ public class ControllerTest {
 
         // Assert
         assertEquals("redirect:/nuevoSalon", viewName);
-        verify(eventoServicio).delete(id);
+        // Regresion: borrar el salon 1 no puede borrar el evento 1, que es otra
+        // entidad. Los eventos del salon caen por cascada en JPA, no por aqui.
+        verify(eventoServicio, never()).delete(any());
         verify(salonServicio).delete(id);
         verify(redirectAttributes).addFlashAttribute("message", "Salón eliminado satisfactoriamente.");
         verify(redirectAttributes).addFlashAttribute("messageType", "success");

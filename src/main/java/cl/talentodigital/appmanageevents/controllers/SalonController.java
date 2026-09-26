@@ -101,7 +101,10 @@ public class SalonController {
     // POST y no GET: ver el comentario del borrado de eventos.
     @RequestMapping(value = "/eliminarSalon/{id}", method = RequestMethod.POST)
 public String eliminarSalon(@PathVariable(name = "id") Long id, RedirectAttributes redirectAttributes) {
-    eventoServicio.delete(id);
+    // Solo el salon. Aqui habia ademas un eventoServicio.delete(id) que borraba
+    // el EVENTO con el mismo numero de id que el salon: un evento cualquiera,
+    // sin relacion con el. Los eventos del salon ya los borra JPA por el
+    // cascade = ALL de Salon.eventos, asi que esa linea solo hacia dano.
     salonServicio.delete(id);
 
     redirectAttributes.addFlashAttribute("message", "Salón eliminado satisfactoriamente.");
