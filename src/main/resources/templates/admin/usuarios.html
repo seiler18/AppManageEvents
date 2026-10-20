@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{base :: pagina(~{::title}, ~{::main}, 'admin')}">
+<head><title th:text="|Usuarios · ${sitio}|">Usuarios</title></head>
+<body>
+<main class="container mt-4">
+    <h1 class="h3 mb-3">Usuarios</h1>
+    <div class="table-responsive">
+        <table class="table align-middle tabla-movil">
+            <thead><tr><th>Nombre</th><th>Correo</th><th>Registro</th><th>Avisos</th><th>Rol</th><th></th></tr></thead>
+            <tbody>
+            <tr th:each="u : ${usuarios}">
+                <td th:text="${u.nombre}">nombre</td>
+                <td th:text="${u.email}">correo</td>
+                <td class="small" th:text="${@fmt.corta(u.creadoEn)}">fecha</td>
+                <td><i class="bi" th:classappend="${u.recibeNotificaciones} ? 'bi-bell-fill text-primary' : 'bi-bell-slash text-body-secondary'"
+                       th:title="${u.recibeNotificaciones} ? 'Recibe avisos' : 'Sin avisos'"></i></td>
+                <td><span class="badge" th:classappend="${u.esAdmin()} ? 'text-bg-primary' : 'text-bg-light'"
+                          th:text="${u.esAdmin()} ? 'Admin' : 'Usuario'">rol</span></td>
+                <td class="text-end">
+                    <form th:action="@{/admin/usuarios/{id}/rol(id=${u.id})}" method="post"
+                          th:data-confirmar="${u.esAdmin()} ? |¿Quitar el rol de administrador a ${u.email}?| : |¿Hacer administrador a ${u.email}?|">
+                        <input type="hidden" name="rol" th:value="${u.esAdmin()} ? 'USUARIO' : 'ADMIN'">
+                        <button class="btn btn-sm btn-outline-secondary" th:text="${u.esAdmin()} ? 'Quitar admin' : 'Hacer admin'">rol</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</main>
+</body>
+</html>

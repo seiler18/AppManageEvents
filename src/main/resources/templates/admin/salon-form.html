@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{base :: pagina(~{::title}, ~{::main}, 'admin')}">
+<head><title th:text="${salonId == null} ? 'Nuevo salón' : 'Editar salón'">Salón</title></head>
+<body>
+<main class="container mt-4 medio">
+    <nav class="small mb-3"><a th:href="@{/admin/salones}"><i class="bi bi-arrow-left"></i> Salones</a></nav>
+    <h1 class="h3 mb-4" th:text="${salonId == null} ? 'Nuevo salón' : 'Editar salón'">Salón</h1>
+    <form th:action="${salonId == null} ? @{/admin/salones} : @{/admin/salones/{id}(id=${salonId})}"
+          th:object="${form}" method="post" novalidate class="card"><div class="card-body p-4">
+        <div class="mb-3">
+            <label for="nombre" class="form-label">Nombre</label>
+            <input type="text" class="form-control" th:field="*{nombre}" th:errorclass="is-invalid" required>
+            <div class="invalid-feedback" th:errors="*{nombre}"></div>
+        </div>
+        <div class="mb-3">
+            <label for="direccion" class="form-label">Dirección</label>
+            <input type="text" class="form-control" th:field="*{direccion}">
+        </div>
+        <div class="mb-3">
+            <label for="capacidad" class="form-label">Capacidad (personas)</label>
+            <input type="number" class="form-control" th:field="*{capacidad}" th:errorclass="is-invalid" min="1" required>
+            <div class="invalid-feedback" th:errors="*{capacidad}"></div>
+        </div>
+        <div class="mb-4">
+            <label for="descripcion" class="form-label">Descripción</label>
+            <textarea class="form-control" th:field="*{descripcion}" rows="3"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Guardar</button>
+    </div></form>
+</main>
+</body>
+</html>

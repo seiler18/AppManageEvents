@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{base :: pagina(~{::title}, ~{::main}, 'publico')}">
+<head><title th:text="|Ingresar · ${sitio}|">Ingresar</title></head>
+<body>
+<main class="container mt-5 angosto">
+    <div class="card shadow-sm"><div class="card-body p-4">
+        <h1 class="h3 mb-4">Ingresar</h1>
+        <div class="alert alert-danger" th:if="${param.error}">Correo o contraseña incorrectos.</div>
+        <div class="alert alert-info" th:if="${param.logout}">Cerraste sesión.</div>
+        <form th:action="@{/login}" method="post">
+            <div class="mb-3">
+                <label for="email" class="form-label">Correo</label>
+                <input type="email" class="form-control" id="email" name="email" th:value="${email}"
+                       autocomplete="username" required autofocus>
+            </div>
+            <div class="mb-4">
+                <label for="password" class="form-label">Contraseña</label>
+                <input type="password" class="form-control" id="password" name="password"
+                       autocomplete="current-password" required>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Ingresar</button>
+        </form>
+        <p class="text-center mt-3 mb-0">¿Primera vez? <a th:href="@{/registro}">Crea tu cuenta</a></p>
+    </div></div>
+</main>
+</body>
+</html>

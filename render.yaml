@@ -1,5 +1,5 @@
-# Blueprint de Render. Las credenciales van con sync:false: Render las pide en
-# el panel al crear el servicio y no quedan escritas en este repo publico.
+# Blueprint de Render. Lo sensible va con sync:false: Render lo pide en el
+# panel al crear el servicio y nunca queda escrito en este repo público.
 services:
   - type: web
     name: appmanageevents
@@ -7,15 +7,40 @@ services:
     plan: free
     region: oregon
     dockerfilePath: ./Dockerfile
-    # /login y no /: la raiz redirige a /eventos, que exige sesion, y un 302
-    # puede contar como servicio caido.
-    healthCheckPath: /login
+    healthCheckPath: /actuator/health
     envVars:
       - key: SPRING_PROFILES_ACTIVE
         value: prod
+      # Postgres de Supabase: usar el "Session pooler" (IPv4). La conexión
+      # directa de Supabase es solo IPv6 y Render no la alcanza.
+      # jdbc:postgresql://aws-0-<region>.pooler.supabase.com:5432/postgres?sslmode=require
       - key: SPRING_DATASOURCE_URL
         sync: false
-      - key: SPRING_DATASOURCE_USERNAME
+      - key: SPRING_DATASOURCE_USERNAME   # postgres.<ref-del-proyecto>
         sync: false
       - key: SPRING_DATASOURCE_PASSWORD
+        sync: false
+      - key: APP_URL_BASE                 # https://appmanageevents.onrender.com
+        sync: false
+      - key: ADMIN_EMAIL
+        sync: false
+      - key: ADMIN_PASSWORD               # solo para el primer arranque
+        sync: false
+      # Sin estas tres, Webpay queda en integración (tarjetas de prueba).
+      - key: TRANSBANK_AMBIENTE           # integracion | produccion
+        sync: false
+      - key: TRANSBANK_CODIGO_COMERCIO
+        sync: false
+      - key: TRANSBANK_API_KEY
+        sync: false
+      # Sin MAIL_HOST los correos solo se registran en el log.
+      - key: MAIL_HOST
+        sync: false
+      - key: MAIL_PORT
+        sync: false
+      - key: MAIL_USERNAME
+        sync: false
+      - key: MAIL_PASSWORD
+        sync: false
+      - key: MAIL_FROM
         sync: false

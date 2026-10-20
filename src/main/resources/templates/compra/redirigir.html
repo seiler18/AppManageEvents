@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{base :: pagina(~{::title}, ~{::main}, 'publico')}">
+<head><title th:text="|Ir a Webpay · ${sitio}|">Ir a Webpay</title></head>
+<body>
+<main class="container mt-5 angosto text-center">
+    <div class="spinner-border text-primary mb-3" role="status"></div>
+    <h1 class="h4">Te estamos llevando a Webpay…</h1>
+    <p class="text-body-secondary">Si no pasa nada en unos segundos, presiona el botón.</p>
+    <!-- Webpay exige recibir el token por POST; app.js envía este formulario al cargar. -->
+    <form id="form-webpay" th:action="${urlWebpay}" method="post">
+        <input type="hidden" name="token_ws" th:value="${token}">
+        <button type="submit" class="btn btn-primary">Ir a pagar</button>
+    </form>
+</main>
+</body>
+</html>

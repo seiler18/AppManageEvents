@@ -1,33 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <!-- 3.3.13 y no 3.3.2: mismo minor, sin cambios de API, pero trae los
-             parches de Tomcat (DoS por multipart y cabeceras), Spring
-             Security (BCrypt con mas de 72 bytes, CVE-2025-22228) y Logback
-             publicados despues. Saltar a 3.4/3.5 es otra conversacion. -->
-        <version>3.3.13</version>
+        <!-- Última estable (Spring 7, Security 7, Hibernate 7, Tomcat 11).
+             La 4.2 sigue en milestones. -->
+        <version>4.1.1</version>
         <relativePath/>
     </parent>
-    <groupId>cl.talentodigital</groupId>
+    <groupId>cl.seiler</groupId>
     <artifactId>appmanageevents</artifactId>
-    <version>0.0.1-RELEASE</version>
-    <name>appmanageevents</name>
-    <description>AppManageEvents</description>
+    <version>1.0.0</version>
+    <name>AppManageEvents</name>
+    <description>Gestor de eventos con venta de entradas y pago con Webpay Plus</description>
+
     <properties>
-        <java.version>17</java.version>
-        <jacoco.version>0.8.12</jacoco.version>
+        <!-- Java 25 es la LTS vigente: soporte de seguridad hasta 2031 o más. -->
+        <java.version>25</java.version>
+        <springdoc.version>3.1.1</springdoc.version>
+        <zxing.version>3.5.4</zxing.version>
+        <embedded-postgres.version>2.2.2</embedded-postgres.version>
     </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <!-- Misma versión mayor que Supabase (Postgres 17) para la prueba de migraciones. -->
+            <dependency>
+                <groupId>io.zonky.test.postgres</groupId>
+                <artifactId>embedded-postgres-binaries-bom</artifactId>
+                <version>17.11.0</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
     <dependencies>
         <dependency>
-            <groupId>org.seleniumhq.selenium</groupId>
-            <artifactId>selenium-java</artifactId>
-            <version>4.10.0</version>
-            <!-- test: solo lo usa GoogleSearchTest. En compile arrastraba un
-                 navegador entero al jar que se despliega. -->
-            <scope>test</scope>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-webmvc</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.thymeleaf.extras</groupId>
+            <artifactId>thymeleaf-extras-springsecurity6</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -35,196 +64,132 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-thymeleaf</artifactId>
-        </dependency>
-        <!-- Dialecto sec: de Thymeleaf. home.html usaba expresiones de
-             seguridad sin tenerlo y reventaba con TemplateInputException; como
-             ninguna ruta la devolvia, el fallo no se veia. Sin version: la
-             gestiona el parent de Spring Boot. -->
-        <dependency>
-            <groupId>org.thymeleaf.extras</groupId>
-            <artifactId>thymeleaf-extras-springsecurity6</artifactId>
+            <artifactId>spring-boot-starter-mail</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
+
+        <!-- El esquema lo llevan las migraciones, no Hibernate: la base de
+             Supabase persiste y un ddl-auto=update no sabe renombrar ni borrar.
+             En Boot 4 la autoconfiguración de Flyway vive en su propio starter. -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-security</artifactId>
-            <!-- Sin version: la hereda del parent (Boot 3.3.2 -> Security 6).
-                 Estaba clavada en 2.6.3, que es Security 5. -->
-        </dependency>
-        <!-- <dependency>
-            <groupId>com.google.firebase</groupId>
-            <artifactId>firebase-admin</artifactId>
-            <version>8.0.0</version>
-        </dependency> -->
-        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-oauth2-client</artifactId>
+            <artifactId>spring-boot-starter-flyway</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-test</artifactId>
-            <scope>test</scope>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-database-postgresql</artifactId>
         </dependency>
-        <!-- H2 para desarrollo local (perfil por defecto) -->
-        <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
-            <scope>runtime</scope>
-        </dependency>
-        <!-- Postgres para produccion (perfil prod) -->
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <scope>runtime</scope>
         </dependency>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-actuator</artifactId>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>runtime</scope>
         </dependency>
-        <!-- springfox 3.0.0 retirado: no soporta Boot 3 y competia con
-             springdoc, que es el que se queda para el OpenAPI. -->
-        <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-core</artifactId>
-            <version>5.7.0</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-junit-jupiter</artifactId>
-            <version>5.7.0</version>
-            <scope>test</scope>
-        </dependency>
+
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-            <version>2.3.0</version>
+            <version>${springdoc.version}</version>
+        </dependency>
+        <!-- QR de cada entrada, generado en el servidor: sin depender de un
+             servicio externo que vea los códigos. -->
+        <dependency>
+            <groupId>com.google.zxing</groupId>
+            <artifactId>core</artifactId>
+            <version>${zxing.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.zxing</groupId>
+            <artifactId>javase</artifactId>
+            <version>${zxing.version}</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <optional>true</optional>
         </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>jakarta.annotation</groupId>
-            <artifactId>jakarta.annotation-api</artifactId>
-            <version>2.1.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-api</artifactId>
-            <version>5.9.1</version>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-webmvc-test</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-engine</artifactId>
-            <version>5.9.1</version>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security-test</artifactId>
             <scope>test</scope>
         </dependency>
+        <!-- Postgres real para probar las migraciones tal como corren en
+             Supabase, sin Docker: descarga los binarios y levanta un servidor
+             temporal durante la prueba. -->
         <dependency>
-            <groupId>org.junit.platform</groupId>
-            <artifactId>junit-platform-suite-api</artifactId>
-            <version>1.10.0</version>
+            <groupId>io.zonky.test</groupId>
+            <artifactId>embedded-postgres</artifactId>
+            <version>${embedded-postgres.version}</version>
             <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>net.logstash.logback</groupId>
-            <artifactId>logstash-logback-encoder</artifactId>
-            <version>7.3</version>
         </dependency>
     </dependencies>
+
     <build>
+        <finalName>appmanageevents</finalName>
         <plugins>
             <plugin>
-                <groupId>org.sonarsource.scanner.maven</groupId>
-                <artifactId>sonar-maven-plugin</artifactId>
-                <version>4.0.0.4121</version>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>${lombok.version}</version>
+                        </path>
+                    </annotationProcessorPaths>
+                </configuration>
+            </plugin>
+            <!-- Mockito como agente: los JDK nuevos dejan de permitir que se
+                 adjunte solo en tiempo de ejecución. -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>properties</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <argLine>-javaagent:${org.mockito:mockito-core:jar} -Xshare:off</argLine>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <archive>
-                        <manifestEntries>
-                            <Main-Class>cl.talentodigital.appmanageevents.AppManageEventsApplication</Main-Class>
-                        </manifestEntries>
-                    </archive>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>com.google.cloud.tools</groupId>
-                <artifactId>jib-maven-plugin</artifactId>
-                <version>3.4.1</version>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-deploy-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.0.0-M6</version>
-                <configuration>
-                    <includes>
-                        <include>**/*Test.java</include>
-                    </includes>
                     <excludes>
-                        <!-- Los dos tests de Selenium necesitan un navegador y
-                             su driver instalados (Chrome uno, Edge el otro), y
-                             una app ya levantada. No hay ninguna de las dos
-                             cosas ni en un equipo limpio ni en el contenedor
-                             que construye el despliegue: dejarlos dentro hace
-                             fallar el build entero. Se ejecutan a mano con
-                             -Dtest=AppManageEventsTest cuando se quieran. -->
-                        <exclude>**/GoogleSearchTest.java</exclude>
-                        <exclude>**/AppManageEventsTest.java</exclude>
+                        <exclude>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                        </exclude>
                     </excludes>
-                    <!-- El argLine lo pone jacoco:prepare-agent en @{argLine}.
-                         Escribirlo a mano con la ruta del repo local rompia el
-                         build en cualquier maquina sin ese jar cacheado. -->
-                    <argLine>@{argLine}</argLine>
                 </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.jacoco</groupId>
-                <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.8.12</version>
-                <executions>
-                    <execution>
-                        <id>prepare-agent</id>
-                        <goals>
-                            <goal>prepare-agent</goal>
-                        </goals>
-                        <!-- initialize, no test: el agente tiene que estar
-                             preparado ANTES de que surefire lance la JVM. -->
-                        <phase>initialize</phase>
-                    </execution>
-                    <execution>
-                        <id>report</id>
-                        <phase>prepare-package</phase>
-                        <!-- Configurado para ejecutarse en la fase de prepare-package -->
-                        <goals>
-                            <goal>report</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
     </build>
-    <distributionManagement>
-        <repository>
-            <id>NexusLogin</id>
-            <url>http://localhost:8081/repository/appmanageevents/</url>
-        </repository>
-    </distributionManagement>
 </project>

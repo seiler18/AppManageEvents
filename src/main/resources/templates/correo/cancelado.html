@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" th:replace="~{correo/base :: marco(~{::div})}">
+<body>
+<div>
+    <h1 style="font-size:22px;margin:0 0 12px;">Evento cancelado</h1>
+    <p>Hola <span th:text="${usuario.nombre}">nombre</span>, lamentamos informarte que
+        <strong th:text="${evento.titulo}">evento</strong>, programado para el
+        <span th:text="${@fmt.fecha(evento.fechaInicio)}">fecha</span>, fue cancelado.</p>
+    <p>Devolveremos el monto pagado a tu medio de pago y te avisaremos por correo cuando el reembolso esté hecho.</p>
+</div>
+</body>
+</html>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{base :: pagina(~{::title}, ~{::main}, 'publico')}">
+<head><title th:text="|Notificaciones · ${sitio}|">Notificaciones</title></head>
+<body>
+<main class="container mt-5 angosto">
+    <div class="card"><div class="card-body p-4 text-center">
+        <th:block th:if="${hecho == null}">
+            <i class="bi bi-bell-slash fs-1 text-primary"></i>
+            <h1 class="h4 mt-2">¿Dejar de recibir avisos de nuevos eventos?</h1>
+            <p class="text-body-secondary">Seguirás recibiendo los correos de tus compras.</p>
+            <form th:action="@{/notificaciones/baja}" method="post">
+                <input type="hidden" name="t" th:value="${token}">
+                <button type="submit" class="btn btn-primary">Sí, darme de baja</button>
+            </form>
+        </th:block>
+        <th:block th:if="${hecho == true}">
+            <i class="bi bi-check-circle fs-1 text-success"></i>
+            <h1 class="h4 mt-2">Listo, no te enviaremos más avisos</h1>
+            <p class="text-body-secondary mb-0">Puedes volver a activarlos en tu perfil cuando quieras.</p>
+        </th:block>
+        <th:block th:if="${hecho == false}">
+            <i class="bi bi-question-circle fs-1 text-warning"></i>
+            <h1 class="h4 mt-2">Enlace no válido</h1>
+            <p class="text-body-secondary mb-0">Puedes cambiar tus avisos desde tu perfil.</p>
+        </th:block>
+    </div></div>
+</main>
+</body>
+</html>

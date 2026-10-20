@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{base :: pagina(~{::title}, ~{::main}, 'publico')}">
+<head><title th:text="|Compra ${orden.codigo} · ${sitio}|">Compra</title></head>
+<body>
+<main class="container mt-5 medio" th:with="e=${orden.evento}">
+    <div class="card shadow-sm"><div class="card-body p-4">
+        <div class="text-center mb-4" th:switch="${orden.estado.name()}">
+            <th:block th:case="'PAGADA'">
+                <i class="bi bi-check-circle-fill text-success display-4"></i>
+                <h1 class="h3 mt-2">¡Listo! Tus entradas están confirmadas</h1>
+                <p class="text-body-secondary mb-0">Te las enviamos por correo. También quedan en «Mis entradas».</p>
+            </th:block>
+            <th:block th:case="'PENDIENTE'">
+                <i class="bi bi-hourglass-split text-warning display-4"></i>
+                <h1 class="h3 mt-2">Tu pago está en proceso</h1>
+                <p class="text-body-secondary mb-0">Las entradas siguen reservadas unos minutos.</p>
+            </th:block>
+            <th:block th:case="'REEMBOLSADA'">
+                <i class="bi bi-arrow-counterclockwise text-info display-4"></i>
+                <h1 class="h3 mt-2">Compra reembolsada</h1>
+                <p class="text-body-secondary mb-0">El monto se devolvió a tu medio de pago.</p>
+            </th:block>
+            <th:block th:case="*">
+                <i class="bi bi-x-circle-fill text-danger display-4"></i>
+                <h1 class="h3 mt-2">El pago no se completó</h1>
+                <p class="text-body-secondary mb-0">No se hizo ningún cargo y las entradas se liberaron.</p>
+            </th:block>
+        </div>
+
+        <dl class="row mb-0">
+            <dt class="col-sm-4">Evento</dt><dd class="col-sm-8" th:text="${e.titulo}">Evento</dd>
+            <dt class="col-sm-4">Fecha</dt><dd class="col-sm-8" th:text="${@fmt.fecha(e.fechaInicio)}">fecha</dd>
+            <dt class="col-sm-4">Orden</dt><dd class="col-sm-8 codigo" th:text="${orden.codigo}">AME</dd>
+            <dt class="col-sm-4">Entradas</dt><dd class="col-sm-8" th:text="${orden.cantidad}">1</dd>
+            <dt class="col-sm-4">Total</dt><dd class="col-sm-8 fw-bold" th:text="${@fmt.precio(orden.monto)}">$</dd>
+            <th:block th:if="${orden.codigoAutorizacion}">
+                <dt class="col-sm-4">Autorización</dt><dd class="col-sm-8" th:text="${orden.codigoAutorizacion}">1234</dd>
+                <dt class="col-sm-4">Medio de pago</dt>
+                <dd class="col-sm-8">
+                    <span th:text="${orden.descripcionTipoPago}">Débito</span>
+                    <span th:if="${orden.tarjetaUltimos4}" th:text="|· terminada en ${orden.tarjetaUltimos4}|"></span>
+                    <span th:if="${orden.cuotas != null and orden.cuotas > 1}" th:text="|· ${orden.cuotas} cuotas|"></span>
+                </dd>
+            </th:block>
+        </dl>
+
+        <div class="d-flex flex-wrap gap-2 justify-content-center mt-4">
+            <a class="btn btn-primary" th:if="${orden.estaPagada()}" th:href="@{/cuenta/entradas}">Ver mis entradas</a>
+            <a class="btn btn-outline-primary" th:unless="${orden.estaPagada()}" th:href="@{/eventos/{id}(id=${e.id})}">Volver al evento</a>
+            <a class="btn btn-link" th:href="@{/}">Ir a la cartelera</a>
+        </div>
+    </div></div>
+</main>
+</body>
+</html>

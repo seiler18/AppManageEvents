@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" th:replace="~{correo/base :: marco(~{::div})}">
+<body>
+<div>
+    <h1 style="font-size:22px;margin:0 0 12px;">Reembolso realizado</h1>
+    <p>Hola <span th:text="${usuario.nombre}">nombre</span>, reembolsamos tu compra
+        <strong th:text="${orden.codigo}">AME</strong> para <strong th:text="${evento.titulo}">evento</strong>
+        por <strong th:text="${@fmt.precio(orden.monto)}">$</strong>.</p>
+    <p>Las entradas de esa compra ya no son válidas. Según tu banco, el abono puede tardar algunos días hábiles en verse.</p>
+</div>
+</body>
+</html>

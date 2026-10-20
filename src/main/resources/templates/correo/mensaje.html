@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" th:replace="~{correo/base :: marco(~{::div})}">
+<body>
+<div>
+    <p style="color:#6b6780;margin:0 0 4px;" th:text="${evento.titulo}">Evento</p>
+    <h1 style="font-size:22px;margin:0 0 12px;" th:text="${asunto}">Asunto</h1>
+    <p>Hola <span th:text="${usuario.nombre}">nombre</span>:</p>
+    <p style="white-space:pre-line;" th:text="${texto}">Mensaje</p>
+    <p style="margin:24px 0;">
+        <a th:href="${urlEvento}" style="background:#5b3cc4;color:#ffffff;padding:12px 22px;border-radius:8px;text-decoration:none;font-weight:bold;">Ver el evento</a>
+    </p>
+</div>
+</body>
+</html>

@@ -1,0 +1,6 @@
+# Scripts de shell siempre con LF: con CRLF el ./mvnw de la CI en Linux no corre.
+* text=auto
+mvnw text eol=lf
+*.sh text eol=lf
+*.cmd text eol=crlf
+*.png binary

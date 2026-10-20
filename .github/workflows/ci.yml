@@ -1,0 +1,25 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+# El job solo lee el código: el token de Actions no necesita escribir nada.
+permissions:
+  contents: read
+
+jobs:
+  pruebas:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: '25'
+          cache: maven
+      # Incluye la prueba contra Postgres 17 embebido (mismas migraciones que Supabase).
+      - name: Pruebas y empaquetado
+        run: ./mvnw -B verify

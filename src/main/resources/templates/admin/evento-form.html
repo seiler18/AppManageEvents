@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{base :: pagina(~{::title}, ~{::main}, 'admin')}">
+<head><title th:text="${eventoId == null} ? 'Nuevo evento' : 'Editar evento'">Evento</title></head>
+<body>
+<main class="container mt-4 medio">
+    <nav class="small mb-3">
+        <a th:href="${eventoId == null} ? @{/admin/eventos} : @{/admin/eventos/{id}(id=${eventoId})}"><i class="bi bi-arrow-left"></i> Volver</a>
+    </nav>
+    <h1 class="h3 mb-4" th:text="${eventoId == null} ? 'Nuevo evento' : 'Editar evento'">Evento</h1>
+
+    <form th:action="${eventoId == null} ? @{/admin/eventos} : @{/admin/eventos/{id}(id=${eventoId})}"
+          th:object="${form}" method="post" novalidate class="card"><div class="card-body p-4">
+        <div class="mb-3">
+            <label for="titulo" class="form-label">Título</label>
+            <input type="text" class="form-control" th:field="*{titulo}" th:errorclass="is-invalid" maxlength="150" required>
+            <div class="invalid-feedback" th:errors="*{titulo}"></div>
+        </div>
+        <div class="mb-3">
+            <label for="descripcion" class="form-label">Descripción</label>
+            <textarea class="form-control" th:field="*{descripcion}" rows="5" maxlength="5000"></textarea>
+        </div>
+        <div class="row g-3 mb-3">
+            <div class="col-md-6">
+                <label for="fechaInicio" class="form-label">Fecha y hora (hora de Chile)</label>
+                <input type="datetime-local" class="form-control" id="fechaInicio" name="fechaInicio"
+                       th:value="${@fmt.input(form.fechaInicio)}"
+                       th:classappend="${#fields.hasErrors('fechaInicio')} ? 'is-invalid'" required>
+                <div class="invalid-feedback" th:errors="*{fechaInicio}"></div>
+            </div>
+            <div class="col-md-6">
+                <label for="salonId" class="form-label">Salón</label>
+                <select class="form-select" th:field="*{salonId}">
+                    <option value="">Sin salón asignado</option>
+                    <option th:each="s : ${salones}" th:value="${s.id}"
+                            th:text="|${s.nombre} (hasta ${s.capacidad})|">Salón</option>
+                </select>
+                <div class="form-text"><a th:href="@{/admin/salones/nuevo}">Agregar un salón</a></div>
+            </div>
+        </div>
+        <div class="row g-3 mb-3">
+            <div class="col-md-4">
+                <label for="precio" class="form-label">Precio por entrada (CLP)</label>
+                <div class="input-group" th:classappend="${#fields.hasErrors('precio')} ? 'has-validation'">
+                    <span class="input-group-text">$</span>
+                    <input type="number" class="form-control" th:field="*{precio}" th:errorclass="is-invalid" min="0" step="1" required>
+                    <div class="invalid-feedback" th:errors="*{precio}"></div>
+                </div>
+                <div class="form-text">0 = evento gratuito, sin pago.</div>
+            </div>
+            <div class="col-md-4">
+                <label for="cupoMaximo" class="form-label">Máximo de entradas</label>
+                <input type="number" class="form-control" th:field="*{cupoMaximo}" th:errorclass="is-invalid" min="1" required>
+                <div class="invalid-feedback" th:errors="*{cupoMaximo}"></div>
+            </div>
+            <div class="col-md-4">
+                <label for="maxPorCompra" class="form-label">Máximo por compra</label>
+                <input type="number" class="form-control" th:field="*{maxPorCompra}" th:errorclass="is-invalid" min="1" max="50" required>
+                <div class="invalid-feedback" th:errors="*{maxPorCompra}"></div>
+            </div>
+        </div>
+        <div class="mb-4">
+            <label for="imagenUrl" class="form-label">Imagen (URL, opcional)</label>
+            <input type="url" class="form-control" th:field="*{imagenUrl}" th:errorclass="is-invalid" placeholder="https://...">
+            <div class="invalid-feedback" th:errors="*{imagenUrl}"></div>
+        </div>
+        <button type="submit" class="btn btn-primary">Guardar</button>
+    </div></form>
+</main>
+</body>
+</html>

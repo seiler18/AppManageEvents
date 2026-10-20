@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{base :: pagina(~{::title}, ~{::main}, 'admin')}">
+<head><title th:text="|Validar entradas · ${sitio}|">Validar</title></head>
+<body>
+<main class="container mt-4 angosto">
+    <h1 class="h3 mb-1">Validar entradas</h1>
+    <p class="text-body-secondary">Escanea el QR con la cámara del teléfono (abre esta página con el código)
+        o escribe el código de la entrada.</p>
+
+    <form th:action="@{/admin/validar}" method="get" class="d-flex gap-2 mb-4">
+        <input class="form-control codigo" id="codigo-entrada" name="codigo" th:value="${codigo}"
+               placeholder="Código de la entrada" aria-label="Código de la entrada" autocomplete="off" required>
+        <button class="btn btn-outline-primary">Buscar</button>
+    </form>
+
+    <div th:if="${validacion}" th:with="v=${validacion.veredicto.name()}, en=${validacion.entrada}">
+        <div class="card" th:classappend="${v == 'VALIDA'} ? 'border-success' : 'border-danger'">
+            <div class="card-body text-center p-4">
+                <th:block th:switch="${v}">
+                    <div th:case="'VALIDA'">
+                        <th:block th:if="${recienMarcada}">
+                            <i class="bi bi-check-circle-fill text-success display-3"></i>
+                            <div class="veredicto text-success">Ingreso registrado</div>
+                        </th:block>
+                        <th:block th:unless="${recienMarcada}">
+                            <i class="bi bi-ticket-perforated text-success display-3"></i>
+                            <div class="veredicto text-success">Entrada válida</div>
+                        </th:block>
+                    </div>
+                    <div th:case="'YA_USADA'">
+                        <i class="bi bi-exclamation-octagon-fill text-danger display-3"></i>
+                        <div class="veredicto text-danger">Ya fue usada</div>
+                        <div th:if="${en.usadaEn}" th:text="|El ${@fmt.corta(en.usadaEn)}|">fecha</div>
+                    </div>
+                    <div th:case="'NO_VIGENTE'">
+                        <i class="bi bi-x-octagon-fill text-danger display-3"></i>
+                        <div class="veredicto text-danger">No vigente</div>
+                        <div class="small">Orden no pagada, reembolsada o evento cancelado.</div>
+                    </div>
+                    <div th:case="*">
+                        <i class="bi bi-question-octagon-fill text-danger display-3"></i>
+                        <div class="veredicto text-danger">No existe</div>
+                    </div>
+                </th:block>
+
+                <dl class="row text-start small mt-3 mb-0" th:if="${en}">
+                    <dt class="col-4">Evento</dt><dd class="col-8" th:text="${en.orden.evento.titulo}">Evento</dd>
+                    <dt class="col-4">Fecha</dt><dd class="col-8" th:text="${@fmt.corta(en.orden.evento.fechaInicio)}">fecha</dd>
+                    <dt class="col-4">Titular</dt><dd class="col-8" th:text="${en.orden.usuario.nombre}">nombre</dd>
+                    <dt class="col-4">Orden</dt><dd class="col-8 codigo" th:text="${en.orden.codigo}">AME</dd>
+                </dl>
+
+                <form th:if="${v == 'VALIDA' and !recienMarcada}" th:action="@{/admin/validar}" method="post" class="mt-3">
+                    <input type="hidden" name="codigo" th:value="${codigo}">
+                    <button class="btn btn-success btn-lg w-100"><i class="bi bi-door-open me-1"></i>Registrar ingreso</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html>

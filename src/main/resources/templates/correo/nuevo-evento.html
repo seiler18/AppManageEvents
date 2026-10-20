@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" th:replace="~{correo/base :: marco(~{::div})}">
+<body>
+<div>
+    <p>Hola <span th:text="${usuario.nombre}">nombre</span>, publicamos un evento nuevo:</p>
+    <h1 style="font-size:22px;margin:0 0 12px;" th:text="${evento.titulo}">Evento</h1>
+    <img th:if="${evento.imagenUrl}" th:src="${evento.imagenUrl}" alt="" width="544" style="max-width:100%;border-radius:8px;margin-bottom:12px;">
+    <p><strong th:text="${@fmt.fecha(evento.fechaInicio)}">fecha</strong>
+        <th:block th:if="${evento.salon}"><br><span th:text="${evento.salon.nombre}">lugar</span></th:block></p>
+    <p th:if="${evento.descripcion}" th:text="${#strings.abbreviate(evento.descripcion, 400)}">descripción</p>
+    <p>Entradas: <strong th:text="${@fmt.precio(evento.precio)}">$</strong> · Cupos: <span th:text="${evento.cupoMaximo}">100</span></p>
+    <p style="margin:24px 0;">
+        <a th:href="${urlEvento}" style="background:#5b3cc4;color:#ffffff;padding:12px 22px;border-radius:8px;text-decoration:none;font-weight:bold;">Comprar entradas</a>
+    </p>
+</div>
+</body>
+</html>

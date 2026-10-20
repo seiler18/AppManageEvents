@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{base :: pagina(~{::title}, ~{::main}, 'admin')}">
+<head><title th:text="|Salones · ${sitio}|">Salones</title></head>
+<body>
+<main class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1 class="h3 mb-0">Salones</h1>
+        <a class="btn btn-primary" th:href="@{/admin/salones/nuevo}"><i class="bi bi-plus-lg me-1"></i>Nuevo salón</a>
+    </div>
+    <div class="table-responsive">
+        <table class="table align-middle tabla-movil">
+            <thead><tr><th>Nombre</th><th>Dirección</th><th>Capacidad</th><th></th></tr></thead>
+            <tbody>
+            <tr th:if="${#lists.isEmpty(salones)}"><td colspan="4" class="text-body-secondary">Aún no hay salones.</td></tr>
+            <tr th:each="s : ${salones}">
+                <td th:text="${s.nombre}">Salón</td>
+                <td th:text="${s.direccion}">dirección</td>
+                <td th:text="${s.capacidad}">100</td>
+                <td class="text-end">
+                    <a class="btn btn-sm btn-outline-secondary" th:href="@{/admin/salones/{id}/editar(id=${s.id})}">Editar</a>
+                    <form class="d-inline" th:action="@{/admin/salones/{id}/eliminar(id=${s.id})}" method="post"
+                          data-confirmar="¿Eliminar este salón?">
+                        <button class="btn btn-sm btn-link text-danger">Eliminar</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</main>
+</body>
+</html>

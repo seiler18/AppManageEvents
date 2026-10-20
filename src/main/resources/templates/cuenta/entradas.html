@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{base :: pagina(~{::title}, ~{::main}, 'publico')}">
+<head><title th:text="|Mis entradas · ${sitio}|">Mis entradas</title></head>
+<body>
+<main class="container mt-4">
+    <h1 class="h3 mb-4">Mis entradas</h1>
+
+    <div class="text-center text-body-secondary py-5" th:if="${#lists.isEmpty(ordenes)}">
+        <i class="bi bi-ticket-perforated fs-1 d-block mb-2"></i>
+        Todavía no tienes entradas. <a th:href="@{/}">Mira la cartelera</a>.
+    </div>
+
+    <div class="card mb-3" th:each="o : ${ordenes}" th:with="e=${o.evento}">
+        <div class="card-body">
+            <div class="d-flex flex-wrap justify-content-between gap-2 mb-2">
+                <div>
+                    <h2 class="h5 mb-1"><a th:href="@{/eventos/{id}(id=${e.id})}" th:text="${e.titulo}">Evento</a></h2>
+                    <div class="small text-body-secondary">
+                        <span th:text="${@fmt.fecha(e.fechaInicio)}">fecha</span>
+                        <span th:if="${e.salon}" th:text="|· ${e.salon.nombre}|">lugar</span>
+                    </div>
+                </div>
+                <div class="text-end small">
+                    <span class="badge text-bg-danger" th:if="${e.estado.name() == 'CANCELADO'}">Evento cancelado</span>
+                    <div class="text-body-secondary">Orden <span class="codigo" th:text="${o.codigo}">AME</span></div>
+                </div>
+            </div>
+            <div class="list-group list-group-flush">
+                <a class="list-group-item list-group-item-action d-flex justify-content-between align-items-center px-0"
+                   th:each="en, i : ${o.entradas}" th:href="@{/cuenta/entradas/{c}(c=${en.codigo})}">
+                    <span><i class="bi bi-qr-code me-2"></i>Entrada <span th:text="${i.count}">1</span></span>
+                    <span class="badge text-bg-secondary" th:if="${en.usada}">Usada</span>
+                    <span class="badge text-bg-success" th:if="${en.vigente}">Vigente</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html>

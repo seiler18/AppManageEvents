@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<span th:fragment="estadoOrden(estado)" class="badge"
+      th:classappend="${estado.name() == 'PAGADA'} ? 'text-bg-success'
+                     : (${estado.name() == 'PENDIENTE'} ? 'text-bg-warning'
+                     : (${estado.name() == 'REEMBOLSADA'} ? 'text-bg-info' : 'text-bg-secondary'))"
+      th:text="${estado.name() == 'PAGADA'} ? 'Pagada'
+             : (${estado.name() == 'PENDIENTE'} ? 'Pendiente'
+             : (${estado.name() == 'RECHAZADA'} ? 'Rechazada'
+             : (${estado.name() == 'ANULADA'} ? 'Anulada'
+             : (${estado.name() == 'EXPIRADA'} ? 'Expirada' : 'Reembolsada'))))">Estado</span>
+
+<span th:fragment="estadoEvento(estado)" class="badge"
+      th:classappend="${estado.name() == 'PUBLICADO'} ? 'text-bg-success'
+                     : (${estado.name() == 'BORRADOR'} ? 'text-bg-secondary' : 'text-bg-danger')"
+      th:text="${estado.name() == 'PUBLICADO'} ? 'Publicado'
+             : (${estado.name() == 'BORRADOR'} ? 'Borrador' : 'Cancelado')">Estado</span>
+
+<div th:fragment="ocupacion(evento)">
+    <div class="d-flex justify-content-between small text-body-secondary mb-1">
+        <span th:text="|${evento.entradasReservadas} de ${evento.cupoMaximo} entradas|">0 de 0</span>
+        <span th:text="|${evento.porcentajeOcupacion}%|">0%</span>
+    </div>
+    <div class="progress" role="progressbar" th:aria-valuenow="${evento.porcentajeOcupacion}"
+         aria-valuemin="0" aria-valuemax="100" aria-label="Ocupación">
+        <div class="progress-bar" th:style="|width: ${evento.porcentajeOcupacion}%|"
+             th:classappend="${evento.porcentajeOcupacion >= 90} ? 'bg-danger'"></div>
+    </div>
+</div>
+
+</body>
+</html>

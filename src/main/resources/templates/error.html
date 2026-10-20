@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{base :: pagina(~{::title}, ~{::main}, 'publico')}">
+<head><title>Algo salió mal</title></head>
+<body>
+<main class="container mt-5 angosto text-center">
+    <div class="display-1 fw-bold text-primary" th:text="${status}">404</div>
+    <h1 class="h4" th:switch="${status}">
+        <span th:case="404">No encontramos esa página</span>
+        <span th:case="403">No tienes acceso a esta página</span>
+        <span th:case="*">Ocurrió un error inesperado</span>
+    </h1>
+    <p class="text-body-secondary">Si el problema sigue, escríbenos indicando qué estabas haciendo.</p>
+    <a class="btn btn-primary" href="/">Ir a la cartelera</a>
+</main>
+</body>
+</html>

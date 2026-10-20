@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{base :: pagina(~{::title}, ~{::main}, 'publico')}">
+<head><title th:text="|Pago · ${sitio}|">Pago</title></head>
+<body>
+<main class="container mt-5 angosto text-center">
+    <i class="bi bi-exclamation-triangle text-warning display-4"></i>
+    <h1 class="h4 mt-2">Algo no salió como esperábamos</h1>
+    <p class="text-body-secondary" th:text="${mensaje}">Mensaje</p>
+    <a class="btn btn-primary" th:href="@{/cuenta/entradas}">Ver mis entradas</a>
+</main>
+</body>
+</html>

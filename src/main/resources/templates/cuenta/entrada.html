@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{base :: pagina(~{::title}, ~{::main}, 'publico')}">
+<head><title th:text="|Entrada · ${evento.titulo}|">Entrada</title></head>
+<body>
+<main class="container mt-4 angosto">
+    <nav class="small mb-3"><a th:href="@{/cuenta/entradas}"><i class="bi bi-arrow-left"></i> Mis entradas</a></nav>
+    <div class="entrada p-4 text-center">
+        <div class="small text-uppercase text-body-secondary fw-bold mb-1" th:text="${sitio}">Sitio</div>
+        <h1 class="h4" th:text="${evento.titulo}">Evento</h1>
+        <p class="mb-3">
+            <span th:text="${@fmt.fecha(evento.fechaInicio)}">fecha</span><br>
+            <span th:if="${evento.salon}" th:text="${evento.salon.nombre}">lugar</span>
+        </p>
+        <img class="qr mb-3" th:src="@{/cuenta/entradas/{c}/qr.png(c=${entrada.codigo})}" alt="Código QR de la entrada">
+        <div class="codigo small mb-2" th:text="${entrada.codigo}">uuid</div>
+        <div th:if="${entrada.vigente}" class="badge text-bg-success fs-6">Vigente</div>
+        <div th:if="${entrada.usada}" class="badge text-bg-secondary fs-6"
+             th:text="|Usada el ${@fmt.corta(entrada.usadaEn)}|">Usada</div>
+        <div th:if="${!entrada.vigente and !entrada.usada}" class="badge text-bg-danger fs-6">No válida</div>
+        <p class="small text-body-secondary mt-3 mb-0">
+            A nombre de <strong th:text="${orden.usuario.nombre}">nombre</strong> · Orden <span class="codigo" th:text="${orden.codigo}">AME</span><br>
+            Muestra este código en la entrada. Cada código sirve una sola vez.
+        </p>
+    </div>
+</main>
+</body>
+</html>

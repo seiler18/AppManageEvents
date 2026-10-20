@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{base :: pagina(~{::title}, ~{::main}, 'admin')}">
+<head><title th:text="|${evento.titulo} · Panel|">Evento</title></head>
+<body>
+<main class="container mt-4" th:with="e=${evento}">
+    <nav class="small mb-3"><a th:href="@{/admin/eventos}"><i class="bi bi-arrow-left"></i> Eventos</a></nav>
+
+    <div class="d-flex flex-wrap justify-content-between align-items-start gap-3 mb-4">
+        <div>
+            <h1 class="h3 mb-1"><span th:text="${e.titulo}">Evento</span>
+                <span th:replace="~{fragmentos :: estadoEvento(${e.estado})}"></span></h1>
+            <div class="text-body-secondary">
+                <span th:text="${@fmt.fecha(e.fechaInicio)}">fecha</span>
+                <span th:if="${e.salon}" th:text="|· ${e.salon.nombre}|">salón</span>
+                · <span th:text="${@fmt.precio(e.precio)}">$</span>
+            </div>
+        </div>
+        <div class="d-flex flex-wrap gap-2">
+            <a class="btn btn-outline-secondary" th:href="@{/admin/eventos/{id}/editar(id=${e.id})}"><i class="bi bi-pencil me-1"></i>Editar</a>
+            <a class="btn btn-outline-secondary" th:if="${e.estado.name() != 'BORRADOR'}" th:href="@{/eventos/{id}(id=${e.id})}" target="_blank" rel="noopener">
+                <i class="bi bi-box-arrow-up-right me-1"></i>Ver ficha pública</a>
+            <form th:if="${e.estado.name() == 'BORRADOR'}" th:action="@{/admin/eventos/{id}/publicar(id=${e.id})}" method="post"
+                  data-confirmar="¿Publicar el evento? Se avisará por correo a todos los suscritos.">
+                <button class="btn btn-primary"><i class="bi bi-megaphone me-1"></i>Publicar</button>
+            </form>
+            <form th:if="${e.estado.name() != 'CANCELADO'}" th:action="@{/admin/eventos/{id}/cancelar(id=${e.id})}" method="post"
+                  data-confirmar="¿Cancelar el evento? Se detiene la venta y se avisa a quienes compraron.">
+                <button class="btn btn-outline-danger"><i class="bi bi-x-octagon me-1"></i>Cancelar evento</button>
+            </form>
+            <form th:if="${e.estado.name() == 'CANCELADO'}" th:action="@{/admin/eventos/{id}/reembolsar(id=${e.id})}" method="post"
+                  data-confirmar="¿Reembolsar en Webpay todas las órdenes pagadas de este evento?">
+                <button class="btn btn-danger"><i class="bi bi-arrow-counterclockwise me-1"></i>Reembolsar todo</button>
+            </form>
+            <form th:action="@{/admin/eventos/{id}/eliminar(id=${e.id})}" method="post"
+                  data-confirmar="¿Eliminar el evento? Solo es posible si no tiene compras.">
+                <button class="btn btn-link text-danger">Eliminar</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="row g-3 mb-4">
+        <div class="col-md-4"><div class="card metrica h-100"><div class="card-body">
+            <div class="small text-body-secondary">Ocupación</div>
+            <div th:replace="~{fragmentos :: ocupacion(${e})}"></div>
+        </div></div></div>
+        <div class="col-6 col-md-4"><div class="card metrica h-100"><div class="card-body">
+            <div class="small text-body-secondary">Disponibles</div>
+            <div class="valor" th:text="${e.disponibles}">0</div>
+        </div></div></div>
+        <div class="col-6 col-md-4"><div class="card metrica h-100"><div class="card-body">
+            <div class="small text-body-secondary">Recaudado</div>
+            <div class="valor" th:text="${@fmt.clp(recaudacion)}">$0</div>
+        </div></div></div>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-lg-8">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <h2 class="h5 mb-0">Órdenes</h2>
+                <a class="btn btn-sm btn-outline-primary" th:href="@{/admin/eventos/{id}/asistentes.csv(id=${e.id})}">
+                    <i class="bi bi-download me-1"></i>Asistentes (CSV)</a>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-sm align-middle tabla-movil">
+                    <thead><tr><th>Orden</th><th>Comprador</th><th>Cant.</th><th>Monto</th><th>Estado</th><th>Usadas</th><th></th></tr></thead>
+                    <tbody>
+                    <tr th:if="${#lists.isEmpty(ordenes)}"><td colspan="7" class="text-body-secondary">Sin órdenes todavía.</td></tr>
+                    <tr th:each="o : ${ordenes}">
+                        <td class="codigo small" th:text="${o.codigo}">AME</td>
+                        <td><span th:text="${o.usuario.nombre}">nombre</span>
+                            <div class="small text-body-secondary" th:text="${o.usuario.email}">correo</div></td>
+                        <td th:text="${o.cantidad}">1</td>
+                        <td th:text="${@fmt.clp(o.monto)}">$</td>
+                        <td><span th:replace="~{fragmentos :: estadoOrden(${o.estado})}"></span></td>
+                        <td th:text="${#lists.size(o.entradas.?[usada])}">0</td>
+                        <td>
+                            <form th:if="${o.estaPagada()}" th:action="@{/admin/ordenes/{c}/reembolsar(c=${o.codigo})}" method="post"
+                                  th:data-confirmar="|¿Reembolsar la orden ${o.codigo} en Webpay?|">
+                                <button class="btn btn-sm btn-outline-danger">Reembolsar</button>
+                            </form>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="card"><div class="card-body">
+                <h2 class="h6">Enviar un mensaje</h2>
+                <form th:action="@{/admin/eventos/{id}/mensaje(id=${e.id})}" method="post">
+                    <div class="mb-2">
+                        <select class="form-select form-select-sm" name="destinatarios" aria-label="Destinatarios">
+                            <option value="COMPRADORES">A quienes compraron</option>
+                            <option value="SUSCRITOS">A todos los suscritos a avisos</option>
+                        </select>
+                    </div>
+                    <div class="mb-2"><input class="form-control form-control-sm" name="asunto" placeholder="Asunto" required maxlength="150"></div>
+                    <div class="mb-2"><textarea class="form-control form-control-sm" name="texto" rows="4" placeholder="Mensaje" required maxlength="5000"></textarea></div>
+                    <button class="btn btn-sm btn-primary w-100"><i class="bi bi-send me-1"></i>Enviar</button>
+                </form>
+            </div></div>
+        </div>
+    </div>
+</main>
+</body>
+</html>

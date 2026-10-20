@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{base :: pagina(~{::title}, ~{::main}, 'admin')}">
+<head><title th:text="|Panel · ${sitio}|">Panel</title></head>
+<body>
+<main class="container mt-4" th:with="r=${resumen}">
+    <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-4">
+        <h1 class="h3 mb-0">Panel de administración</h1>
+        <div class="d-flex gap-2">
+            <a class="btn btn-outline-primary" th:href="@{/admin/validar}"><i class="bi bi-qr-code-scan me-1"></i>Validar entradas</a>
+            <a class="btn btn-primary" th:href="@{/admin/eventos/nuevo}"><i class="bi bi-plus-lg me-1"></i>Nuevo evento</a>
+        </div>
+    </div>
+
+    <div class="row g-3 mb-4">
+        <div class="col-6 col-lg-3"><div class="card metrica h-100"><div class="card-body">
+            <div class="small text-body-secondary">Eventos a la venta</div>
+            <div class="valor" th:text="${r.eventosProximos}">0</div>
+        </div></div></div>
+        <div class="col-6 col-lg-3"><div class="card metrica h-100"><div class="card-body">
+            <div class="small text-body-secondary">Entradas vendidas</div>
+            <div class="valor" th:text="${r.entradasVendidas}">0</div>
+        </div></div></div>
+        <div class="col-6 col-lg-3"><div class="card metrica h-100"><div class="card-body">
+            <div class="small text-body-secondary">Recaudación</div>
+            <div class="valor" th:text="${@fmt.clp(r.recaudacion)}">$0</div>
+        </div></div></div>
+        <div class="col-6 col-lg-3"><div class="card metrica h-100"><div class="card-body">
+            <div class="small text-body-secondary">Usuarios · suscritos a avisos</div>
+            <div class="valor"><span th:text="${r.usuarios}">0</span> · <span th:text="${r.suscritos}">0</span></div>
+        </div></div></div>
+    </div>
+
+    <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <strong>Próximos eventos publicados</strong>
+            <a th:href="@{/admin/eventos}" class="small">Ver todos</a>
+        </div>
+        <div class="list-group list-group-flush">
+            <div class="list-group-item text-body-secondary" th:if="${#lists.isEmpty(r.proximos)}">
+                No hay eventos publicados. <a th:href="@{/admin/eventos/nuevo}">Crea uno</a>.
+            </div>
+            <a class="list-group-item list-group-item-action" th:each="e : ${r.proximos}"
+               th:href="@{/admin/eventos/{id}(id=${e.id})}">
+                <div class="row align-items-center g-2">
+                    <div class="col-md-6">
+                        <div class="fw-semibold" th:text="${e.titulo}">Evento</div>
+                        <div class="small text-body-secondary" th:text="${@fmt.fecha(e.fechaInicio)}">fecha</div>
+                    </div>
+                    <div class="col-md-6"><div th:replace="~{fragmentos :: ocupacion(${e})}"></div></div>
+                </div>
+            </a>
+        </div>
+    </div>
+</main>
+</body>
+</html>

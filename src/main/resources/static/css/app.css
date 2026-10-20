@@ -1,0 +1,123 @@
+/* Ajustes sobre Bootstrap 5.3. Los colores salen de variables para que el
+   tema oscuro (data-bs-theme="dark") funcione sin duplicar reglas. */
+:root,
+[data-bs-theme="light"] {
+  --bs-primary: #5b3cc4;
+  --bs-primary-rgb: 91, 60, 196;
+  --bs-link-color: #5b3cc4;
+  --bs-link-color-rgb: 91, 60, 196;
+  --bs-link-hover-color: #452c9c;
+  --acento: #f5a524;
+  --fondo-suave: #f6f4fd;
+  --bs-body-bg: #ffffff;
+}
+
+[data-bs-theme="dark"] {
+  --bs-primary: #9b85f0;
+  --bs-primary-rgb: 155, 133, 240;
+  --bs-link-color: #b3a2f5;
+  --bs-link-color-rgb: 179, 162, 245;
+  --bs-link-hover-color: #cfc3fa;
+  --fondo-suave: #1d1a2b;
+  --bs-body-bg: #12101b;
+}
+
+body {
+  background: var(--bs-body-bg);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+body > footer { margin-top: auto !important; }
+
+.btn-primary {
+  --bs-btn-bg: var(--bs-primary);
+  --bs-btn-border-color: var(--bs-primary);
+  --bs-btn-hover-bg: #452c9c;
+  --bs-btn-hover-border-color: #452c9c;
+  --bs-btn-active-bg: #3a2585;
+  --bs-btn-disabled-bg: var(--bs-primary);
+  --bs-btn-disabled-border-color: var(--bs-primary);
+}
+
+[data-bs-theme="dark"] .btn-primary {
+  --bs-btn-color: #12101b;
+  --bs-btn-hover-color: #12101b;
+  --bs-btn-hover-bg: #b3a2f5;
+  --bs-btn-hover-border-color: #b3a2f5;
+}
+
+.btn-outline-primary {
+  --bs-btn-color: var(--bs-primary);
+  --bs-btn-border-color: var(--bs-primary);
+  --bs-btn-hover-bg: var(--bs-primary);
+  --bs-btn-hover-border-color: var(--bs-primary);
+}
+
+.barra { background: color-mix(in srgb, var(--bs-body-bg) 92%, transparent); backdrop-filter: blur(8px); }
+.zona-admin .barra { border-bottom: 3px solid var(--bs-primary) !important; }
+
+/* ---------- Portada ---------- */
+.portada {
+  background: linear-gradient(135deg, var(--fondo-suave), transparent 70%);
+  padding: 3rem 0 2rem;
+}
+.portada h1 { font-weight: 800; letter-spacing: -0.02em; }
+
+.tarjeta-evento { transition: transform .15s ease, box-shadow .15s ease; overflow: hidden; }
+.tarjeta-evento:hover { transform: translateY(-3px); box-shadow: 0 .75rem 1.5rem rgba(0, 0, 0, .08); }
+.tarjeta-evento .imagen {
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  width: 100%;
+  background: linear-gradient(135deg, var(--bs-primary), #8a6cf0);
+}
+.imagen-vacia { display: flex; align-items: center; justify-content: center; color: #fff; font-size: 2.5rem; }
+
+.fecha-chip {
+  position: absolute;
+  top: .75rem;
+  left: .75rem;
+  background: var(--bs-body-bg);
+  border-radius: .5rem;
+  padding: .25rem .6rem;
+  font-weight: 700;
+  font-size: .85rem;
+  text-transform: uppercase;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, .15);
+}
+
+.precio { font-weight: 700; color: var(--bs-primary); }
+
+/* ---------- Ficha y compra ---------- */
+.hero-evento { aspect-ratio: 21 / 9; object-fit: cover; width: 100%; border-radius: 1rem; }
+.caja-compra { position: sticky; top: 5rem; }
+.total { font-size: 1.75rem; font-weight: 800; }
+
+/* ---------- Entradas ---------- */
+.entrada {
+  border: 2px dashed var(--bs-border-color);
+  border-radius: 1rem;
+  background: var(--fondo-suave);
+}
+.entrada .qr { width: 100%; max-width: 260px; background: #fff; padding: .5rem; border-radius: .5rem; }
+.codigo { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; word-break: break-all; }
+
+/* ---------- Panel ---------- */
+.metrica { border-left: 4px solid var(--bs-primary); }
+.metrica .valor { font-size: 1.75rem; font-weight: 800; line-height: 1.1; }
+.progress { height: .5rem; }
+.veredicto { font-size: 1.5rem; font-weight: 800; }
+
+.tabla-movil td, .tabla-movil th { white-space: nowrap; }
+
+@media (max-width: 575.98px) {
+  .portada { padding: 2rem 0 1rem; }
+  .total { font-size: 1.4rem; }
+}
+
+/* ---------- Utilidades ---------- */
+.texto-libre { white-space: pre-line; }
+.angosto { max-width: 560px; }
+.medio { max-width: 760px; }

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{base :: pagina(~{::title}, ~{::main}, 'publico')}">
+<head><title th:text="|Mi perfil · ${sitio}|">Mi perfil</title></head>
+<body>
+<main class="container mt-4 medio">
+    <h1 class="h3 mb-4">Mi perfil</h1>
+
+    <div class="card mb-4"><div class="card-body p-4">
+        <h2 class="h5 mb-3">Datos y avisos</h2>
+        <p class="text-body-secondary small">Correo: <strong th:text="${usuario.email}">correo</strong></p>
+        <form th:action="@{/cuenta/perfil}" th:object="${form}" method="post" novalidate>
+            <div class="mb-3">
+                <label for="nombre" class="form-label">Nombre</label>
+                <input type="text" class="form-control" th:field="*{nombre}" th:errorclass="is-invalid" required>
+                <div class="invalid-feedback" th:errors="*{nombre}"></div>
+            </div>
+            <div class="form-check form-switch mb-3">
+                <input class="form-check-input" type="checkbox" role="switch" th:field="*{recibeNotificaciones}">
+                <label class="form-check-label" th:for="${#ids.prev('recibeNotificaciones')}">
+                    Avisarme por correo cuando se publique un evento nuevo
+                </label>
+            </div>
+            <button type="submit" class="btn btn-primary">Guardar</button>
+        </form>
+    </div></div>
+
+    <div class="card"><div class="card-body p-4">
+        <h2 class="h5 mb-3">Cambiar contraseña</h2>
+        <div class="alert alert-danger" th:if="${errorClave}" th:text="${errorClave}">error</div>
+        <form th:action="@{/cuenta/clave}" th:object="${clave}" method="post" novalidate>
+            <div class="mb-3">
+                <label for="actual" class="form-label">Contraseña actual</label>
+                <input type="password" class="form-control" th:field="*{actual}" th:errorclass="is-invalid"
+                       autocomplete="current-password" required>
+                <div class="invalid-feedback" th:errors="*{actual}"></div>
+            </div>
+            <div class="mb-3">
+                <label for="nueva" class="form-label">Nueva contraseña</label>
+                <input type="password" class="form-control" th:field="*{nueva}" th:errorclass="is-invalid"
+                       autocomplete="new-password" minlength="8" required>
+                <div class="invalid-feedback" th:errors="*{nueva}"></div>
+            </div>
+            <div class="mb-3">
+                <label for="confirmacion" class="form-label">Repite la nueva contraseña</label>
+                <input type="password" class="form-control" th:field="*{confirmacion}"
+                       th:classappend="${#fields.hasErrors('confirmacionValida')} ? 'is-invalid'"
+                       autocomplete="new-password" required>
+                <div class="invalid-feedback" th:errors="*{confirmacionValida}"></div>
+            </div>
+            <button type="submit" class="btn btn-outline-primary">Cambiar contraseña</button>
+        </form>
+    </div></div>
+</main>
+</body>
+</html>

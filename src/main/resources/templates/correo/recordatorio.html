@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" th:replace="~{correo/base :: marco(~{::div})}">
+<body>
+<div>
+    <h1 style="font-size:22px;margin:0 0 12px;">Te esperamos pronto</h1>
+    <p>Hola <span th:text="${usuario.nombre}">nombre</span>, te recordamos que
+        <strong th:text="${evento.titulo}">evento</strong> es el
+        <strong th:text="${@fmt.fecha(evento.fechaInicio)}">fecha</strong>.</p>
+    <p th:if="${evento.salon}">Lugar: <span th:text="${evento.salon.nombre}">lugar</span><span th:if="${evento.salon.direccion}" th:text="|, ${evento.salon.direccion}|"></span></p>
+    <p style="margin:24px 0;">
+        <a th:href="${urlEntradas}" style="background:#5b3cc4;color:#ffffff;padding:12px 22px;border-radius:8px;text-decoration:none;font-weight:bold;">Tener mis entradas a mano</a>
+    </p>
+</div>
+</body>
+</html>

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<!--/* Layout común. Cada vista hace:
+     <html th:replace="~{base :: pagina(~{::title}, ~{::main}, 'publico')}"> */-->
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      th:fragment="pagina(titulo, contenido, seccion)">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light dark">
+    <title th:replace="${titulo}">AppManageEvents</title>
+    <link rel="icon" type="image/svg+xml" th:href="@{/favicon.svg}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+          integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.2/font/bootstrap-icons.min.css"
+          integrity="sha384-nWN3KqaaVcbEsCjLSV+2jMjh62Iny/+mN3srM8TZeM8N6aj7eDl5wwYggjAJ4/sJ" crossorigin="anonymous">
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+    <script th:src="@{/js/tema.js}"></script>
+</head>
+<body th:classappend="${seccion == 'admin'} ? 'zona-admin'">
+
+<nav class="navbar navbar-expand-lg border-bottom sticky-top barra">
+    <div class="container">
+        <a class="navbar-brand fw-bold d-flex align-items-center gap-2" th:href="@{/}">
+            <img th:src="@{/favicon.svg}" alt="" width="28" height="28">
+            <span th:text="${sitio ?: 'AppManageEvents'}">AppManageEvents</span>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu"
+                aria-controls="menu" aria-expanded="false" aria-label="Abrir menú">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="menu">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item"><a class="nav-link" th:href="@{/}">Cartelera</a></li>
+                <li class="nav-item" sec:authorize="isAuthenticated()">
+                    <a class="nav-link" th:href="@{/cuenta/entradas}">Mis entradas</a>
+                </li>
+                <li class="nav-item dropdown" sec:authorize="hasRole('ADMIN')">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                       aria-expanded="false">Administración</a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" th:href="@{/admin}"><i class="bi bi-speedometer2 me-2"></i>Panel</a></li>
+                        <li><a class="dropdown-item" th:href="@{/admin/eventos}"><i class="bi bi-calendar-event me-2"></i>Eventos</a></li>
+                        <li><a class="dropdown-item" th:href="@{/admin/salones}"><i class="bi bi-building me-2"></i>Salones</a></li>
+                        <li><a class="dropdown-item" th:href="@{/admin/ordenes}"><i class="bi bi-receipt me-2"></i>Órdenes</a></li>
+                        <li><a class="dropdown-item" th:href="@{/admin/validar}"><i class="bi bi-qr-code-scan me-2"></i>Validar entradas</a></li>
+                        <li><a class="dropdown-item" th:href="@{/admin/usuarios}"><i class="bi bi-people me-2"></i>Usuarios</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="navbar-nav align-items-lg-center gap-lg-2">
+                <li class="nav-item">
+                    <button type="button" class="btn btn-link nav-link" id="cambiar-tema" aria-label="Cambiar tema claro u oscuro">
+                        <i class="bi bi-circle-half"></i>
+                    </button>
+                </li>
+                <th:block sec:authorize="isAuthenticated()">
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/cuenta/perfil}">
+                            <i class="bi bi-person-circle me-1"></i><span sec:authentication="name">correo</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <form th:action="@{/logout}" method="post" class="d-inline">
+                            <button type="submit" class="btn btn-outline-secondary btn-sm">Salir</button>
+                        </form>
+                    </li>
+                </th:block>
+                <th:block sec:authorize="!isAuthenticated()">
+                    <li class="nav-item"><a class="nav-link" th:href="@{/login}">Ingresar</a></li>
+                    <li class="nav-item"><a class="btn btn-primary btn-sm" th:href="@{/registro}">Crear cuenta</a></li>
+                </th:block>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container mt-3" th:if="${ok != null or error != null}">
+    <div class="alert alert-success alert-dismissible fade show" role="status" th:if="${ok}">
+        <span th:text="${ok}">Listo</span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+    </div>
+    <div class="alert alert-danger alert-dismissible fade show" role="alert" th:if="${error}">
+        <span th:text="${error}">Error</span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+    </div>
+</div>
+
+<th:block th:replace="${contenido}"></th:block>
+
+<footer class="border-top mt-5 py-4 text-body-secondary small">
+    <div class="container d-flex flex-wrap justify-content-between gap-2">
+        <span>© 2026 <span th:text="${sitio ?: 'AppManageEvents'}">AppManageEvents</span></span>
+        <span th:if="${pagosDePrueba}" class="badge text-bg-warning">Pagos en modo de prueba (Webpay integración)</span>
+        <span>Pagos seguros con <strong>Webpay Plus</strong></span>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+<script th:src="@{/js/app.js}"></script>
+</body>
+</html>

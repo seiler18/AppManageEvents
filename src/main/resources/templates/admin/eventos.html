@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{base :: pagina(~{::title}, ~{::main}, 'admin')}">
+<head><title th:text="|Eventos · ${sitio}|">Eventos</title></head>
+<body>
+<main class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1 class="h3 mb-0">Eventos</h1>
+        <a class="btn btn-primary" th:href="@{/admin/eventos/nuevo}"><i class="bi bi-plus-lg me-1"></i>Nuevo evento</a>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-hover align-middle tabla-movil">
+            <thead><tr><th>Evento</th><th>Fecha</th><th>Precio</th><th>Vendidas / máximo</th><th>Estado</th></tr></thead>
+            <tbody>
+            <tr th:if="${#lists.isEmpty(eventos)}"><td colspan="5" class="text-body-secondary">Aún no hay eventos.</td></tr>
+            <tr th:each="e : ${eventos}">
+                <td><a th:href="@{/admin/eventos/{id}(id=${e.id})}" th:text="${e.titulo}">Evento</a>
+                    <div class="small text-body-secondary" th:if="${e.salon}" th:text="${e.salon.nombre}">salón</div></td>
+                <td th:text="${@fmt.corta(e.fechaInicio)}">fecha</td>
+                <td th:text="${@fmt.precio(e.precio)}">$</td>
+                <td th:text="|${e.entradasReservadas} / ${e.cupoMaximo}|">0 / 0</td>
+                <td><span th:replace="~{fragmentos :: estadoEvento(${e.estado})}"></span></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</main>
+</body>
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{base :: pagina(~{::title}, ~{::main}, 'publico')}">
+<head><title th:text="|Crear cuenta · ${sitio}|">Crear cuenta</title></head>
+<body>
+<main class="container mt-5 angosto">
+    <div class="card shadow-sm"><div class="card-body p-4">
+        <h1 class="h3 mb-1">Crear cuenta</h1>
+        <p class="text-body-secondary mb-4">Para comprar entradas y enterarte primero de los nuevos eventos.</p>
+        <form th:action="@{/registro}" th:object="${form}" method="post" novalidate>
+            <div class="mb-3">
+                <label for="nombre" class="form-label">Nombre</label>
+                <input type="text" class="form-control" th:field="*{nombre}" th:errorclass="is-invalid"
+                       autocomplete="name" required>
+                <div class="invalid-feedback" th:errors="*{nombre}"></div>
+            </div>
+            <div class="mb-3">
+                <label for="email" class="form-label">Correo</label>
+                <input type="email" class="form-control" th:field="*{email}" th:errorclass="is-invalid"
+                       autocomplete="email" required>
+                <div class="invalid-feedback" th:errors="*{email}"></div>
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">Contraseña</label>
+                <input type="password" class="form-control" th:field="*{password}" th:errorclass="is-invalid"
+                       autocomplete="new-password" minlength="8" required>
+                <div class="invalid-feedback" th:errors="*{password}"></div>
+                <div class="form-text">Al menos 8 caracteres.</div>
+            </div>
+            <div class="mb-3">
+                <label for="confirmacion" class="form-label">Repite la contraseña</label>
+                <input type="password" class="form-control" th:field="*{confirmacion}"
+                       th:classappend="${#fields.hasErrors('confirmacionValida')} ? 'is-invalid'"
+                       autocomplete="new-password" required>
+                <div class="invalid-feedback" th:errors="*{confirmacionValida}"></div>
+            </div>
+            <div class="form-check mb-4">
+                <input class="form-check-input" type="checkbox" th:field="*{recibeNotificaciones}">
+                <label class="form-check-label" th:for="${#ids.prev('recibeNotificaciones')}">
+                    Quiero recibir por correo los nuevos eventos
+                </label>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Crear cuenta</button>
+        </form>
+        <p class="text-center mt-3 mb-0">¿Ya tienes cuenta? <a th:href="@{/login}">Ingresa</a></p>
+    </div></div>
+</main>
+</body>
+</html>

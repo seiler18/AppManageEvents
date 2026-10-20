@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" th:replace="~{correo/base :: marco(~{::div})}">
+<body>
+<div>
+    <h1 style="font-size:22px;margin:0 0 12px;">Hola, <span th:text="${usuario.nombre}">nombre</span></h1>
+    <p>Tu cuenta quedó creada. Desde ahora puedes comprar entradas y verlas en «Mis entradas».</p>
+    <p th:if="${usuario.recibeNotificaciones}">Te avisaremos por correo cada vez que publiquemos un evento nuevo.</p>
+    <p style="margin:24px 0;">
+        <a th:href="${urlBase}" style="background:#5b3cc4;color:#ffffff;padding:12px 22px;border-radius:8px;text-decoration:none;font-weight:bold;">Ver la cartelera</a>
+    </p>
+</div>
+</body>
+</html>

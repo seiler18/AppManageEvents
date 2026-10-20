@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      th:replace="~{base :: pagina(~{::title}, ~{::main}, 'publico')}">
+<head><title th:text="|Cartelera · ${sitio}|">Cartelera</title></head>
+<body>
+<main>
+    <section class="portada">
+        <div class="container">
+            <h1 class="display-5">Eventos que valen la pena</h1>
+            <p class="lead text-body-secondary mb-4">Compra tus entradas en segundos y págalas con Webpay.
+                Te llegan al correo con su código QR.</p>
+            <div class="d-flex flex-wrap gap-2" sec:authorize="!isAuthenticated()">
+                <a class="btn btn-primary" th:href="@{/registro}"><i class="bi bi-bell me-1"></i>Avísame de nuevos eventos</a>
+                <a class="btn btn-outline-primary" th:href="@{/login}">Ya tengo cuenta</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="container mt-4">
+        <h2 class="h4 mb-3">Próximos eventos</h2>
+
+        <div class="text-center text-body-secondary py-5" th:if="${#lists.isEmpty(eventos)}">
+            <i class="bi bi-calendar-x fs-1 d-block mb-2"></i>
+            No hay eventos a la venta por ahora. Crea una cuenta y te avisamos cuando se publique uno.
+        </div>
+
+        <div class="row g-4">
+            <div class="col-12 col-sm-6 col-lg-4" th:each="e : ${eventos}">
+                <a class="card h-100 tarjeta-evento text-decoration-none" th:href="@{/eventos/{id}(id=${e.id})}">
+                    <div class="position-relative">
+                        <img class="imagen card-img-top" th:if="${e.imagenUrl}" th:src="${e.imagenUrl}" th:alt="${e.titulo}" loading="lazy">
+                        <div class="imagen imagen-vacia" th:unless="${e.imagenUrl}"><i class="bi bi-ticket-perforated"></i></div>
+                        <span class="fecha-chip" th:text="${@fmt.dia(e.fechaInicio)}">12 nov</span>
+                    </div>
+                    <div class="card-body d-flex flex-column">
+                        <h3 class="h5 card-title text-body" th:text="${e.titulo}">Título</h3>
+                        <p class="small text-body-secondary mb-2">
+                            <i class="bi bi-clock me-1"></i><span th:text="${@fmt.fecha(e.fechaInicio)}">fecha</span>
+                            <th:block th:if="${e.salon}"><br><i class="bi bi-geo-alt me-1"></i><span th:text="${e.salon.nombre}">lugar</span></th:block>
+                        </p>
+                        <div class="mt-auto d-flex justify-content-between align-items-center">
+                            <span class="precio" th:text="${@fmt.precio(e.precio)}">$10.000</span>
+                            <span class="badge text-bg-danger" th:if="${e.disponibles == 0}">Agotado</span>
+                            <span class="badge text-bg-warning" th:if="${e.disponibles > 0 and e.porcentajeOcupacion >= 80}"
+                                  th:text="|Quedan ${e.disponibles}|">Quedan pocas</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+</main>
+</body>
+</html>

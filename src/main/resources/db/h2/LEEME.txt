@@ -1,0 +1,1 @@
+-- Sin migraciones propias de H2; la carpeta existe porque Flyway la busca.

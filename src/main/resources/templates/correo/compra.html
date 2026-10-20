@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" th:replace="~{correo/base :: marco(~{::div})}">
+<body>
+<div>
+    <h1 style="font-size:22px;margin:0 0 12px;">¡Tus entradas están listas!</h1>
+    <p>Hola <span th:text="${usuario.nombre}">nombre</span>, confirmamos tu compra para
+        <strong th:text="${evento.titulo}">evento</strong>.</p>
+    <table role="presentation" cellpadding="6" cellspacing="0" style="font-size:14px;margin:12px 0;">
+        <tr><td style="color:#6b6780;">Fecha</td><td th:text="${@fmt.fecha(evento.fechaInicio)}">fecha</td></tr>
+        <tr th:if="${evento.salon}"><td style="color:#6b6780;">Lugar</td>
+            <td><span th:text="${evento.salon.nombre}">lugar</span><span th:if="${evento.salon.direccion}" th:text="|, ${evento.salon.direccion}|"></span></td></tr>
+        <tr><td style="color:#6b6780;">Orden</td><td th:text="${orden.codigo}">AME</td></tr>
+        <tr><td style="color:#6b6780;">Entradas</td><td th:text="${orden.cantidad}">1</td></tr>
+        <tr><td style="color:#6b6780;">Total</td><td style="font-weight:bold;" th:text="${@fmt.precio(orden.monto)}">$</td></tr>
+        <tr th:if="${orden.codigoAutorizacion}"><td style="color:#6b6780;">Autorización Webpay</td><td th:text="${orden.codigoAutorizacion}">1234</td></tr>
+    </table>
+    <p style="font-size:14px;">Códigos de tus entradas (cada uno sirve una vez):</p>
+    <ul style="font-family:Consolas,monospace;font-size:13px;">
+        <li th:each="en : ${entradas}" th:text="${en.codigo}">uuid</li>
+    </ul>
+    <p style="margin:24px 0;">
+        <a th:href="${urlEntradas}" style="background:#5b3cc4;color:#ffffff;padding:12px 22px;border-radius:8px;text-decoration:none;font-weight:bold;">Ver mis entradas con QR</a>
+    </p>
+    <p style="font-size:13px;color:#6b6780;">En la entrada muestra el QR desde tu teléfono.</p>
+</div>
+</body>
+</html>
