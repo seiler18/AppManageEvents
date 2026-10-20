@@ -1,0 +1,105 @@
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+body {
+    /* WebP de 130 KB en vez del JPEG de 1,5 MB: el fondo se descargaba
+       entero antes de poder leer el formulario en datos moviles.
+       El JPEG original sigue en el repo como master. */
+    background-image: url('/img/Eventos.webp');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Asegura que el cuerpo ocupe al menos la altura de la ventana */
+}
+
+.main-container {
+    display: flex;
+    flex-direction: column;
+    flex: 1; /* Ocupa el espacio restante */
+}
+
+.navbar {
+    background-color: rgba(0, 0, 0, 0.8) !important; /* Navbar más oscuro para mejorar contraste */
+    color: #fff; /* Texto blanco para mejor visibilidad */
+}
+
+.navbar-brand {
+    /* clamp y no 2rem fijos: "MANTENEDOR DE EVENTOS" en mayusculas con
+       letter-spacing no cabe en 360px de ancho. */
+    font-size: clamp(1.1rem, 5.5vw, 2rem);
+    font-weight: bold;
+    color: #fff; /* Mantener el texto blanco en el navbar */
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.content {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* padding horizontal: sin el, la tarjeta quedaba pegada a los dos bordes
+       de la pantalla del movil. */
+    padding: 2rem 1rem;
+}
+
+.login-container {
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 500px;
+}
+
+footer {
+    background-color: rgba(0, 0, 0, 0.9); /* Fondo negro para el footer */
+    color: #fff; /* Texto blanco en el footer */
+    text-align: center;
+    padding: 1rem;
+}
+
+footer a {
+    color: #fff; /* Mantener los enlaces en blanco */
+    text-decoration: none;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}
+
+.btn-google {
+    background-color: #db4437;
+    color: white;
+}
+
+.btn-github {
+    background-color: #333;
+    color: white;
+}
+
+.form-control {
+    margin-bottom: 1rem;
+}
+
+.btn {
+    width: 100%;
+}
+
+hr {
+    border-top: 1px solid #ccc;
+}
+
+/* Titulos dentro de la tarjeta: el h1 de la portada a 2.5rem fijos partia
+   palabras en un movil. */
+.login-container h1 {
+    font-size: clamp(1.35rem, 5vw, 2.2rem);
+}
+
+@media (max-width: 480px) {
+    .login-container { padding: 1.25rem; }
+}

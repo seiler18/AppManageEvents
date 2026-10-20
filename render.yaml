@@ -1,0 +1,21 @@
+# Blueprint de Render. Las credenciales van con sync:false: Render las pide en
+# el panel al crear el servicio y no quedan escritas en este repo publico.
+services:
+  - type: web
+    name: appmanageevents
+    runtime: docker
+    plan: free
+    region: oregon
+    dockerfilePath: ./Dockerfile
+    # /login y no /: la raiz redirige a /eventos, que exige sesion, y un 302
+    # puede contar como servicio caido.
+    healthCheckPath: /login
+    envVars:
+      - key: SPRING_PROFILES_ACTIVE
+        value: prod
+      - key: SPRING_DATASOURCE_URL
+        sync: false
+      - key: SPRING_DATASOURCE_USERNAME
+        sync: false
+      - key: SPRING_DATASOURCE_PASSWORD
+        sync: false

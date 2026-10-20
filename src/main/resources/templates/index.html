@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <!-- Sin este viewport el movil renderiza la pagina a 980px y la escala:
+         la tabla y el menu se veian diminutos. -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Control de eventos</title>
+    <link rel="shortcut icon" type="image/png" href="/img/favicon.png">
+    <!--CSS de Bootstrap 4.2.1-->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+        integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <!--Google Fonts-->
+    <link href="https://fonts.googleapis.com/css?family=Raleway:400,700" rel="stylesheet">
+    <!--Font Awesome-->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
+        integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+    <!--CSS propio-->
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" th:href="@{/eventos}">Control de Eventos</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mr-auto">
+                    <!-- Elementos del lado izquierdo -->
+                    <li class="nav-item">
+                        <a class="nav-link hero-section text-light" href="/nuevo">Crear Evento</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link hero-section text-light" href="/nuevoSalon">Crear Salon</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav ml-auto">
+                    <!-- Elementos del lado derecho -->
+                    <li class="nav-item">
+                        <a class="nav-link hero-section text-light" href="https://seiler18.github.io/Curriculo/">Volver
+                            al curriculo</a>
+                    </li>
+                    <li class="nav-item">
+                        <!-- POST y no <a>: con CSRF activo el logout por GET da 403.
+                             Thymeleaf mete el token en el formulario por su cuenta. -->
+                        <form th:action="@{/logout}" method="post" class="form-inline">
+                            <button type="submit" class="nav-link hero-section text-light btn btn-link">Cerrar sesión</button>
+                        </form>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <br>
+
+    <div class="container text-center">
+        <form class="form-inline justify-content-center flex-wrap" th:action="@{/eventos}">
+            <label class="mr-2 mb-2" for="palabraClave">Filtrar:</label>
+            <input type="text" name="palabraClave" class="form-control mr-2 mb-2" id="palabraClave"
+                th:value="${palabraClave}" placeholder="BUSCAR EVENTO" required>
+            <input type="submit" class="btn btn-info mr-2 mb-2" value="Buscar">
+            <input type="button" class="btn btn-secondary mb-2" value="Limpiar" onclick="limpiarCampos()">
+        </form>
+
+        <br>
+        <div class="table-responsive">
+        <table class="table">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Fecha</th>
+                    <th scope="col">Invitados</th>
+                    <th scope="col">Salon</th>
+                    <th scope="col">Capacidad</th>
+                    <th scope="col">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:if="${#lists.isEmpty(listarEventos)}">
+                    <td colspan="7" class="text-center">No existen eventos por el momento, registre uno </td>
+                </tr>
+                <tr th:each="evento: ${listarEventos}">
+                    <td th:text="${evento.id}"></td>
+                    <td th:text="${evento.nombre}"></td>
+                    <td th:text="${evento.fecha}"></td>
+                    <td th:text="${evento.invitados}"></td>
+                    <td th:text="${evento.salon.nombre}"></td>
+                    <td th:text="${evento.salon.capacidad}"></td>
+                    <td>
+                        <div class="d-flex">
+                            <a class="btn btn-sm btn-primary mr-1" th:href="@{'/editar/' + ${evento.id}}">Editar</a>
+                            <!-- Formulario y no enlace: un GET que borra lo puede
+                                 disparar un rastreador o el prefetch del navegador. -->
+                            <form th:action="@{'/eliminar/' + ${evento.id}}" method="post"
+                                  onsubmit="return confirm('¿Eliminar este evento?')">
+                                <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        </div>
+
+        <div class="text-center p-3">
+            <img src="/img/Salon.png" class="img-fluid" alt="Imagen de un salon">
+        </div>
+
+    </div> <!-- Cierre del div container text-center -->
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white text-center py-3 mt-auto container-footer">
+        <div class="container">
+            <p>&copy; 2024 Control de Eventos. Todos los derechos reservados.</p>
+            <ul class="list-inline">
+                <li class="list-inline-item">
+                    <a href="/" class="text-white">Política de Privacidad</a>
+                </li>
+                <li class="list-inline-item">
+                    <a href="/" class="text-white">Términos de Servicio</a>
+                </li>
+                <li class="list-inline-item">
+                    <a href="/" class="text-white">Contacto</a>
+                </li>
+            </ul>
+        </div>
+    </footer>
+
+    <!--jQuery 3.3.1 -->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"
+        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+
+    <!--Popper JS 1.14.3-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
+        integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous">
+        </script>
+
+    <!--Bootstrap JS 4.2.1-->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
+        integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous">
+        </script>
+
+    <!--Script propio-->
+    <script src="/js/script.js"></script>
+
+<nav th:replace="~{fragmentos-nav :: cinta}"></nav>
+</body>
+
+</html>
