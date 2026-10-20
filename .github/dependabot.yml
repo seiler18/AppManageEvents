@@ -20,6 +20,12 @@ updates:
     groups:
       menores-y-parches:
         update-types: [minor, patch]
+    ignore:
+      # Las pruebas con Postgres embebido deben coincidir con la base real
+      # (Supabase, Postgres 17): con otra mayor probarían contra un motor distinto
+      # al de producción. Se sube cuando Supabase suba.
+      - dependency-name: "io.zonky.test.postgres:*"
+        update-types: ["version-update:semver-major"]
 
   # Las imágenes base del Dockerfile (JDK y JRE) son lo que realmente corre en
   # producción: un parche de seguridad del JRE llega por aquí, no por el pom.
@@ -32,6 +38,14 @@ updates:
       timezone: America/Santiago
     commit-message:
       prefix: "deps"
+    ignore:
+      # La versión de Java la fija `java.version` del pom (25): subir el JDK de la
+      # imagen de build sin subir el JRE de ejecución, o al revés, los desalinea.
+      # Se cambian a mano y juntos, junto con el pom.
+      - dependency-name: eclipse-temurin
+        update-types: ["version-update:semver-major"]
+      - dependency-name: maven
+        update-types: ["version-update:semver-major"]
 
   - package-ecosystem: github-actions
     directory: /
