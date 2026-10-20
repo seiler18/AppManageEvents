@@ -1,7 +1,7 @@
 # Imagen única para Render hoy y para un VPS (Hostinger u otro) mañana.
 # Build multietapa: se compila dentro del contenedor, sin Maven ni JDK en la
 # máquina de quien despliega.
-FROM maven:3.9-eclipse-temurin-25 AS build
+FROM maven:3.9-eclipse-temurin-26 AS build
 WORKDIR /app
 
 COPY pom.xml .
