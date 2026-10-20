@@ -1,0 +1,41 @@
+# Dependabot: avisa de dependencias vulnerables o viejas y abre el PR que las
+# actualiza. Cada PR manda un correo, por eso las menores y de parche van juntas
+# en un solo PR por semana; las mayores (Spring Boot incluido) van cada una por
+# su lado porque son las que rompen.
+#
+# Las actualizaciones de seguridad (las que dispara una alerta) no dependen de
+# este archivo: se encienden en Settings → Code security.
+version: 2
+updates:
+  - package-ecosystem: maven
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: "08:00"
+      timezone: America/Santiago
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: "deps"
+    groups:
+      menores-y-parches:
+        update-types: [minor, patch]
+
+  # Las imágenes base del Dockerfile (JDK y JRE) son lo que realmente corre en
+  # producción: un parche de seguridad del JRE llega por aquí, no por el pom.
+  - package-ecosystem: docker
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: "08:00"
+      timezone: America/Santiago
+    commit-message:
+      prefix: "deps"
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
+    commit-message:
+      prefix: "ci"
