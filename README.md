@@ -1,4 +1,8 @@
-# AppManageEvents
+# AppManageEvents (Java / Spring Boot)
+
+> **Versión archivada.** La app sigue en [Renginys](https://github.com/seiler18/Renginys),
+> rehecha en Next.js para correr en el hosting Node.js de Hostinger. Este
+> repositorio queda como referencia de la versión en Java 25 y Spring Boot 4.1.
 
 Gestor de eventos con venta de entradas: cartelera pública, registro con
 avisos por correo, pago con **Webpay Plus** (Transbank) y panel de
